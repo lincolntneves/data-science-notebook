@@ -120,3 +120,9 @@ th{background:#edf5ef}
 .classifier-legend span:nth-child(1) { color:#205e4e; }
 .classifier-legend span:nth-child(2) { color:#9b471d; }
 .controls input[type="range"] { margin-block:0 10px; }
+
+.implementation details {margin:1em 0}
+.implementation summary {font-weight:700}
+.implementation .lesson-code {background:#f3f5f9;border:1px solid #dbe1ea;border-radius:.5rem;padding:1rem;overflow:auto;tab-size:4}
+.implementation .code-actions {display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-top:.8rem}
+.implementation .lesson-code code {font-size:.9rem}

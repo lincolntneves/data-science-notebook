@@ -9,6 +9,7 @@
 <script defer src="assets/strings.js"></script>
 <script defer src="assets/lab.js"></script>
 <script defer src="assets/language.js"></script>
+<script defer src="assets/code-copy.js"></script>
 </head>
 <body data-model="linear">
 <a class="skip" href="#conteudo">Skip to content</a>
@@ -20,7 +21,7 @@
 <nav class="nav language" aria-label="Language"><a href="linear-regression.html" lang="en" hreflang="en" aria-current="true">English</a><a href="pt/linear-regression.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="es/linear-regression.html" lang="es" hreflang="es">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links" aria-label="In this lesson"><a href="#comece">Start here</a><a href="#equacao">Equation</a><a href="#laboratorio">Lab</a><a href="#treinamento">Training</a><a href="#pratica">How to use it</a><a href="#fontes">References</a></nav>
+<nav class="section-links" aria-label="In this lesson"><a href="#comece">Start here</a><a href="#equacao">Equation</a><a href="#laboratorio">Lab</a><a href="#treinamento">Training</a><a href="#pratica">How to use it</a><a href="#implementacao">Python and R</a><a href="#fontes">References</a></nav>
 <section class="card" id="comece"><h2>Start here</h2>
 <p>Imagine laying a straight ruler across dots on paper. Each dot is a work shift you already observed. Put hours on the horizontal axis and installed area on the vertical axis. The line summarizes the overall trend so you can estimate an area for a new shift.</p>
 <p>Training means using past examples with known outcomes to find a pattern. A prediction applies that pattern to a new case. The lab uses simulated data so you can see what changes when you move one control.</p>
@@ -99,6 +100,58 @@
 <label for="notes">What do I want to revisit?</label>
 <textarea id="notes" placeholder="Write down a question or an example to explore."></textarea>
 <div class="notes-actions"><button class="action" type="button" id="export-notes">Download notes (.txt)</button><span id="notes-status" role="status"></span></div>
+</section>
+<section class="card implementation" id="implementacao">
+<h2>Implement in Python and R</h2>
+<h3>Before you run the code</h3><p>Paste the complete Python example into a Python notebook or save it as a .py file and run it. Paste the R example into RStudio or the R console, or save it as a .R file and run it. Choose either language. Both use the same fictional data.</p>
+<h3>The example data</h3><p>Each row describes one past shift. hours is the number of hours worked and area is the area installed in square meters. The new case supplies hours only. The goal is to estimate its area.</p><p>The numerical results can differ between libraries and from the page simulator. This example uses its own small practice dataset.</p>
+<details open><summary>Python</summary>
+<p>Python: install the library once in a terminal.</p><pre class="lesson-code"><code>python -m pip install pandas scikit-learn</code></pre>
+<div class="code-actions"><button class="action" type="button" data-copy-code="example-python" data-copied="Copied" data-manual="Select the code and copy it manually." hidden>Copy code</button><span role="status"></span></div>
+<pre class="lesson-code"><code id="example-python">import pandas as pd
+from sklearn.linear_model import LinearRegression
+
+# 1. Example data for past jobs
+jobs = pd.DataFrame({
+    &quot;hours&quot;: [2, 3, 4, 5, 6, 8, 9, 10],
+    &quot;area&quot;: [9, 11, 15, 16, 21, 26, 28, 32],
+})
+
+# 2. Pick the inputs and the answer
+X = jobs[[&quot;hours&quot;]]
+y = jobs[&quot;area&quot;]
+
+# 3. Fit or prepare the model
+model = LinearRegression()
+model.fit(X, y)
+
+# 4. Predict for a new case
+new_job = pd.DataFrame({&#x27;hours&#x27;: [7]})
+print(model.predict(new_job).round(2))
+</code></pre>
+<h4>Read the code one step at a time</h4><ol><li><strong>Import the tools</strong> The import lines make the model and pandas available. pandas builds the table, called a DataFrame. A dictionary links each column name to its list of values. Make sure all lists for the training table have the same length.</li><li><strong>Pick the inputs and the answer</strong> X contains only the columns the model is allowed to see. y holds the known answer for each past row. Square brackets select columns by name. X stays a table, even with just one input column.</li><li><strong>Fit the model</strong> fit(X, y) uses the past inputs and answers. The adjustable values written inside the model call are settings you choose before fitting. LinearRegression() makes a model that learns a straight line. With one input, it learns a starting value and the expected change in area for one more hour.</li><li><strong>Predict a new case</strong> new_job is a one-row table with the same input names. predict uses the fitted model. print shows the result. When the code says [0], it takes the first prediction because the new table has one row. round limits the digits shown.</li></ol>
+<p><a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html">Official documentation · Python</a></p>
+</details>
+<details><summary>R</summary>
+<p>R: this example uses functions included with R. No extra package is needed.</p>
+<div class="code-actions"><button class="action" type="button" data-copy-code="example-r" data-copied="Copied" data-manual="Select the code and copy it manually." hidden>Copy code</button><span role="status"></span></div>
+<pre class="lesson-code"><code id="example-r"># 1. Example data for past jobs
+jobs &lt;- data.frame(
+  hours = c(2, 3, 4, 5, 6, 8, 9, 10),
+  area = c(9, 11, 15, 16, 21, 26, 28, 32)
+)
+
+# 2. Fit or prepare the model
+model &lt;- lm(area ~ hours, data = jobs)
+
+# 3. Predict for a new case
+new_job &lt;- data.frame(hours = 7)
+print(round(predict(model, new_job), 2))
+</code></pre>
+<h4>Read the code one step at a time</h4><ol><li><strong>Create the data table</strong> data.frame() builds a table and c() gathers values for each column. The arrow &lt;- saves the object with the name on its left. In an expression such as jobs$late, $ picks one named column from the table.</li><li><strong>Fit or set up the model</strong> In a formula, the answer is to the left of ~ and the inputs are to the right. A name such as MASS::lda uses lda from the MASS package. A factor stores class labels. A fit can use a numeric 0/1 answer when the function specifically expects it. lm() fits the straight line. area ~ hours reads “explain area using hours.” The result is a number in square meters.</li><li><strong>Predict a new case</strong> new_job is a one-row table with the same input names as the past jobs. predict usually takes the model and that new table. Some functions, such as knn, make the prediction in the same call. print displays it.</li></ol>
+<p><a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/lm.html">Official documentation · R</a></p>
+</details>
+<h3>Try it yourself</h3><p>Try changing 7 hours to 5. How much does the predicted area change?</p><p>These examples teach the workflow of making a prediction. To measure accuracy, reserve jobs with known outcomes that you never use while fitting or choosing settings.</p>
 </section>
 <section aria-labelledby="fontes-title" id="fontes" class="card references"><h2 id="fontes-title">References and further reading</h2><ol>
 <li id="ref-isl">James, G., Witten, D., Hastie, T., Tibshirani, R., and Taylor, J. (2023). <cite>An Introduction to Statistical Learning with Applications in Python</cite>. Springer. DOI 10.1007/978-3-031-38747-0. Chapter 3, linear regression, and Chapter 5, resampling. <a href="https://www.statlearning.com/">Open the reference</a>.</li>

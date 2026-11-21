@@ -9,6 +9,7 @@
 
 <script defer src="../assets/language.js"></script>
 <script defer src="../assets/classifiers.js"></script>
+<script defer src="../assets/code-copy.js"></script>
 </head>
 <body>
 <a class="skip" href="#conteudo">Saltar al contenido</a>
@@ -20,7 +21,7 @@
 <nav class="nav language" aria-label="Idioma"><a href="../k-nearest-neighbors.html" lang="en" hreflang="en">English</a><a href="../pt/k-nearest-neighbors.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="../es/k-nearest-neighbors.html" lang="es" hreflang="es" aria-current="true">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links"><a href="#comece">Empieza por aquí</a><a href="#treinamento">Cómo aprende</a><a href="#equacao">Ecuación y términos</a><a href="#laboratorio">Laboratorio</a><a href="#pratica">Uso y evaluación</a><a href="#fontes">Referencias</a></nav>
+<nav class="section-links"><a href="#comece">Empieza por aquí</a><a href="#treinamento">Cómo aprende</a><a href="#equacao">Ecuación y términos</a><a href="#laboratorio">Laboratorio</a><a href="#pratica">Uso y evaluación</a><a href="#implementacao">Python y R</a><a href="#fontes">Referencias</a></nav>
 <section class="card" id="comece"><h2>Empieza por aquí</h2>
 <p>Imagina que preguntas a compañeros cómo acabaron trabajos parecidos al tuyo. Escuchas primero los casos más similares. KNN hace lo mismo con un mapa de tareas pasadas. Las mediciones parecidas acercan los puntos.</p>
 <p>Entrenar significa usar ejemplos anteriores con resultados conocidos para encontrar un patrón. Predecir significa aplicar ese patrón a un caso nuevo. El simulador usa datos ficticios para que puedas observar qué cambia al mover un control.</p>
@@ -48,6 +49,65 @@
 <p class="result" id="classification-result" role="status"></p>
 </div></div></div></section>
 <section class="card" id="pratica"><h2>Uso y evaluación</h2><p>Usa escalas comparables antes de medir distancias. Prueba valores pequeños y grandes de k con validación. Un k pequeño puede seguir el ruido y uno grande puede borrar patrones locales. <a class="cite" href="#ref-2">[2]</a></p><h3>Repaso</h3><details><summary>¿Por qué una variable en minutos puede dominar a otra medida entre 0 y 1?</summary><p>Sin ajustar la escala, las diferencias numéricas mayores aportan más a la distancia.</p></details></section>
+<section class="card implementation" id="implementacao">
+<h2>Implementa en Python y R</h2>
+<h3>Antes de ejecutar el código</h3><p>Pega el ejemplo completo de Python en un cuaderno de Python o guárdalo como .py y ejecútalo. Pega el ejemplo de R en RStudio o en la consola de R, o guárdalo como .R y ejecútalo. Elige cualquiera de los dos lenguajes. Ambos usan los mismos datos ficticios.</p>
+<h3>Los datos del ejemplo</h3><p>Cada fila representa una tarea anterior. pending y delay son puntuaciones ficticias en la misma escala de 0 a 10: valores mayores indican más pendientes o más retraso en la entrega. late es el resultado observado, con 0 a tiempo y 1 con retraso. La tarea nueva solo tiene las dos puntuaciones.</p><p>Los resultados numéricos pueden variar entre bibliotecas y con respecto al simulador. El código usa su propio conjunto pequeño de datos para practicar.</p>
+<details open><summary>Python</summary>
+<p>Python: instala la biblioteca una vez en una terminal.</p><pre class="lesson-code"><code>python -m pip install pandas scikit-learn</code></pre>
+<div class="code-actions"><button class="action" type="button" data-copy-code="example-python" data-copied="Copiado" data-manual="Selecciona el código y cópialo manualmente." hidden>Copiar código</button><span role="status"></span></div>
+<pre class="lesson-code"><code id="example-python">import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
+
+# 1. Datos ficticios de tareas anteriores
+jobs = pd.DataFrame({
+    &quot;pending&quot;: [1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    &quot;delay&quot;: [2, 1, 4, 5, 2, 4, 3, 6, 5, 8, 8, 7, 2, 8, 5, 9, 2, 9, 3, 6],
+    &quot;late&quot;: [0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1],
+})
+
+# 2. Elige las entradas y la respuesta
+X = jobs[[&quot;pending&quot;, &quot;delay&quot;]]
+y = jobs[&quot;late&quot;]
+
+# 3. Ajusta o prepara el modelo
+model = KNeighborsClassifier(n_neighbors=5)
+model.fit(X, y)
+
+# 4. Predice un caso nuevo
+new_job = pd.DataFrame({&#x27;pending&#x27;: [6], &#x27;delay&#x27;: [7]})
+print(model.predict(new_job)[0])
+</code></pre>
+<h4>Lee el código paso a paso</h4><ol><li><strong>Importa las herramientas</strong> Las líneas de importación dan acceso al modelo y a pandas. pandas crea la tabla, llamada DataFrame. Un diccionario vincula el nombre de cada columna con su lista de valores. En la tabla de entrenamiento, todas las listas deben tener la misma longitud.</li><li><strong>Elige las entradas y la respuesta</strong> X solo contiene las columnas que el modelo puede ver. y contiene la respuesta conocida de cada fila anterior. Los corchetes seleccionan columnas por su nombre. X sigue siendo una tabla aunque solo haya una columna de entrada.</li><li><strong>Ajusta el modelo</strong> fit(X, y) usa las entradas y respuestas anteriores. Los valores ajustables escritos en la llamada al modelo son configuraciones que eliges antes del ajuste. n_neighbors=5 hace votar a los cinco casos más cercanos. fit() guarda los ejemplos para compararlos más tarde. Las dos entradas ya usan la misma escala de 0 a 10.</li><li><strong>Predice un caso nuevo</strong> new_job es una tabla de una fila con los mismos nombres de entrada. predict usa el modelo ajustado. print muestra el resultado. Cuando ves [0], toma la primera predicción porque la tabla nueva solo tiene un caso. round limita los decimales mostrados.</li></ol>
+<p><a href="https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html">Documentación oficial · Python</a></p>
+</details>
+<details><summary>R</summary>
+<p>R: ejecuta el comando de instalación una vez en la consola de R si falta el paquete.</p><pre class="lesson-code"><code>install.packages("class")</code></pre>
+<div class="code-actions"><button class="action" type="button" data-copy-code="example-r" data-copied="Copiado" data-manual="Selecciona el código y cópialo manualmente." hidden>Copiar código</button><span role="status"></span></div>
+<pre class="lesson-code"><code id="example-r"># 1. Datos ficticios de tareas anteriores
+jobs &lt;- data.frame(
+  pending = c(1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+  delay = c(2, 1, 4, 5, 2, 4, 3, 6, 5, 8, 8, 7, 2, 8, 5, 9, 2, 9, 3, 6),
+  late = c(0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1)
+)
+
+# 2. Ajusta o prepara el modelo
+inputs &lt;- c(&quot;pending&quot;, &quot;delay&quot;)
+set.seed(42)
+
+# 3. Predice un caso nuevo
+new_job &lt;- data.frame(pending = 6, delay = 7)
+prediction &lt;- class::knn(
+  train = jobs[inputs], test = new_job,
+  cl = factor(jobs$late), k = 5
+)
+print(prediction)
+</code></pre>
+<h4>Lee el código paso a paso</h4><ol><li><strong>Crea la tabla</strong> data.frame() crea una tabla y c() reúne los valores de cada columna. La flecha &lt;- guarda el objeto con el nombre de la izquierda. En una expresión como jobs$late, $ selecciona una columna por su nombre.</li><li><strong>Ajusta o prepara el modelo</strong> Esta función recibe directamente las entradas y etiquetas del historial. inputs lista los nombres de las columnas. jobs[inputs] selecciona esas columnas. knn() recibe medidas anteriores como train, el caso nuevo como test y las clases conocidas como cl. La llamada hace la predicción directamente. set.seed fija los desempates aleatorios.</li><li><strong>Predice un caso nuevo</strong> new_job es una tabla de una fila con los mismos nombres de entrada que el historial. Habitualmente, predict recibe el modelo y esa tabla nueva. Algunas funciones, como knn, hacen la predicción en la misma llamada. print muestra el resultado.</li></ol>
+<p><a href="https://stat.ethz.ch/R-manual/R-devel/library/class/html/knn.html">Documentación oficial · R</a></p>
+</details>
+<h3>Pruébalo por tu cuenta</h3><p>Prueba k = 1 y luego k = 9. Cambia las medidas del caso nuevo y busca una predicción que cambie.</p><p>Los ejemplos enseñan el proceso de hacer una predicción. Para medir la calidad del modelo, reserva tareas con resultados conocidos que no se usen en el ajuste ni al elegir la configuración.</p>
+</section>
 <section class="card" id="fontes"><h2>Referencias</h2><ol>
 <li id="ref-1">scikit-learn, <cite>K vecinos más cercanos (KNN)</cite>. <a href="https://scikit-learn.org/stable/modules/neighbors.html">Abrir la fuente</a>.</li>
 <li id="ref-2">James, Witten, Hastie, Tibshirani &amp; Taylor. <cite>An Introduction to Statistical Learning with Applications in Python</cite> (2023). Capítulo 4. <a href="https://link.springer.com/book/10.1007/978-3-031-38747-0">Abrir la fuente</a>.</li>

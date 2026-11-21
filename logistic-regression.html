@@ -9,6 +9,7 @@
 <script defer src="assets/strings.js"></script>
 <script defer src="assets/lab.js"></script>
 <script defer src="assets/language.js"></script>
+<script defer src="assets/code-copy.js"></script>
 </head>
 <body data-model="logistic">
 <a class="skip" href="#conteudo">Skip to content</a>
@@ -20,7 +21,7 @@
 <nav class="nav language" aria-label="Language"><a href="logistic-regression.html" lang="en" hreflang="en" aria-current="true">English</a><a href="pt/logistic-regression.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="es/logistic-regression.html" lang="es" hreflang="es">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links" aria-label="In this lesson"><a href="#comece">Start here</a><a href="#equacao">Equation</a><a href="#laboratorio">Lab</a><a href="#treinamento">Training</a><a href="#pratica">How to use it</a><a href="#fontes">References</a></nav>
+<nav class="section-links" aria-label="In this lesson"><a href="#comece">Start here</a><a href="#equacao">Equation</a><a href="#laboratorio">Lab</a><a href="#treinamento">Training</a><a href="#pratica">How to use it</a><a href="#implementacao">Python and R</a><a href="#fontes">References</a></nav>
 <section class="card" id="comece"><h2>Start here</h2>
 <p>Think of a rain forecast. A 70% chance of rain and a decision to carry an umbrella are two different things. Here, the model estimates the chance that a job finishes late. A separate rule decides when that chance is high enough to raise an alert.</p>
 <p>Training means using past examples with known outcomes to find a pattern. A prediction applies that pattern to a new case. The lab uses simulated data so you can see what changes when you move one control.</p>
@@ -100,6 +101,64 @@
 <label for="notes">What do I want to revisit?</label>
 <textarea id="notes" placeholder="Write down a question or an example to explore."></textarea>
 <div class="notes-actions"><button class="action" type="button" id="export-notes">Download notes (.txt)</button><span id="notes-status" role="status"></span></div>
+</section>
+<section class="card implementation" id="implementacao">
+<h2>Implement in Python and R</h2>
+<h3>Before you run the code</h3><p>Paste the complete Python example into a Python notebook or save it as a .py file and run it. Paste the R example into RStudio or the R console, or save it as a .R file and run it. Choose either language. Both use the same fictional data.</p>
+<h3>The example data</h3><p>Each row describes one past job. pending and delay are fictional scores on the same 0–10 scale: higher means more open items or a longer delivery delay. late is the recorded outcome, with 0 for on time and 1 for late. The new job has only the two scores.</p><p>The numerical results can differ between libraries and from the page simulator. This example uses its own small practice dataset.</p>
+<details open><summary>Python</summary>
+<p>Python: install the library once in a terminal.</p><pre class="lesson-code"><code>python -m pip install pandas scikit-learn</code></pre>
+<div class="code-actions"><button class="action" type="button" data-copy-code="example-python" data-copied="Copied" data-manual="Select the code and copy it manually." hidden>Copy code</button><span role="status"></span></div>
+<pre class="lesson-code"><code id="example-python">import pandas as pd
+from sklearn.linear_model import LogisticRegression
+
+# 1. Example data for past jobs
+jobs = pd.DataFrame({
+    &quot;pending&quot;: [1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    &quot;delay&quot;: [2, 1, 4, 5, 2, 4, 3, 6, 5, 8, 8, 7, 2, 8, 5, 9, 2, 9, 3, 6],
+    &quot;late&quot;: [0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1],
+})
+
+# 2. Pick the inputs and the answer
+X = jobs[[&quot;pending&quot;, &quot;delay&quot;]]
+y = jobs[&quot;late&quot;]
+
+# 3. Fit or prepare the model
+model = LogisticRegression(C=1_000_000)
+model.fit(X, y)
+
+# 4. Predict for a new case
+new_job = pd.DataFrame({&#x27;pending&#x27;: [6], &#x27;delay&#x27;: [7]})
+probability = model.predict_proba(new_job)[0, 1]
+print(round(probability, 3))
+print(&quot;late&quot; if probability &gt;= 0.5 else &quot;on time&quot;)
+</code></pre>
+<h4>Read the code one step at a time</h4><ol><li><strong>Import the tools</strong> The import lines make the model and pandas available. pandas builds the table, called a DataFrame. A dictionary links each column name to its list of values. Make sure all lists for the training table have the same length.</li><li><strong>Pick the inputs and the answer</strong> X contains only the columns the model is allowed to see. y holds the known answer for each past row. Square brackets select columns by name. X stays a table, even with just one input column.</li><li><strong>Fit the model</strong> fit(X, y) uses the past inputs and answers. The adjustable values written inside the model call are settings you choose before fitting. LogisticRegression estimates a probability for a yes-or-no outcome. A large C makes the penalty on large coefficients very small, so this example is closer to the unpenalized R fit. predict_proba gives two columns, for classes 0 and 1. [0, 1] takes the first case and the column for class 1.</li><li><strong>Predict a new case</strong> new_job is a one-row table with the same input names. predict uses the fitted model. print shows the result. When the code says [0], it takes the first prediction because the new table has one row. round limits the digits shown.</li></ol>
+<p><a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">Official documentation · Python</a></p>
+</details>
+<details><summary>R</summary>
+<p>R: this example uses functions included with R. No extra package is needed.</p>
+<div class="code-actions"><button class="action" type="button" data-copy-code="example-r" data-copied="Copied" data-manual="Select the code and copy it manually." hidden>Copy code</button><span role="status"></span></div>
+<pre class="lesson-code"><code id="example-r"># 1. Example data for past jobs
+jobs &lt;- data.frame(
+  pending = c(1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+  delay = c(2, 1, 4, 5, 2, 4, 3, 6, 5, 8, 8, 7, 2, 8, 5, 9, 2, 9, 3, 6),
+  late = c(0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1)
+)
+
+# 2. Fit or prepare the model
+model &lt;- glm(late ~ pending + delay, data = jobs, family = binomial())
+
+# 3. Predict for a new case
+new_job &lt;- data.frame(pending = 6, delay = 7)
+probability &lt;- predict(model, new_job, type = &quot;response&quot;)
+print(round(probability, 3))
+print(ifelse(probability &gt;= 0.5, &quot;late&quot;, &quot;on time&quot;))
+</code></pre>
+<h4>Read the code one step at a time</h4><ol><li><strong>Create the data table</strong> data.frame() builds a table and c() gathers values for each column. The arrow &lt;- saves the object with the name on its left. In an expression such as jobs$late, $ picks one named column from the table.</li><li><strong>Fit or set up the model</strong> In a formula, the answer is to the left of ~ and the inputs are to the right. A name such as MASS::lda uses lda from the MASS package. A factor stores class labels. A fit can use a numeric 0/1 answer when the function specifically expects it. glm() fits a generalized linear model. The + includes both measurements. binomial() selects a binary outcome with the default logit link. type = &quot;response&quot; returns a probability. In both languages, the last line converts a probability of at least 0.5 to “late”.</li><li><strong>Predict a new case</strong> new_job is a one-row table with the same input names as the past jobs. predict usually takes the model and that new table. Some functions, such as knn, make the prediction in the same call. print displays it.</li></ol>
+<p><a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/glm.html">Official documentation · R</a></p>
+</details>
+<h3>Try it yourself</h3><p>Change just the threshold to 0.7. Does the probability change, or only the possible decision?</p><p>These examples teach the workflow of making a prediction. To measure accuracy, reserve jobs with known outcomes that you never use while fitting or choosing settings.</p>
 </section>
 <section aria-labelledby="fontes-title" id="fontes" class="card references"><h2 id="fontes-title">References and further reading</h2><ol>
 <li id="ref-isl">James, G., Witten, D., Hastie, T., Tibshirani, R., and Taylor, J. (2023). <cite>An Introduction to Statistical Learning with Applications in Python</cite>. Springer. DOI 10.1007/978-3-031-38747-0. Chapter 4, classification and logistic regression. <a href="https://www.statlearning.com/">Open the reference</a>.</li>

@@ -9,6 +9,7 @@
 <script defer src="../assets/strings.js"></script>
 <script defer src="../assets/lab.js"></script>
 <script defer src="../assets/language.js"></script>
+<script defer src="../assets/code-copy.js"></script>
 </head>
 <body data-model="tree">
 <a class="skip" href="#conteudo">Pular para o conteúdo</a>
@@ -20,7 +21,7 @@
 <nav class="nav language" aria-label="Idioma"><a href="../decision-tree.html" lang="en" hreflang="en">English</a><a href="../pt/decision-tree.html" lang="pt-BR" hreflang="pt-BR" aria-current="true">Português</a><a href="../es/decision-tree.html" lang="es" hreflang="es">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links" aria-label="Nesta aula"><a href="#comece">Comece por aqui</a><a href="#equacao">Equação</a><a href="#laboratorio">Laboratório</a><a href="#treinamento">Treinamento</a><a href="#pratica">Uso na prática</a><a href="#fontes">Bibliografia</a></nav>
+<nav class="section-links" aria-label="Nesta aula"><a href="#comece">Comece por aqui</a><a href="#equacao">Equação</a><a href="#laboratorio">Laboratório</a><a href="#treinamento">Treinamento</a><a href="#pratica">Uso na prática</a><a href="#implementacao">Python e R</a><a href="#fontes">Bibliografia</a></nav>
 <section class="card" id="comece"><h2>Comece por aqui</h2>
 <p>Pense num fluxograma com perguntas de sim ou não. Numa obra, você pode perguntar se há mais de oito pendências e depois se a equipe é pequena. A árvore aprende quais perguntas fazer olhando para o resultado de tarefas passadas.</p>
 <p>Treinar é usar exemplos anteriores, com resultado conhecido, para encontrar um padrão. Prever é aplicar esse padrão a um caso novo. O simulador usa dados fictícios para você observar o que muda ao mover um controle.</p>
@@ -102,6 +103,64 @@
 <label for="notes">O que quero revisitar nesta aula?</label>
 <textarea id="notes" placeholder="Anote uma dúvida ou um exemplo para explorar."></textarea>
 <div class="notes-actions"><button class="action" type="button" id="export-notes">Baixar notas (.txt)</button><span id="notes-status" role="status"></span></div>
+</section>
+<section class="card implementation" id="implementacao">
+<h2>Implemente em Python e R</h2>
+<h3>Antes de rodar o código</h3><p>Cole o exemplo completo de Python em um notebook Python ou salve em um arquivo .py e execute. Cole o exemplo de R no RStudio ou no console do R, ou salve em um arquivo .R e execute. Escolha uma das duas linguagens. Ambas usam os mesmos dados fictícios.</p>
+<h3>Os dados do exemplo</h3><p>Cada linha representa uma tarefa passada. pending e delay são notas fictícias na mesma escala de 0 a 10: valores maiores indicam mais pendências ou mais atraso na entrega. late é o resultado registrado, com 0 para no prazo e 1 para com atraso. A tarefa nova tem só as duas notas.</p><p>Os resultados numéricos podem variar entre bibliotecas e em relação ao simulador da página. O código usa um conjunto pequeno de dados próprio para a prática.</p>
+<details open><summary>Python</summary>
+<p>Python: instale a biblioteca uma vez no terminal.</p><pre class="lesson-code"><code>python -m pip install pandas scikit-learn</code></pre>
+<div class="code-actions"><button class="action" type="button" data-copy-code="example-python" data-copied="Copiado" data-manual="Selecione o código e copie manualmente." hidden>Copiar código</button><span role="status"></span></div>
+<pre class="lesson-code"><code id="example-python">import pandas as pd
+from sklearn.tree import DecisionTreeClassifier
+
+# 1. Dados fictícios de tarefas anteriores
+jobs = pd.DataFrame({
+    &quot;pending&quot;: [1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    &quot;delay&quot;: [2, 1, 4, 5, 2, 4, 3, 6, 5, 8, 8, 7, 2, 8, 5, 9, 2, 9, 3, 6],
+    &quot;late&quot;: [0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1],
+})
+
+# 2. Escolha as entradas e a resposta
+X = jobs[[&quot;pending&quot;, &quot;delay&quot;]]
+y = jobs[&quot;late&quot;]
+
+# 3. Ajuste ou prepare o modelo
+model = DecisionTreeClassifier(max_depth=3, random_state=42)
+model.fit(X, y)
+
+# 4. Faça a previsão de um caso novo
+new_job = pd.DataFrame({&#x27;pending&#x27;: [6], &#x27;delay&#x27;: [7]})
+print(model.predict(new_job)[0])
+</code></pre>
+<h4>Leia o código por etapas</h4><ol><li><strong>Importe as ferramentas</strong> As linhas de importação disponibilizam o modelo e o pandas. O pandas monta a tabela, chamada DataFrame. Um dicionário associa o nome de cada coluna à sua lista de valores. No histórico, todas as listas precisam ter o mesmo comprimento.</li><li><strong>Escolha as entradas e a resposta</strong> X contém só as colunas que o modelo pode ver. y guarda a resposta conhecida de cada linha do histórico. Os colchetes selecionam colunas pelo nome. X continua sendo uma tabela mesmo com uma única coluna de entrada.</li><li><strong>Ajuste o modelo</strong> fit(X, y) usa as entradas e as respostas passadas. Os valores ajustáveis escritos na chamada do modelo são configurações que você escolhe antes do ajuste. DecisionTreeClassifier aprende perguntas de sim ou não que separam as tarefas anteriores em grupos. max_depth=3 limita o caminho a três perguntas. random_state fixa a semente usada quando o ajuste precisa de uma escolha aleatória.</li><li><strong>Faça a previsão para um caso novo</strong> new_job é uma tabela de uma linha com os mesmos nomes de entrada. predict usa o modelo ajustado. print mostra o resultado. Quando aparece [0], ele seleciona a primeira previsão, porque a tabela nova tem um caso só. round limita as casas decimais exibidas.</li></ol>
+<p><a href="https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeClassifier.html">Documentação oficial · Python</a></p>
+</details>
+<details><summary>R</summary>
+<p>R: rode o comando de instalação uma vez no console do R se o pacote ainda não estiver instalado.</p><pre class="lesson-code"><code>install.packages("rpart")</code></pre>
+<div class="code-actions"><button class="action" type="button" data-copy-code="example-r" data-copied="Copiado" data-manual="Selecione o código e copie manualmente." hidden>Copiar código</button><span role="status"></span></div>
+<pre class="lesson-code"><code id="example-r"># 1. Dados fictícios de tarefas anteriores
+jobs &lt;- data.frame(
+  pending = c(1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+  delay = c(2, 1, 4, 5, 2, 4, 3, 6, 5, 8, 8, 7, 2, 8, 5, 9, 2, 9, 3, 6),
+  late = c(0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1)
+)
+
+# 2. Ajuste ou prepare o modelo
+jobs$late &lt;- factor(jobs$late)
+model &lt;- rpart::rpart(
+  late ~ pending + delay, data = jobs, method = &quot;class&quot;,
+  control = rpart::rpart.control(maxdepth = 3, minsplit = 4, cp = 0)
+)
+
+# 3. Faça a previsão de um caso novo
+new_job &lt;- data.frame(pending = 6, delay = 7)
+print(predict(model, new_job, type = &quot;class&quot;))
+</code></pre>
+<h4>Leia o código por etapas</h4><ol><li><strong>Monte a tabela</strong> data.frame() monta a tabela e c() reúne os valores de cada coluna. A seta &lt;- guarda o objeto com o nome à esquerda. Em uma expressão como jobs$late, o $ pega uma coluna pelo nome.</li><li><strong>Ajuste ou prepare o modelo</strong> Em uma fórmula, a resposta fica à esquerda de ~ e as entradas à direita. Um nome como MASS::lda usa a função lda do pacote MASS. Um fator guarda rótulos de classes. Algumas funções pedem explicitamente uma resposta numérica 0/1. factor() diz ao R que late é uma categoria. method = &quot;class&quot; pede uma árvore de classificação. maxdepth limita as perguntas, minsplit exige quatro linhas para tentar uma divisão, e cp = 0 desativa o corte extra por complexidade neste exemplo. type = &quot;class&quot; retorna a classe escolhida.</li><li><strong>Faça a previsão para um caso novo</strong> new_job é uma tabela de uma linha com os mesmos nomes de entrada do histórico. Em geral, predict recebe o modelo e essa nova tabela. Algumas funções, como knn, já fazem a previsão na mesma chamada. print exibe o resultado.</li></ol>
+<p><a href="https://cran.r-project.org/package=rpart">Documentação oficial · R</a></p>
+</details>
+<h3>Agora é com você</h3><p>Ajuste uma árvore de profundidade 1. Uma pergunta dá conta do exemplo tão bem quanto três? Experimente várias tarefas novas antes de concluir.</p><p>Os exemplos ensinam a sequência para fazer uma previsão. Para medir a qualidade do modelo, separe tarefas com resultados conhecidos e deixe-as fora do ajuste e da escolha das configurações.</p>
 </section>
 <section aria-labelledby="fontes-title" id="fontes" class="card references"><h2 id="fontes-title">Bibliografia e próximos passos de leitura</h2><ol>
 <li id="ref-isl">James, G., Witten, D., Hastie, T., Tibshirani, R., e Taylor, J. (2023). <cite>An Introduction to Statistical Learning with Applications in Python</cite>. Springer. DOI 10.1007/978-3-031-38747-0. Capítulo 8, métodos baseados em árvores. <a href="https://www.statlearning.com/">Abrir a referência</a>.</li>

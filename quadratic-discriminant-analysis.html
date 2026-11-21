@@ -9,6 +9,7 @@
 
 <script defer src="assets/language.js"></script>
 <script defer src="assets/classifiers.js"></script>
+<script defer src="assets/code-copy.js"></script>
 </head>
 <body>
 <a class="skip" href="#conteudo">Skip to content</a>
@@ -20,7 +21,7 @@
 <nav class="nav language" aria-label="Language"><a href="quadratic-discriminant-analysis.html" lang="en" hreflang="en" aria-current="true">English</a><a href="pt/quadratic-discriminant-analysis.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="es/quadratic-discriminant-analysis.html" lang="es" hreflang="es">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links"><a href="#comece">Start here</a><a href="#treinamento">How it learns</a><a href="#equacao">Equation and terms</a><a href="#laboratorio">Lab</a><a href="#pratica">Use and evaluate</a><a href="#fontes">References</a></nav>
+<nav class="section-links"><a href="#comece">Start here</a><a href="#treinamento">How it learns</a><a href="#equacao">Equation and terms</a><a href="#laboratorio">Lab</a><a href="#pratica">Use and evaluate</a><a href="#implementacao">Python and R</a><a href="#fontes">References</a></nav>
 <section class="card" id="comece"><h2>Start here</h2>
 <p>Imagine two clusters on a map. One is compact, while the other stretches along an avenue. A point far from the second cluster’s center can still fit that cluster along the avenue. QDA lets each group have its own shape, which can make the dividing line curve.</p>
 <p>Training means using past examples with known outcomes to find a pattern. A prediction applies that pattern to a new case. The lab uses simulated data so you can see what changes when you move one control.</p>
@@ -48,6 +49,61 @@
 <p class="result" id="classification-result" role="status"></p>
 </div></div></div></section>
 <section class="card" id="pratica"><h2>Use and evaluate</h2><p>Try QDA when classes have different spreads and there are enough cases in each class. Compare with LDA on held-out data because separate covariance estimates can be noisy. <a class="cite" href="#ref-2">[2]</a></p><h3>Review</h3><details><summary>Why can QDA struggle when one class has very few examples?</summary><p>It estimates a covariance for that class using just those examples, which can make the estimate unstable.</p></details></section>
+<section class="card implementation" id="implementacao">
+<h2>Implement in Python and R</h2>
+<h3>Before you run the code</h3><p>Paste the complete Python example into a Python notebook or save it as a .py file and run it. Paste the R example into RStudio or the R console, or save it as a .R file and run it. Choose either language. Both use the same fictional data.</p>
+<h3>The example data</h3><p>Each row describes one past job. pending and delay are fictional scores on the same 0–10 scale: higher means more open items or a longer delivery delay. late is the recorded outcome, with 0 for on time and 1 for late. The new job has only the two scores.</p><p>The numerical results can differ between libraries and from the page simulator. This example uses its own small practice dataset.</p>
+<details open><summary>Python</summary>
+<p>Python: install the library once in a terminal.</p><pre class="lesson-code"><code>python -m pip install pandas scikit-learn</code></pre>
+<div class="code-actions"><button class="action" type="button" data-copy-code="example-python" data-copied="Copied" data-manual="Select the code and copy it manually." hidden>Copy code</button><span role="status"></span></div>
+<pre class="lesson-code"><code id="example-python">import pandas as pd
+from sklearn.discriminant_analysis import QuadraticDiscriminantAnalysis
+
+# 1. Example data for past jobs
+jobs = pd.DataFrame({
+    &quot;pending&quot;: [1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    &quot;delay&quot;: [2, 1, 4, 5, 2, 4, 3, 6, 5, 8, 8, 7, 2, 8, 5, 9, 2, 9, 3, 6],
+    &quot;late&quot;: [0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1],
+})
+
+# 2. Pick the inputs and the answer
+X = jobs[[&quot;pending&quot;, &quot;delay&quot;]]
+y = jobs[&quot;late&quot;]
+
+# 3. Fit or prepare the model
+model = QuadraticDiscriminantAnalysis()
+model.fit(X, y)
+
+# 4. Predict for a new case
+new_job = pd.DataFrame({&#x27;pending&#x27;: [6], &#x27;delay&#x27;: [7]})
+print(model.predict(new_job)[0])
+</code></pre>
+<h4>Read the code one step at a time</h4><ol><li><strong>Import the tools</strong> The import lines make the model and pandas available. pandas builds the table, called a DataFrame. A dictionary links each column name to its list of values. Make sure all lists for the training table have the same length.</li><li><strong>Pick the inputs and the answer</strong> X contains only the columns the model is allowed to see. y holds the known answer for each past row. Square brackets select columns by name. X stays a table, even with just one input column.</li><li><strong>Fit the model</strong> fit(X, y) uses the past inputs and answers. The adjustable values written inside the model call are settings you choose before fitting. QDA learns a separate description of spread for each class. If one group is more stretched out, the model can account for it. The boundary can curve. Keep enough varied examples in each class to estimate its shape.</li><li><strong>Predict a new case</strong> new_job is a one-row table with the same input names. predict uses the fitted model. print shows the result. When the code says [0], it takes the first prediction because the new table has one row. round limits the digits shown.</li></ol>
+<p><a href="https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis.html">Official documentation · Python</a></p>
+</details>
+<details><summary>R</summary>
+<p>R: run the setup command once in the R console if the package is missing.</p><pre class="lesson-code"><code>install.packages("MASS")</code></pre>
+<div class="code-actions"><button class="action" type="button" data-copy-code="example-r" data-copied="Copied" data-manual="Select the code and copy it manually." hidden>Copy code</button><span role="status"></span></div>
+<pre class="lesson-code"><code id="example-r"># 1. Example data for past jobs
+jobs &lt;- data.frame(
+  pending = c(1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+  delay = c(2, 1, 4, 5, 2, 4, 3, 6, 5, 8, 8, 7, 2, 8, 5, 9, 2, 9, 3, 6),
+  late = c(0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1)
+)
+
+# 2. Fit or prepare the model
+jobs$late &lt;- factor(jobs$late)
+model &lt;- MASS::qda(late ~ pending + delay, data = jobs)
+
+# 3. Predict for a new case
+new_job &lt;- data.frame(pending = 6, delay = 7)
+print(predict(model, new_job)$class)
+</code></pre>
+<h4>Read the code one step at a time</h4><ol><li><strong>Create the data table</strong> data.frame() builds a table and c() gathers values for each column. The arrow &lt;- saves the object with the name on its left. In an expression such as jobs$late, $ picks one named column from the table.</li><li><strong>Fit or set up the model</strong> In a formula, the answer is to the left of ~ and the inputs are to the right. A name such as MASS::lda uses lda from the MASS package. A factor stores class labels. A fit can use a numeric 0/1 answer when the function specifically expects it. MASS::qda() fits QDA using the two inputs. predict() compares the fitted groups for the new job, and $class takes the winning label.</li><li><strong>Predict a new case</strong> new_job is a one-row table with the same input names as the past jobs. predict usually takes the model and that new table. Some functions, such as knn, make the prediction in the same call. print displays it.</li></ol>
+<p><a href="https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/qda.html">Official documentation · R</a></p>
+</details>
+<h3>Try it yourself</h3><p>Run LDA and QDA with the same new cases. Look for cases where the two methods disagree.</p><p>These examples teach the workflow of making a prediction. To measure accuracy, reserve jobs with known outcomes that you never use while fitting or choosing settings.</p>
+</section>
 <section class="card" id="fontes"><h2>References</h2><ol>
 <li id="ref-1">scikit-learn, <cite>Quadratic discriminant analysis (QDA)</cite>. <a href="https://scikit-learn.org/stable/modules/lda_qda.html">Open source</a>.</li>
 <li id="ref-2">James, Witten, Hastie, Tibshirani &amp; Taylor. <cite>An Introduction to Statistical Learning with Applications in Python</cite> (2023). Chapter 4. <a href="https://link.springer.com/book/10.1007/978-3-031-38747-0">Open source</a>.</li>

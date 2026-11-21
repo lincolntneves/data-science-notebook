@@ -9,6 +9,7 @@
 
 <script defer src="../assets/language.js"></script>
 <script defer src="../assets/classifiers.js"></script>
+<script defer src="../assets/code-copy.js"></script>
 </head>
 <body>
 <a class="skip" href="#conteudo">Saltar al contenido</a>
@@ -20,7 +21,7 @@
 <nav class="nav language" aria-label="Idioma"><a href="../support-vector-machine.html" lang="en" hreflang="en">English</a><a href="../pt/support-vector-machine.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="../es/support-vector-machine.html" lang="es" hreflang="es" aria-current="true">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links"><a href="#comece">Empieza por aquí</a><a href="#treinamento">Cómo aprende</a><a href="#equacao">Ecuación y términos</a><a href="#laboratorio">Laboratorio</a><a href="#pratica">Uso y evaluación</a><a href="#fontes">Referencias</a></nav>
+<nav class="section-links"><a href="#comece">Empieza por aquí</a><a href="#treinamento">Cómo aprende</a><a href="#equacao">Ecuación y términos</a><a href="#laboratorio">Laboratorio</a><a href="#pratica">Uso y evaluación</a><a href="#implementacao">Python y R</a><a href="#fontes">Referencias</a></nav>
 <section class="card" id="comece"><h2>Empieza por aquí</h2>
 <p>Imagina una línea entre dos grupos de puntos y una franja de seguridad a ambos lados. Quieres una franja amplia, pero algunos puntos pueden quedar dentro o cruzar al lado equivocado. Una SVM lineal equilibra el ancho de la franja con la penalización de esos casos.</p>
 <p>Entrenar significa usar ejemplos anteriores con resultados conocidos para encontrar un patrón. Predecir significa aplicar ese patrón a un caso nuevo. El simulador usa datos ficticios para que puedas observar qué cambia al mover un control.</p>
@@ -48,6 +49,65 @@
 <p class="result" id="classification-result" role="status"></p>
 </div></div></div></section>
 <section class="card" id="pratica"><h2>Uso y evaluación</h2><p>Ajusta la escala y elige C con validación. Una frontera lineal sirve de referencia antes de explorar kernels. El corte de la puntuación está en cero y su magnitud no es una probabilidad. <a class="cite" href="#ref-2">[2]</a></p><h3>Repaso</h3><details><summary>¿Qué ocurre si un punto bien clasificado queda dentro del margen?</summary><p>También incurre en pérdida hinge porque su margen con signo es menor que 1.</p></details></section>
+<section class="card implementation" id="implementacao">
+<h2>Implementa en Python y R</h2>
+<h3>Antes de ejecutar el código</h3><p>Pega el ejemplo completo de Python en un cuaderno de Python o guárdalo como .py y ejecútalo. Pega el ejemplo de R en RStudio o en la consola de R, o guárdalo como .R y ejecútalo. Elige cualquiera de los dos lenguajes. Ambos usan los mismos datos ficticios.</p>
+<h3>Los datos del ejemplo</h3><p>Cada fila representa una tarea anterior. pending y delay son puntuaciones ficticias en la misma escala de 0 a 10: valores mayores indican más pendientes o más retraso en la entrega. late es el resultado observado, con 0 a tiempo y 1 con retraso. La tarea nueva solo tiene las dos puntuaciones.</p><p>Los resultados numéricos pueden variar entre bibliotecas y con respecto al simulador. El código usa su propio conjunto pequeño de datos para practicar.</p>
+<details open><summary>Python</summary>
+<p>Python: instala la biblioteca una vez en una terminal.</p><pre class="lesson-code"><code>python -m pip install pandas scikit-learn</code></pre>
+<div class="code-actions"><button class="action" type="button" data-copy-code="example-python" data-copied="Copiado" data-manual="Selecciona el código y cópialo manualmente." hidden>Copiar código</button><span role="status"></span></div>
+<pre class="lesson-code"><code id="example-python">import pandas as pd
+from sklearn.svm import SVC
+
+# 1. Datos ficticios de tareas anteriores
+jobs = pd.DataFrame({
+    &quot;pending&quot;: [1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+    &quot;delay&quot;: [2, 1, 4, 5, 2, 4, 3, 6, 5, 8, 8, 7, 2, 8, 5, 9, 2, 9, 3, 6],
+    &quot;late&quot;: [0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1],
+})
+
+# 2. Elige las entradas y la respuesta
+X = jobs[[&quot;pending&quot;, &quot;delay&quot;]]
+y = jobs[&quot;late&quot;]
+
+# 3. Ajusta o prepara el modelo
+model = SVC(kernel=&quot;linear&quot;, C=1)
+model.fit(X, y)
+
+# 4. Predice un caso nuevo
+new_job = pd.DataFrame({&#x27;pending&#x27;: [6], &#x27;delay&#x27;: [7]})
+print(model.predict(new_job)[0])
+print(round(model.decision_function(new_job)[0], 3))
+</code></pre>
+<h4>Lee el código paso a paso</h4><ol><li><strong>Importa las herramientas</strong> Las líneas de importación dan acceso al modelo y a pandas. pandas crea la tabla, llamada DataFrame. Un diccionario vincula el nombre de cada columna con su lista de valores. En la tabla de entrenamiento, todas las listas deben tener la misma longitud.</li><li><strong>Elige las entradas y la respuesta</strong> X solo contiene las columnas que el modelo puede ver. y contiene la respuesta conocida de cada fila anterior. Los corchetes seleccionan columnas por su nombre. X sigue siendo una tabla aunque solo haya una columna de entrada.</li><li><strong>Ajusta el modelo</strong> fit(X, y) usa las entradas y respuestas anteriores. Los valores ajustables escritos en la llamada al modelo son configuraciones que eliges antes del ajuste. kernel=&quot;linear&quot; pide una línea divisoria recta con un margen a ambos lados. C controla el coste de invadir el margen o caer del lado equivocado. decision_function muestra una puntuación con signo. No es una probabilidad.</li><li><strong>Predice un caso nuevo</strong> new_job es una tabla de una fila con los mismos nombres de entrada. predict usa el modelo ajustado. print muestra el resultado. Cuando ves [0], toma la primera predicción porque la tabla nueva solo tiene un caso. round limita los decimales mostrados.</li></ol>
+<p><a href="https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html">Documentación oficial · Python</a></p>
+</details>
+<details><summary>R</summary>
+<p>R: ejecuta el comando de instalación una vez en la consola de R si falta el paquete.</p><pre class="lesson-code"><code>install.packages("e1071")</code></pre>
+<div class="code-actions"><button class="action" type="button" data-copy-code="example-r" data-copied="Copiado" data-manual="Selecciona el código y cópialo manualmente." hidden>Copiar código</button><span role="status"></span></div>
+<pre class="lesson-code"><code id="example-r"># 1. Datos ficticios de tareas anteriores
+jobs &lt;- data.frame(
+  pending = c(1, 2, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+  delay = c(2, 1, 4, 5, 2, 4, 3, 6, 5, 8, 8, 7, 2, 8, 5, 9, 2, 9, 3, 6),
+  late = c(0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 1, 0, 1, 1, 1)
+)
+
+# 2. Ajusta o prepara el modelo
+jobs$late &lt;- factor(jobs$late)
+model &lt;- e1071::svm(
+  late ~ pending + delay, data = jobs,
+  kernel = &quot;linear&quot;, cost = 1, scale = FALSE
+)
+
+# 3. Predice un caso nuevo
+new_job &lt;- data.frame(pending = 6, delay = 7)
+print(predict(model, new_job))
+</code></pre>
+<h4>Lee el código paso a paso</h4><ol><li><strong>Crea la tabla</strong> data.frame() crea una tabla y c() reúne los valores de cada columna. La flecha &lt;- guarda el objeto con el nombre de la izquierda. En una expresión como jobs$late, $ selecciona una columna por su nombre.</li><li><strong>Ajusta o prepara el modelo</strong> En una fórmula, la respuesta queda a la izquierda de ~ y las entradas a la derecha. Un nombre como MASS::lda usa lda del paquete MASS. Un factor almacena etiquetas de clase. Algunas funciones piden expresamente una respuesta numérica 0/1. kernel = &quot;linear&quot; significa lo mismo aquí y cost es el nombre de C en R. scale = FALSE usa las medidas tal como están porque ya comparten una escala de 0 a 10. predict() devuelve la clase.</li><li><strong>Predice un caso nuevo</strong> new_job es una tabla de una fila con los mismos nombres de entrada que el historial. Habitualmente, predict recibe el modelo y esa tabla nueva. Algunas funciones, como knn, hacen la predicción en la misma llamada. print muestra el resultado.</li></ol>
+<p><a href="https://cran.r-project.org/package=e1071">Documentación oficial · R</a></p>
+</details>
+<h3>Pruébalo por tu cuenta</h3><p>Cambia C o cost de 1 a 0,1 y compara las clases para varias tareas.</p><p>Los ejemplos enseñan el proceso de hacer una predicción. Para medir la calidad del modelo, reserva tareas con resultados conocidos que no se usen en el ajuste ni al elegir la configuración.</p>
+</section>
 <section class="card" id="fontes"><h2>Referencias</h2><ol>
 <li id="ref-1">scikit-learn, <cite>Máquina de vectores de soporte lineal (SVM)</cite>. <a href="https://scikit-learn.org/stable/modules/svm.html">Abrir la fuente</a>.</li>
 <li id="ref-2">James, Witten, Hastie, Tibshirani &amp; Taylor. <cite>An Introduction to Statistical Learning with Applications in Python</cite> (2023). Capítulo 9. <a href="https://link.springer.com/book/10.1007/978-3-031-38747-0">Abrir la fuente</a>.</li>
