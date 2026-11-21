@@ -16,14 +16,22 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Statistics · Machine learning · AI</span></div>
   <div class="hero-label">Explore by topic</div>
   <h1>Random forest</h1><p>Pool predictions from many randomized trees.</p>
-  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="linear-regression.html">Linear regression</a><a href="logistic-regression.html">Logistic regression</a><a href="decision-tree.html">Decision tree</a></nav>
+  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="index.html#machine-learning">Machine learning models</a></nav>
 <nav class="nav language" aria-label="Language"><a href="random-forest.html" lang="en" hreflang="en" aria-current="true">English</a><a href="pt/random-forest.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="es/random-forest.html" lang="es" hreflang="es">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links"><a href="#treinamento">How it learns</a><a href="#equacao">Equation and terms</a><a href="#laboratorio">Lab</a><a href="#pratica">Use and evaluate</a><a href="#fontes">References</a></nav>
+<nav class="section-links"><a href="#comece">Start here</a><a href="#treinamento">How it learns</a><a href="#equacao">Equation and terms</a><a href="#laboratorio">Lab</a><a href="#pratica">Use and evaluate</a><a href="#fontes">References</a></nav>
+<section class="card" id="comece"><h2>Start here</h2>
+<p>Think of asking several people for estimates. They each see a slightly different collection of past jobs and can ask different questions. A random forest does this with decision trees, then averages their estimates.</p>
+<p>Training means using past examples with known outcomes to find a pattern. A prediction applies that pattern to a new case. The lab uses simulated data so you can see what changes when you move one control.</p>
+<h3>Example, step by step</h3><p>If three trees estimate 20%, 40%, and 90% for one job, their average is (20 + 40 + 90) ÷ 3 = 50%. The lab uses the fraction of late jobs at each tree’s final stop. It combines these fractions instead of picking the estimate of one tree.</p>
+<h3>What to keep in mind</h3><p>The trees can still share blind spots because they learn from the same original dataset. More trees can stabilize the average, but you still need to check it on new jobs.</p>
+</section>
 <section class="card" id="treinamento"><h2>How it learns</h2><p>Each tree sees a sample drawn with replacement. At each split, the lab randomly tries one of the two features and limits the tree depth to four. Averaging helps when the trees make different errors. The random seed is fixed so the experiment is repeatable. <a class="cite" href="#ref-1">[1]</a></p></section>
-<section class="card" id="equacao"><h2>Equation and terms</h2><p class="equation classifier-equation">ŝ(x) = (1/T) ∑ pₜ(x), t = 1,…,T</p><p>T is the number of trees and pₜ(x) is the share of late tasks in the leaf reached by x in tree t. Three predictions of 20%, 40%, and 90% average to 50%. The forest classifies from the average. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></section>
+<section class="card" id="equacao"><h2>Equation and terms</h2><details><summary>The math behind the idea</summary><p class="equation classifier-equation">ŝ(x) = (1/T) ∑ pₜ(x), t = 1,…,T</p><p>T is the number of trees and pₜ(x) is the share of late tasks in the leaf reached by x in tree t. Three predictions of 20%, 40%, and 90% average to 50%. The forest classifies from the average. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></details></section>
 <section id="laboratorio">
+<div class="card"><h3>Try it in the lab</h3><p>Start with one tree and move the diamond across the boundaries. Compare with 11 and then 31 trees, using the same test case. Look for changes in the estimate and for patterns that depend less on a single split.</p><h3>How to read the chart</h3><p>The sliders place the white diamond on the chart. Move one slider at a time. The horizontal axis shows open items and the vertical axis shows delivery delay. The controls express both measurements on a 0–1 scale, with 0 meaning low and 1 meaning high. The colored background tells you which label the model would assign at that spot.</p></div>
+
 <div id="classifier-lab" data-model="rf" data-ontime="On time" data-late="Late" data-tie="Tie" data-score="Mean late share across trees">
 <div class="panel-head"><h2>Lab</h2><button class="action" type="button">Reset</button></div>
 <noscript><p>No JavaScript is needed to read the lesson. Enable it to use the lab.</p></noscript>
@@ -31,7 +39,7 @@
 <div class="chart-heading"><h3>Decision regions</h3></div>
 <canvas class="chart" role="img" aria-label="Decision regions" aria-describedby="chart-note"></canvas>
 <div class="legend classifier-legend"><span>● On time</span><span>■ Late</span><span>◇ Your test case</span></div>
-<figcaption class="chart-note" id="chart-note">Each dot or square represents a simulated task. The background shows the class the model assigns. Move the white diamond or change the model setting. Both inputs run from 0 to 1.</figcaption>
+<figcaption class="chart-note" id="chart-note">Each dot or square represents a simulated task. The background shows the class the model assigns. Use the sliders to move the diamond or adjust the model. Both inputs run from 0 to 1.</figcaption>
 </figure>
 <div class="controls">
 <label class="slider-label" for="setting">Number of trees<output data-output="setting"></output></label><input type="range" id="setting" min="1" max="31" step="1" value="11">

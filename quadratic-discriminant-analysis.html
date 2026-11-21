@@ -16,14 +16,22 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Statistics · Machine learning · AI</span></div>
   <div class="hero-label">Explore by topic</div>
   <h1>Quadratic discriminant analysis (QDA)</h1><p>Let each class have its own shape and orientation.</p>
-  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="linear-regression.html">Linear regression</a><a href="logistic-regression.html">Logistic regression</a><a href="decision-tree.html">Decision tree</a></nav>
+  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="index.html#machine-learning">Machine learning models</a></nav>
 <nav class="nav language" aria-label="Language"><a href="quadratic-discriminant-analysis.html" lang="en" hreflang="en" aria-current="true">English</a><a href="pt/quadratic-discriminant-analysis.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="es/quadratic-discriminant-analysis.html" lang="es" hreflang="es">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links"><a href="#treinamento">How it learns</a><a href="#equacao">Equation and terms</a><a href="#laboratorio">Lab</a><a href="#pratica">Use and evaluate</a><a href="#fontes">References</a></nav>
+<nav class="section-links"><a href="#comece">Start here</a><a href="#treinamento">How it learns</a><a href="#equacao">Equation and terms</a><a href="#laboratorio">Lab</a><a href="#pratica">Use and evaluate</a><a href="#fontes">References</a></nav>
+<section class="card" id="comece"><h2>Start here</h2>
+<p>Imagine two clusters on a map. One is compact, while the other stretches along an avenue. A point far from the second cluster’s center can still fit that cluster along the avenue. QDA lets each group have its own shape, which can make the dividing line curve.</p>
+<p>Training means using past examples with known outcomes to find a pattern. A prediction applies that pattern to a new case. The lab uses simulated data so you can see what changes when you move one control.</p>
+<h3>Example, step by step</h3><p>Picture a point equally far from both centers. If the point lies along one group’s long axis but outside the other group’s compact area, the shapes give different evidence. The model weighs this together with how common each group was.</p>
+<h3>What to keep in mind</h3><p>Giving each group its own shape asks more of the data. With very few examples in one group, its estimated shape can change sharply if you replace a single case.</p>
+</section>
 <section class="card" id="treinamento"><h2>How it learns</h2><p>Like LDA, QDA models each class as Gaussian. It estimates a separate covariance for every class. The quadratic terms generally survive the comparison, which allows curved boundaries. <a class="cite" href="#ref-1">[1]</a></p></section>
-<section class="card" id="equacao"><h2>Equation and terms</h2><p class="equation classifier-equation">δc(x) = ln πc − ½ ln det(Σc) − ½ (x−μc)ᵀΣc⁻¹(x−μc)</p><p>μc locates the class, Σc describes its shape, and πc is the prior. The determinant reflects how spread out the class is. The final quadratic term measures distance from the center, accounting for the shape. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></section>
+<section class="card" id="equacao"><h2>Equation and terms</h2><details><summary>The math behind the idea</summary><p class="equation classifier-equation">δc(x) = ln πc − ½ ln det(Σc) − ½ (x−μc)ᵀΣc⁻¹(x−μc)</p><p>μc locates the class, Σc describes its shape, and πc is the prior. The determinant reflects how spread out the class is. The final quadratic term measures distance from the center, accounting for the shape. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></details></section>
 <section id="laboratorio">
+<div class="card"><h3>Try it in the lab</h3><p>Move the white diamond near the boundary and compare small and large diagonal adjustments. Then open LDA and compare their boundaries. Ask which difference comes from estimating one shape per group instead of one common shape.</p><h3>How to read the chart</h3><p>The sliders place the white diamond on the chart. Move one slider at a time. The horizontal axis shows open items and the vertical axis shows delivery delay. The controls express both measurements on a 0–1 scale, with 0 meaning low and 1 meaning high. The colored background tells you which label the model would assign at that spot.</p></div>
+
 <div id="classifier-lab" data-model="qda" data-ontime="On time" data-late="Late" data-tie="Tie" data-score="Estimated late probability">
 <div class="panel-head"><h2>Lab</h2><button class="action" type="button">Reset</button></div>
 <noscript><p>No JavaScript is needed to read the lesson. Enable it to use the lab.</p></noscript>
@@ -31,7 +39,7 @@
 <div class="chart-heading"><h3>Decision regions</h3></div>
 <canvas class="chart" role="img" aria-label="Decision regions" aria-describedby="chart-note"></canvas>
 <div class="legend classifier-legend"><span>● On time</span><span>■ Late</span><span>◇ Your test case</span></div>
-<figcaption class="chart-note" id="chart-note">Each dot or square represents a simulated task. The background shows the class the model assigns. Move the white diamond or change the model setting. Both inputs run from 0 to 1.</figcaption>
+<figcaption class="chart-note" id="chart-note">Each dot or square represents a simulated task. The background shows the class the model assigns. Use the sliders to move the diamond or adjust the model. Both inputs run from 0 to 1.</figcaption>
 </figure>
 <div class="controls">
 <label class="slider-label" for="setting">Diagonal regularization (×0.001)<output data-output="setting"></output></label><input type="range" id="setting" min="1" max="80" step="1" value="4">

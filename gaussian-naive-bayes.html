@@ -16,14 +16,22 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Statistics · Machine learning · AI</span></div>
   <div class="hero-label">Explore by topic</div>
   <h1>Gaussian naive Bayes</h1><p>Combine a prior with evidence from each measurement.</p>
-  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="linear-regression.html">Linear regression</a><a href="logistic-regression.html">Logistic regression</a><a href="decision-tree.html">Decision tree</a></nav>
+  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="index.html#machine-learning">Machine learning models</a></nav>
 <nav class="nav language" aria-label="Language"><a href="gaussian-naive-bayes.html" lang="en" hreflang="en" aria-current="true">English</a><a href="pt/gaussian-naive-bayes.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="es/gaussian-naive-bayes.html" lang="es" hreflang="es">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links"><a href="#treinamento">How it learns</a><a href="#equacao">Equation and terms</a><a href="#laboratorio">Lab</a><a href="#pratica">Use and evaluate</a><a href="#fontes">References</a></nav>
+<nav class="section-links"><a href="#comece">Start here</a><a href="#treinamento">How it learns</a><a href="#equacao">Equation and terms</a><a href="#laboratorio">Lab</a><a href="#pratica">Use and evaluate</a><a href="#fontes">References</a></nav>
+<section class="card" id="comece"><h2>Start here</h2>
+<p>Think of someone putting together clues about a delayed job. First they ask how common delays usually are. Then they ask how typical each clue is on late jobs and on-time jobs. Gaussian naive Bayes uses a bell-shaped curve to judge how typical a number is within each group.</p>
+<p>Training means using past examples with known outcomes to find a pattern. A prediction applies that pattern to a new case. The lab uses simulated data so you can see what changes when you move one control.</p>
+<h3>Example, step by step</h3><p>Imagine the starting frequency of delays is 40%. A big delivery delay is more typical among late jobs, so that clue pushes the comparison toward late. The model multiplies a starting weight by one clue score per measurement, then compares the totals for the two outcomes.</p>
+<h3>What to keep in mind</h3><p>If two measurements tell almost the same story, multiplying their scores can give that story too much weight. These scores are estimates, and their calibration should be checked on separate cases.</p>
+</section>
 <section class="card" id="treinamento"><h2>How it learns</h2><p>For each class, estimate its frequency and a bell curve for each input. Multiply the densities as if the inputs were independent given the class. The lab adds a small value to each variance and normalizes the two class scores. <a class="cite" href="#ref-1">[1]</a></p></section>
-<section class="card" id="equacao"><h2>Equation and terms</h2><p class="equation classifier-equation">s(c) = P(c) × ∏ Normal(xⱼ; μcⱼ, σ²cⱼ)</p><p>P(c) is the prior class frequency. Normal gives the density of input xⱼ around the class mean μcⱼ with variance σ²cⱼ. ∏ means multiply across inputs. If scores are 0.06 and 0.04, the first normalized score is 60%. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></section>
+<section class="card" id="equacao"><h2>Equation and terms</h2><details><summary>The math behind the idea</summary><p class="equation classifier-equation">s(c) = P(c) × ∏ Normal(xⱼ; μcⱼ, σ²cⱼ)</p><p>P(c) is the prior class frequency. Normal gives the density of input xⱼ around the class mean μcⱼ with variance σ²cⱼ. ∏ means multiply across inputs. If scores are 0.06 and 0.04, the first normalized score is 60%. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></details></section>
 <section id="laboratorio">
+<div class="card"><h3>Try it in the lab</h3><p>Keep one measurement fixed and move the other. See how the score changes as your case moves into another region. Then raise the added variance. This makes the estimated bell curves wider and can reduce how strongly a very narrow curve influences the answer.</p><h3>How to read the chart</h3><p>The sliders place the white diamond on the chart. Move one slider at a time. The horizontal axis shows open items and the vertical axis shows delivery delay. The controls express both measurements on a 0–1 scale, with 0 meaning low and 1 meaning high. The colored background tells you which label the model would assign at that spot.</p></div>
+
 <div id="classifier-lab" data-model="nb" data-ontime="On time" data-late="Late" data-tie="Tie" data-score="Normalized late score">
 <div class="panel-head"><h2>Lab</h2><button class="action" type="button">Reset</button></div>
 <noscript><p>No JavaScript is needed to read the lesson. Enable it to use the lab.</p></noscript>
@@ -31,7 +39,7 @@
 <div class="chart-heading"><h3>Decision regions</h3></div>
 <canvas class="chart" role="img" aria-label="Decision regions" aria-describedby="chart-note"></canvas>
 <div class="legend classifier-legend"><span>● On time</span><span>■ Late</span><span>◇ Your test case</span></div>
-<figcaption class="chart-note" id="chart-note">Each dot or square represents a simulated task. The background shows the class the model assigns. Move the white diamond or change the model setting. Both inputs run from 0 to 1.</figcaption>
+<figcaption class="chart-note" id="chart-note">Each dot or square represents a simulated task. The background shows the class the model assigns. Use the sliders to move the diamond or adjust the model. Both inputs run from 0 to 1.</figcaption>
 </figure>
 <div class="controls">
 <label class="slider-label" for="setting">Variance added (×0.001)<output data-output="setting"></output></label><input type="range" id="setting" min="1" max="60" step="1" value="3">

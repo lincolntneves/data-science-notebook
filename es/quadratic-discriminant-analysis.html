@@ -16,14 +16,22 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estadística · Aprendizaje automático · IA</span></div>
   <div class="hero-label">Explora por tema</div>
   <h1>Análisis discriminante cuadrático (QDA)</h1><p>Permite que cada clase tenga su propia forma y orientación.</p>
-  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="linear-regression.html">Regresión lineal</a><a href="logistic-regression.html">Regresión logística</a><a href="decision-tree.html">Árbol de decisión</a></nav>
+  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="index.html#machine-learning">Modelos de aprendizaje automático</a></nav>
 <nav class="nav language" aria-label="Idioma"><a href="../quadratic-discriminant-analysis.html" lang="en" hreflang="en">English</a><a href="../pt/quadratic-discriminant-analysis.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="../es/quadratic-discriminant-analysis.html" lang="es" hreflang="es" aria-current="true">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links"><a href="#treinamento">Cómo aprende</a><a href="#equacao">Ecuación y términos</a><a href="#laboratorio">Laboratorio</a><a href="#pratica">Uso y evaluación</a><a href="#fontes">Referencias</a></nav>
+<nav class="section-links"><a href="#comece">Empieza por aquí</a><a href="#treinamento">Cómo aprende</a><a href="#equacao">Ecuación y términos</a><a href="#laboratorio">Laboratorio</a><a href="#pratica">Uso y evaluación</a><a href="#fontes">Referencias</a></nav>
+<section class="card" id="comece"><h2>Empieza por aquí</h2>
+<p>Imagina dos grupos en un mapa. Uno es compacto y el otro se extiende a lo largo de una avenida. Un punto lejano al centro del segundo grupo aún puede encajar si está en esa avenida. QDA permite que cada grupo tenga su forma y que la frontera sea curva.</p>
+<p>Entrenar significa usar ejemplos anteriores con resultados conocidos para encontrar un patrón. Predecir significa aplicar ese patrón a un caso nuevo. El simulador usa datos ficticios para que puedas observar qué cambia al mover un control.</p>
+<h3>Ejemplo paso a paso</h3><p>Imagina un punto a igual distancia de ambos centros. Si se encuentra en la dirección larga de un grupo, pero fuera de la zona estrecha del otro, las formas aportan evidencias distintas. El modelo también tiene en cuenta qué tan común era cada grupo.</p>
+<h3>Qué conviene recordar</h3><p>Estimar una forma por grupo exige más datos. Cuando un grupo tiene pocos ejemplos, sustituir un solo caso puede cambiar mucho la forma estimada.</p>
+</section>
 <section class="card" id="treinamento"><h2>Cómo aprende</h2><p>Al igual que LDA, QDA describe cada clase con una distribución gaussiana. Estima una covarianza por clase. Los términos cuadráticos suelen permanecer al comparar clases, lo que permite fronteras curvas. <a class="cite" href="#ref-1">[1]</a></p></section>
-<section class="card" id="equacao"><h2>Ecuación y términos</h2><p class="equation classifier-equation">δc(x) = ln πc − ½ ln det(Σc) − ½ (x−μc)ᵀΣc⁻¹(x−μc)</p><p>μc sitúa la clase, Σc describe su forma y πc es su probabilidad inicial. El determinante refleja el grado de dispersión. El último término mide la distancia al centro teniendo en cuenta la forma. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></section>
+<section class="card" id="equacao"><h2>Ecuación y términos</h2><details><summary>La matemática detrás de la idea</summary><p class="equation classifier-equation">δc(x) = ln πc − ½ ln det(Σc) − ½ (x−μc)ᵀΣc⁻¹(x−μc)</p><p>μc sitúa la clase, Σc describe su forma y πc es su probabilidad inicial. El determinante refleja el grado de dispersión. El último término mide la distancia al centro teniendo en cuenta la forma. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></details></section>
 <section id="laboratorio">
+<div class="card"><h3>Prueba el simulador</h3><p>Acerca el rombo blanco a la frontera y compara ajustes diagonales pequeños y grandes. Luego abre LDA y compara sus fronteras. Piensa qué cambia al estimar una forma por grupo en lugar de una forma común.</p><h3>Cómo leer el gráfico</h3><p>Los controles deslizantes colocan el rombo blanco en el gráfico. Mueve uno a la vez. El eje horizontal muestra los pendientes y el vertical, el retraso en la entrega. Ambas medidas van de 0 a 1, donde 0 indica un valor bajo y 1 uno alto. El color de fondo indica la categoría que el modelo asignaría en ese punto.</p></div>
+
 <div id="classifier-lab" data-model="qda" data-ontime="A tiempo" data-late="Retraso" data-tie="Empate" data-score="Probabilidad estimada de retraso">
 <div class="panel-head"><h2>Laboratorio</h2><button class="action" type="button">Restablecer</button></div>
 <noscript><p>Puedes leer la lección sin JavaScript. Actívalo para usar el laboratorio.</p></noscript>
@@ -31,7 +39,7 @@
 <div class="chart-heading"><h3>Regiones de decisión</h3></div>
 <canvas class="chart" role="img" aria-label="Regiones de decisión" aria-describedby="chart-note"></canvas>
 <div class="legend classifier-legend"><span>● A tiempo</span><span>■ Retraso</span><span>◇ Tu caso de prueba</span></div>
-<figcaption class="chart-note" id="chart-note">Cada punto o cuadrado representa una tarea simulada. El fondo indica la clase predicha. Mueve el rombo blanco o ajusta el parámetro del modelo. Las dos entradas van de 0 a 1.</figcaption>
+<figcaption class="chart-note" id="chart-note">Cada punto o cuadrado representa una tarea simulada. El fondo indica la clase predicha. Usa los controles deslizantes para mover el rombo o ajustar el modelo. Las dos entradas van de 0 a 1.</figcaption>
 </figure>
 <div class="controls">
 <label class="slider-label" for="setting">Regularización diagonal (×0,001)<output data-output="setting"></output></label><input type="range" id="setting" min="1" max="80" step="1" value="4">

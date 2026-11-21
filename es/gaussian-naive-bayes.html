@@ -16,14 +16,22 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estadística · Aprendizaje automático · IA</span></div>
   <div class="hero-label">Explora por tema</div>
   <h1>Naive Bayes gaussiano</h1><p>Combina una frecuencia inicial con la evidencia de cada medida.</p>
-  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="linear-regression.html">Regresión lineal</a><a href="logistic-regression.html">Regresión logística</a><a href="decision-tree.html">Árbol de decisión</a></nav>
+  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="index.html#machine-learning">Modelos de aprendizaje automático</a></nav>
 <nav class="nav language" aria-label="Idioma"><a href="../gaussian-naive-bayes.html" lang="en" hreflang="en">English</a><a href="../pt/gaussian-naive-bayes.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="../es/gaussian-naive-bayes.html" lang="es" hreflang="es" aria-current="true">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links"><a href="#treinamento">Cómo aprende</a><a href="#equacao">Ecuación y términos</a><a href="#laboratorio">Laboratorio</a><a href="#pratica">Uso y evaluación</a><a href="#fontes">Referencias</a></nav>
+<nav class="section-links"><a href="#comece">Empieza por aquí</a><a href="#treinamento">Cómo aprende</a><a href="#equacao">Ecuación y términos</a><a href="#laboratorio">Laboratorio</a><a href="#pratica">Uso y evaluación</a><a href="#fontes">Referencias</a></nav>
+<section class="card" id="comece"><h2>Empieza por aquí</h2>
+<p>Piensa en alguien que reúne pistas sobre un retraso. Primero pregunta con qué frecuencia suelen retrasarse las tareas. Después mira si cada pista es más típica entre las retrasadas o las que acabaron a tiempo. Naive Bayes gaussiano usa una curva de campana para medir qué tan típico es un número dentro de un grupo.</p>
+<p>Entrenar significa usar ejemplos anteriores con resultados conocidos para encontrar un patrón. Predecir significa aplicar ese patrón a un caso nuevo. El simulador usa datos ficticios para que puedas observar qué cambia al mover un control.</p>
+<h3>Ejemplo paso a paso</h3><p>Imagina que el 40% de las tareas suele retrasarse. Una gran demora en la entrega es más típica de las tareas retrasadas, así que esta pista favorece el retraso. El modelo multiplica un peso inicial por un valor por pista y compara los totales de ambos resultados.</p>
+<h3>Qué conviene recordar</h3><p>Si dos medidas cuentan casi la misma historia, multiplicar sus valores puede dar demasiado peso a la misma pista. Comprueba con casos aparte si las probabilidades estimadas coinciden con lo que ocurre en la práctica.</p>
+</section>
 <section class="card" id="treinamento"><h2>Cómo aprende</h2><p>Para cada clase, estima la frecuencia y una curva de campana por variable. Multiplica las densidades como si las variables fueran independientes dentro de la clase. El laboratorio añade un valor pequeño a cada varianza y normaliza las dos puntuaciones. <a class="cite" href="#ref-1">[1]</a></p></section>
-<section class="card" id="equacao"><h2>Ecuación y términos</h2><p class="equation classifier-equation">s(c) = P(c) × ∏ Normal(xⱼ; μcⱼ, σ²cⱼ)</p><p>P(c) es la frecuencia inicial de la clase. Normal da la densidad de xⱼ alrededor de la media μcⱼ con varianza σ²cⱼ. ∏ significa multiplicar entre variables. Si las puntuaciones son 0,06 y 0,04, la primera normalizada da el 60%. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></section>
+<section class="card" id="equacao"><h2>Ecuación y términos</h2><details><summary>La matemática detrás de la idea</summary><p class="equation classifier-equation">s(c) = P(c) × ∏ Normal(xⱼ; μcⱼ, σ²cⱼ)</p><p>P(c) es la frecuencia inicial de la clase. Normal da la densidad de xⱼ alrededor de la media μcⱼ con varianza σ²cⱼ. ∏ significa multiplicar entre variables. Si las puntuaciones son 0,06 y 0,04, la primera normalizada da el 60%. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></details></section>
 <section id="laboratorio">
+<div class="card"><h3>Prueba el simulador</h3><p>Mantén fija una medida y mueve la otra. Mira cómo cambia el valor al entrar en otra región. Después aumenta la varianza añadida. Esto ensancha las curvas de campana y puede reducir la influencia de una curva muy estrecha.</p><h3>Cómo leer el gráfico</h3><p>Los controles deslizantes colocan el rombo blanco en el gráfico. Mueve uno a la vez. El eje horizontal muestra los pendientes y el vertical, el retraso en la entrega. Ambas medidas van de 0 a 1, donde 0 indica un valor bajo y 1 uno alto. El color de fondo indica la categoría que el modelo asignaría en ese punto.</p></div>
+
 <div id="classifier-lab" data-model="nb" data-ontime="A tiempo" data-late="Retraso" data-tie="Empate" data-score="Puntuación normalizada de retraso">
 <div class="panel-head"><h2>Laboratorio</h2><button class="action" type="button">Restablecer</button></div>
 <noscript><p>Puedes leer la lección sin JavaScript. Actívalo para usar el laboratorio.</p></noscript>
@@ -31,7 +39,7 @@
 <div class="chart-heading"><h3>Regiones de decisión</h3></div>
 <canvas class="chart" role="img" aria-label="Regiones de decisión" aria-describedby="chart-note"></canvas>
 <div class="legend classifier-legend"><span>● A tiempo</span><span>■ Retraso</span><span>◇ Tu caso de prueba</span></div>
-<figcaption class="chart-note" id="chart-note">Cada punto o cuadrado representa una tarea simulada. El fondo indica la clase predicha. Mueve el rombo blanco o ajusta el parámetro del modelo. Las dos entradas van de 0 a 1.</figcaption>
+<figcaption class="chart-note" id="chart-note">Cada punto o cuadrado representa una tarea simulada. El fondo indica la clase predicha. Usa los controles deslizantes para mover el rombo o ajustar el modelo. Las dos entradas van de 0 a 1.</figcaption>
 </figure>
 <div class="controls">
 <label class="slider-label" for="setting">Varianza añadida (×0,001)<output data-output="setting"></output></label><input type="range" id="setting" min="1" max="60" step="1" value="3">

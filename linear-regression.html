@@ -16,11 +16,17 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Statistics · Machine learning · AI</span></div>
   <div class="hero-label">Supervised learning</div>
   <h1>Linear regression</h1><p>Predict a quantity with a straight line. Explore residuals, slope, and error in 3D.</p>
-  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="linear-regression.html" aria-current="page">Linear regression</a><a href="logistic-regression.html">Logistic regression</a><a href="decision-tree.html">Decision tree</a></nav>
+  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="index.html#machine-learning">Machine learning models</a></nav>
 <nav class="nav language" aria-label="Language"><a href="linear-regression.html" lang="en" hreflang="en" aria-current="true">English</a><a href="pt/linear-regression.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="es/linear-regression.html" lang="es" hreflang="es">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links" aria-label="In this lesson"><a href="#equacao">Equation</a><a href="#laboratorio">Lab</a><a href="#treinamento">Training</a><a href="#pratica">How to use it</a><a href="#fontes">References</a></nav>
+<nav class="section-links" aria-label="In this lesson"><a href="#comece">Start here</a><a href="#equacao">Equation</a><a href="#laboratorio">Lab</a><a href="#treinamento">Training</a><a href="#pratica">How to use it</a><a href="#fontes">References</a></nav>
+<section class="card" id="comece"><h2>Start here</h2>
+<p>Imagine laying a straight ruler across dots on paper. Each dot is a work shift you already observed. Put hours on the horizontal axis and installed area on the vertical axis. The line summarizes the overall trend so you can estimate an area for a new shift.</p>
+<p>Training means using past examples with known outcomes to find a pattern. A prediction applies that pattern to a new case. The lab uses simulated data so you can see what changes when you move one control.</p>
+<h3>Example, step by step</h3><p>Suppose a simple line starts at 5 m² and rises by 3 m² per hour. At 4 hours it predicts 5 + 3 × 4 = 17 m². If the crew actually installed 15 m², the difference (actual minus predicted) is −2 m². That difference is called a residual.</p>
+<h3>What to keep in mind</h3><p>The slope describes the pattern in this example. It does not establish that working longer is what caused the difference. Crew size or task difficulty might also matter.</p>
+</section>
 
 <section id="equacao" class="card"><h2>The line equation, piece by piece</h2>
 <p>Imagine recording the hours worked and the square meters installed across several shifts. Each shift becomes a point. Linear regression fits a line to describe the <strong>expected average output</strong> for a shift of a given length.  <a class="cite" href="#ref-isl" aria-label="Reference 1">[1]</a> <a class="cite" href="#ref-ols" aria-label="Reference 2">[2]</a></p>
@@ -36,6 +42,8 @@
 <dl class="live"><div><dt>x · hours</dt><dd><output id="eq-x"></output></dd></div><div><dt>b₀ · intercept</dt><dd><output id="eq-intercept"></output></dd></div><div><dt>b₁ · slope</dt><dd><output id="eq-slope"></output></dd></div><div><dt>ŷ · prediction</dt><dd><output id="eq-y"></output></dd></div><div><dt>Training MSE</dt><dd><output id="eq-mse"></output></dd></div></dl>
 </section>
 <noscript><p>Enable JavaScript to use the lab. You can still read the explanations below.</p></noscript><section id="laboratorio" class="lab" aria-labelledby="model-title">
+<div class="card"><h3>Try it in the lab</h3><p>Try 4 hours and then 5 hours with the same fitted line. Subtract the two predictions to see the effect of one additional hour. Then add the outlier and notice that the line itself changes.</p></div>
+
     <div class="panel-head">
       <div><h2 id="model-title"></h2><p id="model-question"></p></div>
       <button class="action" id="reset" type="button">Reset</button>

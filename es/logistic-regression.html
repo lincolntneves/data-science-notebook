@@ -16,11 +16,17 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estadística · Aprendizaje automático · IA</span></div>
   <div class="hero-label">Aprendizaje supervisado</div>
   <h1>Regresión logística</h1><p>Estima la probabilidad de un evento y decide qué hacer. Explora la sigmoide, las odds y el umbral de decisión.</p>
-  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="linear-regression.html">Regresión lineal</a><a href="logistic-regression.html" aria-current="page">Regresión logística</a><a href="decision-tree.html">Árbol de decisión</a></nav>
+  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="index.html#machine-learning">Modelos de aprendizaje automático</a></nav>
 <nav class="nav language" aria-label="Idioma"><a href="../logistic-regression.html" lang="en" hreflang="en">English</a><a href="../pt/logistic-regression.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="../es/logistic-regression.html" lang="es" hreflang="es" aria-current="true">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links" aria-label="En esta lección"><a href="#equacao">Ecuación</a><a href="#laboratorio">Laboratorio</a><a href="#treinamento">Entrenamiento</a><a href="#pratica">Cómo aplicarlo</a><a href="#fontes">Bibliografía</a></nav>
+<nav class="section-links" aria-label="En esta lección"><a href="#comece">Empieza por aquí</a><a href="#equacao">Ecuación</a><a href="#laboratorio">Laboratorio</a><a href="#treinamento">Entrenamiento</a><a href="#pratica">Cómo aplicarlo</a><a href="#fontes">Bibliografía</a></nav>
+<section class="card" id="comece"><h2>Empieza por aquí</h2>
+<p>Piensa en un pronóstico de lluvia. Estimar un 70% de probabilidad de lluvia y decidir llevar paraguas son dos cosas distintas. Aquí el modelo estima la probabilidad de retraso de una tarea. Una regla aparte decide a partir de qué probabilidad se activa una alerta.</p>
+<p>Entrenar significa usar ejemplos anteriores con resultados conocidos para encontrar un patrón. Predecir significa aplicar ese patrón a un caso nuevo. El simulador usa datos ficticios para que puedas observar qué cambia al mover un control.</p>
+<h3>Ejemplo paso a paso</h3><p>Con una estimación del 70%, un umbral del 60% activa la alerta. Con un umbral del 80%, queda desactivada. La estimación sigue siendo del 70% porque solo cambió la regla de decisión. La curva con forma de S mantiene las estimaciones entre 0% y 100%.</p>
+<h3>Qué conviene recordar</h3><p>La probabilidad expresa incertidumbre. Con una estimación del 70%, la tarea aún podría terminar a tiempo.</p>
+</section>
 
 <section id="equacao" class="card"><h2>De minutos de retraso a la probabilidad de un evento</h2>
 <p>Queremos predecir si una tarea terminará tarde. Cada tarea del historial tiene un resultado: <strong>1</strong> si terminó tarde y <strong>0</strong> si terminó a tiempo. La regresión logística binaria estima la probabilidad de y = 1 dadas las entradas. Calcula una puntuación lineal y la transforma con una curva en S llamada <strong>sigmoide</strong>.  <a class="cite" href="#ref-isl" aria-label="Referencia 1">[1]</a> <a class="cite" href="#ref-log" aria-label="Referencia 2">[2]</a></p>
@@ -39,6 +45,8 @@
 <dl class="live"><div><dt>x · entrada reescalada</dt><dd><output id="eq-x"></output></dd></div><div><dt>b₀ · intercepto</dt><dd><output id="eq-intercept"></output></dd></div><div><dt>b₁ · coeficiente</dt><dd><output id="eq-slope"></output></dd></div><div><dt>z · puntuación</dt><dd><output id="eq-z"></output></dd></div><div><dt>p · probabilidad</dt><dd><output id="eq-p"></output></dd></div><div><dt>Odds estimadas</dt><dd><output id="eq-odds"></output></dd></div><div><dt>Umbral elegido</dt><dd><output id="eq-cut"></output></dd></div></dl>
 </section>
 <noscript><p>Activa JavaScript para usar el laboratorio. Puedes seguir leyendo las explicaciones.</p></noscript><section id="laboratorio" class="lab" aria-labelledby="model-title">
+<div class="card"><h3>Prueba el simulador</h3><p>Elige un retraso en la entrega y déjalo fijo. Mueve el umbral de alerta de un valor bajo a uno alto. Observa por separado la probabilidad y la alerta. Después cambia el retraso para ver qué modifica la probabilidad.</p></div>
+
     <div class="panel-head">
       <div><h2 id="model-title"></h2><p id="model-question"></p></div>
       <button class="action" id="reset" type="button">Restablecer</button>

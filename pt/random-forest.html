@@ -16,14 +16,22 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estatística · Machine learning · IA</span></div>
   <div class="hero-label">Explore por assunto</div>
   <h1>Floresta aleatória (Random Forest)</h1><p>Combine previsões de várias árvores aleatórias.</p>
-  <nav class="nav" aria-label="Aulas"><a href="index.html">Início</a><a href="linear-regression.html">Regressão linear</a><a href="logistic-regression.html">Regressão logística</a><a href="decision-tree.html">Árvore de decisão</a></nav>
+  <nav class="nav" aria-label="Aulas"><a href="index.html">Início</a><a href="index.html#machine-learning">Modelos de machine learning</a></nav>
 <nav class="nav language" aria-label="Idioma"><a href="../random-forest.html" lang="en" hreflang="en">English</a><a href="../pt/random-forest.html" lang="pt-BR" hreflang="pt-BR" aria-current="true">Português</a><a href="../es/random-forest.html" lang="es" hreflang="es">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links"><a href="#treinamento">Como aprende</a><a href="#equacao">Equação e termos</a><a href="#laboratorio">Laboratório</a><a href="#pratica">Uso e avaliação</a><a href="#fontes">Referências</a></nav>
+<nav class="section-links"><a href="#comece">Comece por aqui</a><a href="#treinamento">Como aprende</a><a href="#equacao">Equação e termos</a><a href="#laboratorio">Laboratório</a><a href="#pratica">Uso e avaliação</a><a href="#fontes">Referências</a></nav>
+<section class="card" id="comece"><h2>Comece por aqui</h2>
+<p>Pense em pedir estimativas a várias pessoas. Cada uma vê uma seleção um pouco diferente de tarefas antigas e pode fazer perguntas diferentes. Uma floresta aleatória faz isso com árvores de decisão e calcula a média das estimativas.</p>
+<p>Treinar é usar exemplos anteriores, com resultado conhecido, para encontrar um padrão. Prever é aplicar esse padrão a um caso novo. O simulador usa dados fictícios para você observar o que muda ao mover um controle.</p>
+<h3>Exemplo passo a passo</h3><p>Se três árvores estimam 20%, 40% e 90% para uma tarefa, a média é (20 + 40 + 90) ÷ 3 = 50%. O laboratório usa a fração de atrasos no grupo final de cada árvore e combina essas frações.</p>
+<h3>O que vale lembrar</h3><p>As árvores podem errar de formas parecidas porque aprendem do mesmo conjunto original. Mais árvores podem estabilizar a média, mas você ainda precisa avaliar o resultado em tarefas novas.</p>
+</section>
 <section class="card" id="treinamento"><h2>Como aprende</h2><p>Cada árvore vê uma amostra sorteada com reposição. Em cada divisão, o laboratório tenta uma das duas variáveis ao acaso e limita a profundidade a quatro. A média ajuda quando as árvores erram de maneiras diferentes. A semente é fixa para repetir o experimento. <a class="cite" href="#ref-1">[1]</a></p></section>
-<section class="card" id="equacao"><h2>Equação e termos</h2><p class="equation classifier-equation">ŝ(x) = (1/T) ∑ pₜ(x), t = 1,…,T</p><p>T é o número de árvores e pₜ(x) é a fração de atrasos na folha que x alcança na árvore t. Previsões de 20%, 40% e 90% têm média de 50%. A floresta classifica pela média. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></section>
+<section class="card" id="equacao"><h2>Equação e termos</h2><details><summary>A matemática por trás da ideia</summary><p class="equation classifier-equation">ŝ(x) = (1/T) ∑ pₜ(x), t = 1,…,T</p><p>T é o número de árvores e pₜ(x) é a fração de atrasos na folha que x alcança na árvore t. Previsões de 20%, 40% e 90% têm média de 50%. A floresta classifica pela média. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></details></section>
 <section id="laboratorio">
+<div class="card"><h3>Experimente no simulador</h3><p>Comece com uma árvore e mova o losango pelas fronteiras. Compare com 11 e depois 31 árvores, usando o mesmo caso de teste. Observe mudanças na estimativa e procure padrões que dependam menos de uma única divisão.</p><h3>Como ler o gráfico</h3><p>Os controles deslizantes posicionam o losango branco no gráfico. Mova um por vez. O eixo horizontal mostra as pendências e o vertical, o atraso na entrega. As duas medidas estão numa escala de 0 a 1, em que 0 indica um valor baixo e 1 indica um valor alto. A cor de fundo mostra a categoria que o modelo atribuiria naquele ponto.</p></div>
+
 <div id="classifier-lab" data-model="rf" data-ontime="No prazo" data-late="Atraso" data-tie="Empate" data-score="Fração média de atrasos nas árvores">
 <div class="panel-head"><h2>Laboratório</h2><button class="action" type="button">Reiniciar</button></div>
 <noscript><p>A aula pode ser lida sem JavaScript. Ative-o para usar o laboratório.</p></noscript>
@@ -31,7 +39,7 @@
 <div class="chart-heading"><h3>Regiões de decisão</h3></div>
 <canvas class="chart" role="img" aria-label="Regiões de decisão" aria-describedby="chart-note"></canvas>
 <div class="legend classifier-legend"><span>● No prazo</span><span>■ Atraso</span><span>◇ Seu caso de teste</span></div>
-<figcaption class="chart-note" id="chart-note">Cada ponto ou quadrado representa uma tarefa simulada. O fundo indica a classe prevista. Mova o losango branco ou ajuste o parâmetro do modelo. As duas entradas vão de 0 a 1.</figcaption>
+<figcaption class="chart-note" id="chart-note">Cada ponto ou quadrado representa uma tarefa simulada. O fundo indica a classe prevista. Use os controles deslizantes para mover o losango ou ajustar o modelo. As duas entradas vão de 0 a 1.</figcaption>
 </figure>
 <div class="controls">
 <label class="slider-label" for="setting">Número de árvores<output data-output="setting"></output></label><input type="range" id="setting" min="1" max="31" step="1" value="11">

@@ -16,11 +16,17 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estatística · Machine learning · IA</span></div>
   <div class="hero-label">Machine learning supervisionado</div>
   <h1>Regressão linear</h1><p>Como prever uma quantidade a partir de uma reta. Acompanhe os resíduos, a inclinação e o erro em 3D.</p>
-  <nav class="nav" aria-label="Aulas"><a href="index.html">Início</a><a href="linear-regression.html" aria-current="page">Regressão linear</a><a href="logistic-regression.html">Regressão logística</a><a href="decision-tree.html">Árvore de decisão</a></nav>
+  <nav class="nav" aria-label="Aulas"><a href="index.html">Início</a><a href="index.html#machine-learning">Modelos de machine learning</a></nav>
 <nav class="nav language" aria-label="Idioma"><a href="../linear-regression.html" lang="en" hreflang="en">English</a><a href="../pt/linear-regression.html" lang="pt-BR" hreflang="pt-BR" aria-current="true">Português</a><a href="../es/linear-regression.html" lang="es" hreflang="es">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links" aria-label="Nesta aula"><a href="#equacao">Equação</a><a href="#laboratorio">Laboratório</a><a href="#treinamento">Treinamento</a><a href="#pratica">Uso na prática</a><a href="#fontes">Bibliografia</a></nav>
+<nav class="section-links" aria-label="Nesta aula"><a href="#comece">Comece por aqui</a><a href="#equacao">Equação</a><a href="#laboratorio">Laboratório</a><a href="#treinamento">Treinamento</a><a href="#pratica">Uso na prática</a><a href="#fontes">Bibliografia</a></nav>
+<section class="card" id="comece"><h2>Comece por aqui</h2>
+<p>Imagine colocar uma régua sobre pontos no papel. Cada ponto é um turno de trabalho que você já observou. No eixo horizontal ficam as horas, e no vertical, a área instalada. A reta resume a tendência para você estimar a área de um novo turno.</p>
+<p>Treinar é usar exemplos anteriores, com resultado conhecido, para encontrar um padrão. Prever é aplicar esse padrão a um caso novo. O simulador usa dados fictícios para você observar o que muda ao mover um controle.</p>
+<h3>Exemplo passo a passo</h3><p>Suponha que uma reta comece em 5 m² e suba 3 m² por hora. Para 4 horas, ela prevê 5 + 3 × 4 = 17 m². Se a equipe instalou 15 m², a diferença (real menos previsto) é −2 m². Essa diferença se chama resíduo.</p>
+<h3>O que vale lembrar</h3><p>A inclinação descreve o padrão do exemplo. Para saber se trabalhar mais tempo causou a diferença, seria preciso avaliar outros fatores, como o tamanho da equipe e a dificuldade da tarefa.</p>
+</section>
 
 <section id="equacao" class="card"><h2>A equação da reta, peça por peça</h2>
 <p>Imagine que você anotou quantas horas a equipe trabalhou e quantos m² instalou em vários turnos. Cada turno vira um ponto. A regressão linear ajusta uma reta para descrever a <strong>produção média esperada</strong> para uma dada duração.  <a class="cite" href="#ref-isl" aria-label="Referência 1">[1]</a> <a class="cite" href="#ref-ols" aria-label="Referência 2">[2]</a></p>
@@ -36,6 +42,8 @@
 <dl class="live"><div><dt>x · horas</dt><dd><output id="eq-x"></output></dd></div><div><dt>b₀ · intercepto</dt><dd><output id="eq-intercept"></output></dd></div><div><dt>b₁ · inclinação</dt><dd><output id="eq-slope"></output></dd></div><div><dt>ŷ · previsão</dt><dd><output id="eq-y"></output></dd></div><div><dt>MSE no treino</dt><dd><output id="eq-mse"></output></dd></div></dl>
 </section>
 <noscript><p>Ative o JavaScript para usar o laboratório. As explicações continuam disponíveis abaixo.</p></noscript><section id="laboratorio" class="lab" aria-labelledby="model-title">
+<div class="card"><h3>Experimente no simulador</h3><p>Experimente 4 e depois 5 horas com a mesma reta. Subtraia as duas previsões para ver o efeito de uma hora a mais. Depois, adicione o ponto fora do padrão e observe que a própria reta muda.</p></div>
+
     <div class="panel-head">
       <div><h2 id="model-title"></h2><p id="model-question"></p></div>
       <button class="action" id="reset" type="button">Reiniciar</button>

@@ -16,14 +16,22 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estatística · Machine learning · IA</span></div>
   <div class="hero-label">Explore por assunto</div>
   <h1>Máquina de vetores de suporte linear (SVM)</h1><p>Encontre uma reta que separe grupos com espaço dos dois lados.</p>
-  <nav class="nav" aria-label="Aulas"><a href="index.html">Início</a><a href="linear-regression.html">Regressão linear</a><a href="logistic-regression.html">Regressão logística</a><a href="decision-tree.html">Árvore de decisão</a></nav>
+  <nav class="nav" aria-label="Aulas"><a href="index.html">Início</a><a href="index.html#machine-learning">Modelos de machine learning</a></nav>
 <nav class="nav language" aria-label="Idioma"><a href="../support-vector-machine.html" lang="en" hreflang="en">English</a><a href="../pt/support-vector-machine.html" lang="pt-BR" hreflang="pt-BR" aria-current="true">Português</a><a href="../es/support-vector-machine.html" lang="es" hreflang="es">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links"><a href="#treinamento">Como aprende</a><a href="#equacao">Equação e termos</a><a href="#laboratorio">Laboratório</a><a href="#pratica">Uso e avaliação</a><a href="#fontes">Referências</a></nav>
+<nav class="section-links"><a href="#comece">Comece por aqui</a><a href="#treinamento">Como aprende</a><a href="#equacao">Equação e termos</a><a href="#laboratorio">Laboratório</a><a href="#pratica">Uso e avaliação</a><a href="#fontes">Referências</a></nav>
+<section class="card" id="comece"><h2>Comece por aqui</h2>
+<p>Imagine traçar uma linha entre dois grupos de pontos e marcar uma faixa de proteção dos dois lados. Você quer uma faixa larga, mas alguns pontos podem cair dentro dela ou cruzar para o lado errado. Uma SVM linear equilibra a largura da faixa com a penalidade desses casos.</p>
+<p>Treinar é usar exemplos anteriores, com resultado conhecido, para encontrar um padrão. Prever é aplicar esse padrão a um caso novo. O simulador usa dados fictícios para você observar o que muda ao mover um controle.</p>
+<h3>Exemplo passo a passo</h3><p>Imagine uma tarefa colocada corretamente, mas perto da linha. Ela ainda recebe uma penalidade por estar dentro da faixa. Uma tarefa do lado errado tem penalidade maior que uma do lado certo a uma distância equivalente. O controle C muda o peso dessas penalidades.</p>
+<h3>O que vale lembrar</h3><p>O gráfico usa o sinal do escore para atribuir uma classe. Um escore de 0,8 não indica 80% de chance de atraso.</p>
+</section>
 <section class="card" id="treinamento"><h2>Como aprende</h2><p>A SVM linear equilibra uma margem ampla com a penalização de exemplos dentro da margem ou do lado errado. O laboratório usa uma função linear e otimização aproximada por subgradiente. O sinal do escore determina a classe. <a class="cite" href="#ref-1">[1]</a></p></section>
-<section class="card" id="equacao"><h2>Equação e termos</h2><p class="equation classifier-equation">min ‖w‖²/2 + C · mean(max(0, 1 − yᵢ f(xᵢ))), f(x) = wᵀx + b</p><p>w é perpendicular à fronteira, b a desloca e yᵢ vale −1 ou +1. A perda hinge é zero se yᵢ f(xᵢ) for pelo menos 1. C controla o peso da penalização. Bibliotecas podem usar a soma das perdas em vez da média usada aqui. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></section>
+<section class="card" id="equacao"><h2>Equação e termos</h2><details><summary>A matemática por trás da ideia</summary><p class="equation classifier-equation">min ‖w‖²/2 + C · mean(max(0, 1 − yᵢ f(xᵢ))), f(x) = wᵀx + b</p><p>w é perpendicular à fronteira, b a desloca e yᵢ vale −1 ou +1. A perda hinge é zero se yᵢ f(xᵢ) for pelo menos 1. C controla o peso da penalização. Bibliotecas podem usar a soma das perdas em vez da média usada aqui. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></details></section>
 <section id="laboratorio">
+<div class="card"><h3>Experimente no simulador</h3><p>Mova o losango branco para os dois lados da linha e observe o sinal do escore. Depois, compare um C baixo e um alto. A linha pode se mover ou girar. Escore zero marca a fronteira, e o valor do escore não é uma porcentagem.</p><h3>Como ler o gráfico</h3><p>Os controles deslizantes posicionam o losango branco no gráfico. Mova um por vez. O eixo horizontal mostra as pendências e o vertical, o atraso na entrega. As duas medidas estão numa escala de 0 a 1, em que 0 indica um valor baixo e 1 indica um valor alto. A cor de fundo mostra a categoria que o modelo atribuiria naquele ponto.</p></div>
+
 <div id="classifier-lab" data-model="svm" data-ontime="No prazo" data-late="Atraso" data-tie="Empate" data-score="Escore de decisão com sinal">
 <div class="panel-head"><h2>Laboratório</h2><button class="action" type="button">Reiniciar</button></div>
 <noscript><p>A aula pode ser lida sem JavaScript. Ative-o para usar o laboratório.</p></noscript>
@@ -31,7 +39,7 @@
 <div class="chart-heading"><h3>Regiões de decisão</h3></div>
 <canvas class="chart" role="img" aria-label="Regiões de decisão" aria-describedby="chart-note"></canvas>
 <div class="legend classifier-legend"><span>● No prazo</span><span>■ Atraso</span><span>◇ Seu caso de teste</span></div>
-<figcaption class="chart-note" id="chart-note">Cada ponto ou quadrado representa uma tarefa simulada. O fundo indica a classe prevista. Mova o losango branco ou ajuste o parâmetro do modelo. As duas entradas vão de 0 a 1.</figcaption>
+<figcaption class="chart-note" id="chart-note">Cada ponto ou quadrado representa uma tarefa simulada. O fundo indica a classe prevista. Use os controles deslizantes para mover o losango ou ajustar o modelo. As duas entradas vão de 0 a 1.</figcaption>
 </figure>
 <div class="controls">
 <label class="slider-label" for="setting">Penalidade da margem (C)<output data-output="setting"></output></label><input type="range" id="setting" min="1" max="30" step="1" value="9">

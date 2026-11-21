@@ -16,11 +16,17 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estadística · Aprendizaje automático · IA</span></div>
   <div class="hero-label">Aprendizaje supervisado</div>
   <h1>Árbol de decisión</h1><p>Convierte los datos en preguntas. Sigue una tarea por el árbol y compara cómo las divisiones agrupan los ejemplos.</p>
-  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="linear-regression.html">Regresión lineal</a><a href="logistic-regression.html">Regresión logística</a><a href="decision-tree.html" aria-current="page">Árbol de decisión</a></nav>
+  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="index.html#machine-learning">Modelos de aprendizaje automático</a></nav>
 <nav class="nav language" aria-label="Idioma"><a href="../decision-tree.html" lang="en" hreflang="en">English</a><a href="../pt/decision-tree.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="../es/decision-tree.html" lang="es" hreflang="es" aria-current="true">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links" aria-label="En esta lección"><a href="#equacao">Ecuación</a><a href="#laboratorio">Laboratorio</a><a href="#treinamento">Entrenamiento</a><a href="#pratica">Cómo aplicarlo</a><a href="#fontes">Bibliografía</a></nav>
+<nav class="section-links" aria-label="En esta lección"><a href="#comece">Empieza por aquí</a><a href="#equacao">Ecuación</a><a href="#laboratorio">Laboratorio</a><a href="#treinamento">Entrenamiento</a><a href="#pratica">Cómo aplicarlo</a><a href="#fontes">Bibliografía</a></nav>
+<section class="card" id="comece"><h2>Empieza por aquí</h2>
+<p>Piensa en un diagrama de flujo con preguntas de sí o no. En una obra podrías preguntar si hay más de ocho pendientes y después si la cuadrilla es pequeña. El árbol aprende qué preguntas hacer mirando los resultados de tareas anteriores.</p>
+<p>Entrenar significa usar ejemplos anteriores con resultados conocidos para encontrar un patrón. Predecir significa aplicar ese patrón a un caso nuevo. El simulador usa datos ficticios para que puedas observar qué cambia al mover un control.</p>
+<h3>Ejemplo paso a paso</h3><p>Supón que cuatro tareas llegaron al mismo final del diagrama y tres se retrasaron. El árbol estima 3 ÷ 4 = 75% para una nueva tarea que sigue ese recorrido. Ese grupo final se llama hoja.</p>
+<h3>Qué conviene recordar</h3><p>Un árbol profundo puede memorizar peculiaridades de los ejemplos. Comprueba si las preguntas adicionales ayudan con tareas ajenas al entrenamiento.</p>
+</section>
 
 <section id="equacao" class="card"><h2>Una secuencia de preguntas lleva a una predicción</h2>
 <p>Un árbol de decisión plantea preguntas como «¿hay como máximo 8 pendientes?» o «¿hay como máximo 5 personas en el equipo?». La primera pregunta está en la <strong>raíz</strong>. Cada respuesta lleva a una rama. Una <strong>hoja</strong> es el final del recorrido. En este laboratorio, la proporción de retrasos de una hoja del árbol de clasificación se convierte en la estimación para una tarea nueva.  <a class="cite" href="#ref-isl" aria-label="Referencia 1">[1]</a> <a class="cite" href="#ref-tree" aria-label="Referencia 2">[2]</a></p>
@@ -34,6 +40,8 @@
 <dl class="live"><div><dt>Pregunta de la raíz</dt><dd><output id="eq-root"></output></dd></div><div><dt>Ejemplos en la hoja</dt><dd><output id="eq-n"></output></dd></div><div><dt>Retrasos en la hoja</dt><dd><output id="eq-delay"></output></dd></div><div><dt>Proporción de retrasos</dt><dd><output id="eq-p"></output></dd></div></dl>
 </section>
 <noscript><p>Activa JavaScript para usar el laboratorio. Puedes seguir leyendo las explicaciones.</p></noscript><section id="laboratorio" class="lab" aria-labelledby="model-title">
+<div class="card"><h3>Prueba el simulador</h3><p>Empieza con un árbol poco profundo y mueve el control de pendientes hasta cruzar un corte que aparezca en el árbol. Sigue el camino resaltado y mira el resultado. Luego aumenta la profundidad y busca otra pregunta o un grupo final más pequeño.</p></div>
+
     <div class="panel-head">
       <div><h2 id="model-title"></h2><p id="model-question"></p></div>
       <button class="action" id="reset" type="button">Restablecer</button>

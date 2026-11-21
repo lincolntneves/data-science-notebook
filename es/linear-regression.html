@@ -16,11 +16,17 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estadística · Aprendizaje automático · IA</span></div>
   <div class="hero-label">Aprendizaje supervisado</div>
   <h1>Regresión lineal</h1><p>Predice una cantidad con una recta. Explora los residuos, la pendiente y el error en 3D.</p>
-  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="linear-regression.html" aria-current="page">Regresión lineal</a><a href="logistic-regression.html">Regresión logística</a><a href="decision-tree.html">Árbol de decisión</a></nav>
+  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="index.html#machine-learning">Modelos de aprendizaje automático</a></nav>
 <nav class="nav language" aria-label="Idioma"><a href="../linear-regression.html" lang="en" hreflang="en">English</a><a href="../pt/linear-regression.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="../es/linear-regression.html" lang="es" hreflang="es" aria-current="true">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links" aria-label="En esta lección"><a href="#equacao">Ecuación</a><a href="#laboratorio">Laboratorio</a><a href="#treinamento">Entrenamiento</a><a href="#pratica">Cómo aplicarlo</a><a href="#fontes">Bibliografía</a></nav>
+<nav class="section-links" aria-label="En esta lección"><a href="#comece">Empieza por aquí</a><a href="#equacao">Ecuación</a><a href="#laboratorio">Laboratorio</a><a href="#treinamento">Entrenamiento</a><a href="#pratica">Cómo aplicarlo</a><a href="#fontes">Bibliografía</a></nav>
+<section class="card" id="comece"><h2>Empieza por aquí</h2>
+<p>Imagina que colocas una regla recta sobre puntos dibujados en papel. Cada punto es un turno de trabajo ya observado. El eje horizontal muestra las horas y el vertical, el área instalada. La recta resume la tendencia para estimar el área en un turno nuevo.</p>
+<p>Entrenar significa usar ejemplos anteriores con resultados conocidos para encontrar un patrón. Predecir significa aplicar ese patrón a un caso nuevo. El simulador usa datos ficticios para que puedas observar qué cambia al mover un control.</p>
+<h3>Ejemplo paso a paso</h3><p>Supón que una recta empieza en 5 m² y sube 3 m² por hora. Para 4 horas predice 5 + 3 × 4 = 17 m². Si se instalaron 15 m², la diferencia (real menos previsto) es −2 m². Esa diferencia se llama residuo.</p>
+<h3>Qué conviene recordar</h3><p>La pendiente describe el patrón del ejemplo. Para saber si trabajar más tiempo causó la diferencia habría que examinar otros factores, como el tamaño del equipo y la dificultad de la tarea.</p>
+</section>
 
 <section id="equacao" class="card"><h2>La ecuación de la recta, pieza por pieza</h2>
 <p>Imagina que registras las horas trabajadas y los metros cuadrados instalados en varios turnos. Cada turno se convierte en un punto. La regresión lineal ajusta una recta para describir la <strong>producción media esperada</strong> para un turno de una duración determinada.  <a class="cite" href="#ref-isl" aria-label="Referencia 1">[1]</a> <a class="cite" href="#ref-ols" aria-label="Referencia 2">[2]</a></p>
@@ -36,6 +42,8 @@
 <dl class="live"><div><dt>x · horas</dt><dd><output id="eq-x"></output></dd></div><div><dt>b₀ · intercepto</dt><dd><output id="eq-intercept"></output></dd></div><div><dt>b₁ · pendiente</dt><dd><output id="eq-slope"></output></dd></div><div><dt>ŷ · predicción</dt><dd><output id="eq-y"></output></dd></div><div><dt>MSE de entrenamiento</dt><dd><output id="eq-mse"></output></dd></div></dl>
 </section>
 <noscript><p>Activa JavaScript para usar el laboratorio. Puedes seguir leyendo las explicaciones.</p></noscript><section id="laboratorio" class="lab" aria-labelledby="model-title">
+<div class="card"><h3>Prueba el simulador</h3><p>Prueba con 4 horas y luego con 5 sobre la misma recta. Resta las dos predicciones para ver el efecto de una hora adicional. Después, añade el valor atípico y observa que cambia la recta.</p></div>
+
     <div class="panel-head">
       <div><h2 id="model-title"></h2><p id="model-question"></p></div>
       <button class="action" id="reset" type="button">Restablecer</button>

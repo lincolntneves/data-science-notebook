@@ -43,3 +43,8 @@ Commit the files and folders in this package to the root of the repository on `m
 ## Add a lesson
 
 Add the same filename at the root for English and under `pt/` and `es/`. Keep the same section IDs so the language switch can retain the current section. Link each lesson from the three indexes. Share computation and styling in `assets/`, and add any interface strings to `assets/strings.js`. Keep citations near the relevant passages and include the references on each version of the page.
+
+When adding a lesson, start with a plain-language explanation and a concrete example in all three languages. Define unfamiliar terms before using them, then show a worked example and guide the reader through one change in the lab. Introduce formulas after the main idea is clear.
+
+The homepages group lessons by topic. Add machine learning models to the existing catalog. Use a new topic section for a different subject when its first lesson is ready.
+

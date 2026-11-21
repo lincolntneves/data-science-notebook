@@ -16,14 +16,22 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estadística · Aprendizaje automático · IA</span></div>
   <div class="hero-label">Explora por tema</div>
   <h1>Máquina de vectores de soporte lineal (SVM)</h1><p>Busca una recta que separe grupos con espacio a ambos lados.</p>
-  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="linear-regression.html">Regresión lineal</a><a href="logistic-regression.html">Regresión logística</a><a href="decision-tree.html">Árbol de decisión</a></nav>
+  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="index.html#machine-learning">Modelos de aprendizaje automático</a></nav>
 <nav class="nav language" aria-label="Idioma"><a href="../support-vector-machine.html" lang="en" hreflang="en">English</a><a href="../pt/support-vector-machine.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="../es/support-vector-machine.html" lang="es" hreflang="es" aria-current="true">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links"><a href="#treinamento">Cómo aprende</a><a href="#equacao">Ecuación y términos</a><a href="#laboratorio">Laboratorio</a><a href="#pratica">Uso y evaluación</a><a href="#fontes">Referencias</a></nav>
+<nav class="section-links"><a href="#comece">Empieza por aquí</a><a href="#treinamento">Cómo aprende</a><a href="#equacao">Ecuación y términos</a><a href="#laboratorio">Laboratorio</a><a href="#pratica">Uso y evaluación</a><a href="#fontes">Referencias</a></nav>
+<section class="card" id="comece"><h2>Empieza por aquí</h2>
+<p>Imagina una línea entre dos grupos de puntos y una franja de seguridad a ambos lados. Quieres una franja amplia, pero algunos puntos pueden quedar dentro o cruzar al lado equivocado. Una SVM lineal equilibra el ancho de la franja con la penalización de esos casos.</p>
+<p>Entrenar significa usar ejemplos anteriores con resultados conocidos para encontrar un patrón. Predecir significa aplicar ese patrón a un caso nuevo. El simulador usa datos ficticios para que puedas observar qué cambia al mover un control.</p>
+<h3>Ejemplo paso a paso</h3><p>Imagina una tarea bien situada pero cerca de la línea. Aún recibe una penalización por estar dentro de la franja. Una tarea en el lado equivocado recibe una penalización mayor que otra a igual distancia en el lado correcto. El control C modifica el peso de esas penalizaciones.</p>
+<h3>Qué conviene recordar</h3><p>El gráfico usa el signo de la puntuación para asignar una clase. Una puntuación de 0,8 no significa un 80% de probabilidad de retraso.</p>
+</section>
 <section class="card" id="treinamento"><h2>Cómo aprende</h2><p>La SVM lineal equilibra un margen amplio con una penalización para los ejemplos dentro del margen o del lado equivocado. El laboratorio usa una función lineal y optimización aproximada por subgradiente. El signo de la puntuación decide la clase. <a class="cite" href="#ref-1">[1]</a></p></section>
-<section class="card" id="equacao"><h2>Ecuación y términos</h2><p class="equation classifier-equation">min ‖w‖²/2 + C · mean(max(0, 1 − yᵢ f(xᵢ))), f(x) = wᵀx + b</p><p>w es perpendicular a la frontera, b la desplaza e yᵢ vale −1 o +1. La pérdida hinge es cero si yᵢ f(xᵢ) es al menos 1. C controla el peso de la penalización. Algunas bibliotecas usan la suma de pérdidas en vez de la media usada aquí. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></section>
+<section class="card" id="equacao"><h2>Ecuación y términos</h2><details><summary>La matemática detrás de la idea</summary><p class="equation classifier-equation">min ‖w‖²/2 + C · mean(max(0, 1 − yᵢ f(xᵢ))), f(x) = wᵀx + b</p><p>w es perpendicular a la frontera, b la desplaza e yᵢ vale −1 o +1. La pérdida hinge es cero si yᵢ f(xᵢ) es al menos 1. C controla el peso de la penalización. Algunas bibliotecas usan la suma de pérdidas en vez de la media usada aquí. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></details></section>
 <section id="laboratorio">
+<div class="card"><h3>Prueba el simulador</h3><p>Mueve el rombo blanco a los dos lados de la línea y observa el signo de la puntuación. Después compara un C bajo y uno alto. La línea puede moverse o girar. Una puntuación de cero marca la frontera, y su valor no es un porcentaje.</p><h3>Cómo leer el gráfico</h3><p>Los controles deslizantes colocan el rombo blanco en el gráfico. Mueve uno a la vez. El eje horizontal muestra los pendientes y el vertical, el retraso en la entrega. Ambas medidas van de 0 a 1, donde 0 indica un valor bajo y 1 uno alto. El color de fondo indica la categoría que el modelo asignaría en ese punto.</p></div>
+
 <div id="classifier-lab" data-model="svm" data-ontime="A tiempo" data-late="Retraso" data-tie="Empate" data-score="Puntuación de decisión con signo">
 <div class="panel-head"><h2>Laboratorio</h2><button class="action" type="button">Restablecer</button></div>
 <noscript><p>Puedes leer la lección sin JavaScript. Actívalo para usar el laboratorio.</p></noscript>
@@ -31,7 +39,7 @@
 <div class="chart-heading"><h3>Regiones de decisión</h3></div>
 <canvas class="chart" role="img" aria-label="Regiones de decisión" aria-describedby="chart-note"></canvas>
 <div class="legend classifier-legend"><span>● A tiempo</span><span>■ Retraso</span><span>◇ Tu caso de prueba</span></div>
-<figcaption class="chart-note" id="chart-note">Cada punto o cuadrado representa una tarea simulada. El fondo indica la clase predicha. Mueve el rombo blanco o ajusta el parámetro del modelo. Las dos entradas van de 0 a 1.</figcaption>
+<figcaption class="chart-note" id="chart-note">Cada punto o cuadrado representa una tarea simulada. El fondo indica la clase predicha. Usa los controles deslizantes para mover el rombo o ajustar el modelo. Las dos entradas van de 0 a 1.</figcaption>
 </figure>
 <div class="controls">
 <label class="slider-label" for="setting">Penalización del margen (C)<output data-output="setting"></output></label><input type="range" id="setting" min="1" max="30" step="1" value="9">

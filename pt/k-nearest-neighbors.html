@@ -16,14 +16,22 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estatística · Machine learning · IA</span></div>
   <div class="hero-label">Explore por assunto</div>
   <h1>K vizinhos mais próximos (KNN)</h1><p>Peça aos casos anteriores mais parecidos que votem.</p>
-  <nav class="nav" aria-label="Aulas"><a href="index.html">Início</a><a href="linear-regression.html">Regressão linear</a><a href="logistic-regression.html">Regressão logística</a><a href="decision-tree.html">Árvore de decisão</a></nav>
+  <nav class="nav" aria-label="Aulas"><a href="index.html">Início</a><a href="index.html#machine-learning">Modelos de machine learning</a></nav>
 <nav class="nav language" aria-label="Idioma"><a href="../k-nearest-neighbors.html" lang="en" hreflang="en">English</a><a href="../pt/k-nearest-neighbors.html" lang="pt-BR" hreflang="pt-BR" aria-current="true">Português</a><a href="../es/k-nearest-neighbors.html" lang="es" hreflang="es">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links"><a href="#treinamento">Como aprende</a><a href="#equacao">Equação e termos</a><a href="#laboratorio">Laboratório</a><a href="#pratica">Uso e avaliação</a><a href="#fontes">Referências</a></nav>
+<nav class="section-links"><a href="#comece">Comece por aqui</a><a href="#treinamento">Como aprende</a><a href="#equacao">Equação e termos</a><a href="#laboratorio">Laboratório</a><a href="#pratica">Uso e avaliação</a><a href="#fontes">Referências</a></nav>
+<section class="card" id="comece"><h2>Comece por aqui</h2>
+<p>Imagine perguntar a colegas o que aconteceu em serviços parecidos com o seu. Você escuta primeiro os casos mais parecidos. O KNN faz o mesmo em um mapa de tarefas passadas. Medidas parecidas aproximam os pontos.</p>
+<p>Treinar é usar exemplos anteriores, com resultado conhecido, para encontrar um padrão. Prever é aplicar esse padrão a um caso novo. O simulador usa dados fictícios para você observar o que muda ao mover um controle.</p>
+<h3>Exemplo passo a passo</h3><p>Pegue as cinco tarefas mais próximas da nova. Se três atrasaram e duas ficaram no prazo, foram três votos em cinco pelo atraso. Isso dá 60%, e atraso vence. A letra k diz quantos vizinhos entram na votação.</p>
+<h3>O que vale lembrar</h3><p>A porcentagem de votos resume os vizinhos escolhidos. Cinco vizinhos são poucos casos, então vale interpretar um resultado de 60% com cuidado.</p>
+</section>
 <section class="card" id="treinamento"><h2>Como aprende</h2><p>O KNN guarda os exemplos de treino. Para uma tarefa nova, ordena os exemplos por distância, pega os k mais próximos e conta quantos atrasaram. O laboratório usa distância euclidiana e votos com peso igual. <a class="cite" href="#ref-1">[1]</a></p></section>
-<section class="card" id="equacao"><h2>Equação e termos</h2><p class="equation classifier-equation">ŝ(x) = (1/k) ∑ yᵢ, i ∈ Nₖ(x)</p><p>Nₖ(x) reúne os k exemplos mais próximos da nova tarefa x. Cada yᵢ vale 1 para atraso e 0 para entrega no prazo. ŝ é a fração de votos por atraso. Com três atrasos em cinco tarefas, são 60%. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></section>
+<section class="card" id="equacao"><h2>Equação e termos</h2><details><summary>A matemática por trás da ideia</summary><p class="equation classifier-equation">ŝ(x) = (1/k) ∑ yᵢ, i ∈ Nₖ(x)</p><p>Nₖ(x) reúne os k exemplos mais próximos da nova tarefa x. Cada yᵢ vale 1 para atraso e 0 para entrega no prazo. ŝ é a fração de votos por atraso. Com três atrasos em cinco tarefas, são 60%. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></details></section>
 <section id="laboratorio">
+<div class="card"><h3>Experimente no simulador</h3><p>Deixe o losango branco parado e compare k = 1, 5 e 21. Com k = 1, só o caso mais próximo decide. Com mais vizinhos, procure pequenas ilhas de cor que somem quando a votação abrange uma área maior.</p><h3>Como ler o gráfico</h3><p>Os controles deslizantes posicionam o losango branco no gráfico. Mova um por vez. O eixo horizontal mostra as pendências e o vertical, o atraso na entrega. As duas medidas estão numa escala de 0 a 1, em que 0 indica um valor baixo e 1 indica um valor alto. A cor de fundo mostra a categoria que o modelo atribuiria naquele ponto.</p></div>
+
 <div id="classifier-lab" data-model="knn" data-ontime="No prazo" data-late="Atraso" data-tie="Empate" data-score="Fração de votos por atraso">
 <div class="panel-head"><h2>Laboratório</h2><button class="action" type="button">Reiniciar</button></div>
 <noscript><p>A aula pode ser lida sem JavaScript. Ative-o para usar o laboratório.</p></noscript>
@@ -31,7 +39,7 @@
 <div class="chart-heading"><h3>Regiões de decisão</h3></div>
 <canvas class="chart" role="img" aria-label="Regiões de decisão" aria-describedby="chart-note"></canvas>
 <div class="legend classifier-legend"><span>● No prazo</span><span>■ Atraso</span><span>◇ Seu caso de teste</span></div>
-<figcaption class="chart-note" id="chart-note">Cada ponto ou quadrado representa uma tarefa simulada. O fundo indica a classe prevista. Mova o losango branco ou ajuste o parâmetro do modelo. As duas entradas vão de 0 a 1.</figcaption>
+<figcaption class="chart-note" id="chart-note">Cada ponto ou quadrado representa uma tarefa simulada. O fundo indica a classe prevista. Use os controles deslizantes para mover o losango ou ajustar o modelo. As duas entradas vão de 0 a 1.</figcaption>
 </figure>
 <div class="controls">
 <label class="slider-label" for="setting">Número de vizinhos (k)<output data-output="setting"></output></label><input type="range" id="setting" min="1" max="21" step="2" value="5">

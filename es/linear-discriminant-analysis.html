@@ -16,14 +16,22 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estadística · Aprendizaje automático · IA</span></div>
   <div class="hero-label">Explora por tema</div>
   <h1>Análisis discriminante lineal (LDA)</h1><p>Compara los centros de las clases con una descripción común de la dispersión.</p>
-  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="linear-regression.html">Regresión lineal</a><a href="logistic-regression.html">Regresión logística</a><a href="decision-tree.html">Árbol de decisión</a></nav>
+  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="index.html#machine-learning">Modelos de aprendizaje automático</a></nav>
 <nav class="nav language" aria-label="Idioma"><a href="../linear-discriminant-analysis.html" lang="en" hreflang="en">English</a><a href="../pt/linear-discriminant-analysis.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="../es/linear-discriminant-analysis.html" lang="es" hreflang="es" aria-current="true">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links"><a href="#treinamento">Cómo aprende</a><a href="#equacao">Ecuación y términos</a><a href="#laboratorio">Laboratorio</a><a href="#pratica">Uso y evaluación</a><a href="#fontes">Referencias</a></nav>
+<nav class="section-links"><a href="#comece">Empieza por aquí</a><a href="#treinamento">Cómo aprende</a><a href="#equacao">Ecuación y términos</a><a href="#laboratorio">Laboratorio</a><a href="#pratica">Uso y evaluación</a><a href="#fontes">Referencias</a></nav>
+<section class="card" id="comece"><h2>Empieza por aquí</h2>
+<p>Imagina dibujar una elipse alrededor de cada una de dos nubes de puntos. Dales la misma forma e inclinación, pero pon cada elipse en el centro de su nube. LDA separa los grupos con una recta en ese dibujo.</p>
+<p>Entrenar significa usar ejemplos anteriores con resultados conocidos para encontrar un patrón. Predecir significa aplicar ese patrón a un caso nuevo. El simulador usa datos ficticios para que puedas observar qué cambia al mover un control.</p>
+<h3>Ejemplo paso a paso</h3><p>Si las tareas retrasadas y puntuales son igual de comunes, piensa que la nueva tarea elige el grupo más cercano tras considerar la forma común. Si los retrasos son raros, el modelo también lo tiene en cuenta. La forma muestra qué diferencias son típicas del grupo.</p>
+<h3>Qué conviene recordar</h3><p>La covarianza describe cómo se dispersan las medidas y cómo varían juntas. Una covarianza compartida supone el mismo patrón de dispersión aunque los centros sean distintos.</p>
+</section>
 <section class="card" id="treinamento"><h2>Cómo aprende</h2><p>LDA estima un centro por clase y combina las covarianzas dentro de las clases. En el modelo gaussiano con covarianza compartida, los términos cuadráticos en x se cancelan al comparar clases. En dos dimensiones, la frontera es una recta. <a class="cite" href="#ref-1">[1]</a></p></section>
-<section class="card" id="equacao"><h2>Ecuación y términos</h2><p class="equation classifier-equation">δc(x) = xᵀΣ⁻¹μc − ½ μcᵀΣ⁻¹μc + ln πc</p><p>μc es el centro de la clase, Σ recoge la dispersión y las correlaciones, y πc es la probabilidad inicial de la clase. Gana el mayor δc. El laboratorio añade un término diagonal para estabilizar la inversión de Σ. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></section>
+<section class="card" id="equacao"><h2>Ecuación y términos</h2><details><summary>La matemática detrás de la idea</summary><p class="equation classifier-equation">δc(x) = xᵀΣ⁻¹μc − ½ μcᵀΣ⁻¹μc + ln πc</p><p>μc es el centro de la clase, Σ recoge la dispersión y las correlaciones, y πc es la probabilidad inicial de la clase. Gana el mayor δc. El laboratorio añade un término diagonal para estabilizar la inversión de Σ. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></details></section>
 <section id="laboratorio">
+<div class="card"><h3>Prueba el simulador</h3><p>Mueve el rombo blanco a través de la frontera. Después aumenta el ajuste diagonal. La línea puede moverse o girar, pero el modelo sigue usando una forma común. Los escalones pequeños aparecen porque el gráfico se dibuja en una cuadrícula.</p><h3>Cómo leer el gráfico</h3><p>Los controles deslizantes colocan el rombo blanco en el gráfico. Mueve uno a la vez. El eje horizontal muestra los pendientes y el vertical, el retraso en la entrega. Ambas medidas van de 0 a 1, donde 0 indica un valor bajo y 1 uno alto. El color de fondo indica la categoría que el modelo asignaría en ese punto.</p></div>
+
 <div id="classifier-lab" data-model="lda" data-ontime="A tiempo" data-late="Retraso" data-tie="Empate" data-score="Probabilidad estimada de retraso">
 <div class="panel-head"><h2>Laboratorio</h2><button class="action" type="button">Restablecer</button></div>
 <noscript><p>Puedes leer la lección sin JavaScript. Actívalo para usar el laboratorio.</p></noscript>
@@ -31,7 +39,7 @@
 <div class="chart-heading"><h3>Regiones de decisión</h3></div>
 <canvas class="chart" role="img" aria-label="Regiones de decisión" aria-describedby="chart-note"></canvas>
 <div class="legend classifier-legend"><span>● A tiempo</span><span>■ Retraso</span><span>◇ Tu caso de prueba</span></div>
-<figcaption class="chart-note" id="chart-note">Cada punto o cuadrado representa una tarea simulada. El fondo indica la clase predicha. Mueve el rombo blanco o ajusta el parámetro del modelo. Las dos entradas van de 0 a 1.</figcaption>
+<figcaption class="chart-note" id="chart-note">Cada punto o cuadrado representa una tarea simulada. El fondo indica la clase predicha. Usa los controles deslizantes para mover el rombo o ajustar el modelo. Las dos entradas van de 0 a 1.</figcaption>
 </figure>
 <div class="controls">
 <label class="slider-label" for="setting">Regularización diagonal (×0,001)<output data-output="setting"></output></label><input type="range" id="setting" min="1" max="80" step="1" value="4">

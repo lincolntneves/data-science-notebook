@@ -16,11 +16,17 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Statistics · Machine learning · AI</span></div>
   <div class="hero-label">Supervised learning</div>
   <h1>Decision tree</h1><p>Turn data into questions. Follow a task through the tree and compare how its splits group the examples.</p>
-  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="linear-regression.html">Linear regression</a><a href="logistic-regression.html">Logistic regression</a><a href="decision-tree.html" aria-current="page">Decision tree</a></nav>
+  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="index.html#machine-learning">Machine learning models</a></nav>
 <nav class="nav language" aria-label="Language"><a href="decision-tree.html" lang="en" hreflang="en" aria-current="true">English</a><a href="pt/decision-tree.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="es/decision-tree.html" lang="es" hreflang="es">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links" aria-label="In this lesson"><a href="#equacao">Equation</a><a href="#laboratorio">Lab</a><a href="#treinamento">Training</a><a href="#pratica">How to use it</a><a href="#fontes">References</a></nav>
+<nav class="section-links" aria-label="In this lesson"><a href="#comece">Start here</a><a href="#equacao">Equation</a><a href="#laboratorio">Lab</a><a href="#treinamento">Training</a><a href="#pratica">How to use it</a><a href="#fontes">References</a></nav>
+<section class="card" id="comece"><h2>Start here</h2>
+<p>Think of a flowchart with yes-or-no questions. In a project, you might ask whether there are more than eight open items and then whether the crew is small. A decision tree learns which questions to ask by looking at past outcomes.</p>
+<p>Training means using past examples with known outcomes to find a pattern. A prediction applies that pattern to a new case. The lab uses simulated data so you can see what changes when you move one control.</p>
+<h3>Example, step by step</h3><p>Suppose four past jobs reached the same end of the flowchart, and three finished late. The tree uses that group to estimate 3 ÷ 4 = 75% for a new job that follows the same path. That end group is called a leaf.</p>
+<h3>What to keep in mind</h3><p>A deep tree can capture quirks of the practice examples. Check whether its extra questions still help on jobs it has never seen.</p>
+</section>
 
 <section id="equacao" class="card"><h2>A sequence of questions leads to a prediction</h2>
 <p>A decision tree asks questions like “Are there at most 8 open items?” or “Are there at most 5 people on the crew?” The first question sits at the <strong>root</strong>. Each answer leads to a branch. A <strong>leaf</strong> is the end of the path. In this lab, the fraction of late tasks in a classification tree&#x27;s leaf becomes the estimate for a new task.  <a class="cite" href="#ref-isl" aria-label="Reference 1">[1]</a> <a class="cite" href="#ref-tree" aria-label="Reference 2">[2]</a></p>
@@ -34,6 +40,8 @@
 <dl class="live"><div><dt>Root question</dt><dd><output id="eq-root"></output></dd></div><div><dt>Examples in leaf</dt><dd><output id="eq-n"></output></dd></div><div><dt>Late tasks in leaf</dt><dd><output id="eq-delay"></output></dd></div><div><dt>Fraction of late tasks</dt><dd><output id="eq-p"></output></dd></div></dl>
 </section>
 <noscript><p>Enable JavaScript to use the lab. You can still read the explanations below.</p></noscript><section id="laboratorio" class="lab" aria-labelledby="model-title">
+<div class="card"><h3>Try it in the lab</h3><p>Start with a shallow tree and move the open-items control across a split shown on the tree. Follow the highlighted path and watch the result. Then increase the depth and look for an extra question or a smaller end group.</p></div>
+
     <div class="panel-head">
       <div><h2 id="model-title"></h2><p id="model-question"></p></div>
       <button class="action" id="reset" type="button">Reset</button>

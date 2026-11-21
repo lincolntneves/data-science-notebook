@@ -16,14 +16,22 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Statistics · Machine learning · AI</span></div>
   <div class="hero-label">Explore by topic</div>
   <h1>K-nearest neighbors (KNN)</h1><p>Ask the most similar past cases to vote.</p>
-  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="linear-regression.html">Linear regression</a><a href="logistic-regression.html">Logistic regression</a><a href="decision-tree.html">Decision tree</a></nav>
+  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="index.html#machine-learning">Machine learning models</a></nav>
 <nav class="nav language" aria-label="Language"><a href="k-nearest-neighbors.html" lang="en" hreflang="en" aria-current="true">English</a><a href="pt/k-nearest-neighbors.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="es/k-nearest-neighbors.html" lang="es" hreflang="es">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links"><a href="#treinamento">How it learns</a><a href="#equacao">Equation and terms</a><a href="#laboratorio">Lab</a><a href="#pratica">Use and evaluate</a><a href="#fontes">References</a></nav>
+<nav class="section-links"><a href="#comece">Start here</a><a href="#treinamento">How it learns</a><a href="#equacao">Equation and terms</a><a href="#laboratorio">Lab</a><a href="#pratica">Use and evaluate</a><a href="#fontes">References</a></nav>
+<section class="card" id="comece"><h2>Start here</h2>
+<p>Imagine asking coworkers how jobs similar to yours turned out. You listen to the most similar cases first. KNN does the same with a map of past tasks. Similar jobs sit near one another because their measurements are close.</p>
+<p>Training means using past examples with known outcomes to find a pattern. A prediction applies that pattern to a new case. The lab uses simulated data so you can see what changes when you move one control.</p>
+<h3>Example, step by step</h3><p>Find the five tasks closest to the new one. If three finished late and two on time, late gets three of five votes. That is 60%, and late wins. The letter k is simply the number of neighbors you consult.</p>
+<h3>What to keep in mind</h3><p>A vote share tells you what happened among the chosen neighbors. Five neighbors are a small sample, so treat a 60% vote share with care.</p>
+</section>
 <section class="card" id="treinamento"><h2>How it learns</h2><p>KNN keeps the training examples. For a new task, it ranks examples by distance, takes the closest k, and counts how many finished late. The lab uses Euclidean distance and equal votes. <a class="cite" href="#ref-1">[1]</a></p></section>
-<section class="card" id="equacao"><h2>Equation and terms</h2><p class="equation classifier-equation">ŝ(x) = (1/k) ∑ yᵢ, i ∈ Nₖ(x)</p><p>Nₖ(x) is the set of k nearest examples to the new task x. Each yᵢ is 1 for late and 0 for on time. ŝ is the fraction that voted late. With three late tasks out of five, the fraction is 60%. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></section>
+<section class="card" id="equacao"><h2>Equation and terms</h2><details><summary>The math behind the idea</summary><p class="equation classifier-equation">ŝ(x) = (1/k) ∑ yᵢ, i ∈ Nₖ(x)</p><p>Nₖ(x) is the set of k nearest examples to the new task x. Each yᵢ is 1 for late and 0 for on time. ŝ is the fraction that voted late. With three late tasks out of five, the fraction is 60%. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></details></section>
 <section id="laboratorio">
+<div class="card"><h3>Try it in the lab</h3><p>Hold the white diamond still and compare k = 1, 5, and 21. With k = 1 the closest past job makes the decision alone. With more neighbors, look for small islands of color that disappear as the vote includes a wider area.</p><h3>How to read the chart</h3><p>The sliders place the white diamond on the chart. Move one slider at a time. The horizontal axis shows open items and the vertical axis shows delivery delay. The controls express both measurements on a 0–1 scale, with 0 meaning low and 1 meaning high. The colored background tells you which label the model would assign at that spot.</p></div>
+
 <div id="classifier-lab" data-model="knn" data-ontime="On time" data-late="Late" data-tie="Tie" data-score="Late vote share">
 <div class="panel-head"><h2>Lab</h2><button class="action" type="button">Reset</button></div>
 <noscript><p>No JavaScript is needed to read the lesson. Enable it to use the lab.</p></noscript>
@@ -31,7 +39,7 @@
 <div class="chart-heading"><h3>Decision regions</h3></div>
 <canvas class="chart" role="img" aria-label="Decision regions" aria-describedby="chart-note"></canvas>
 <div class="legend classifier-legend"><span>● On time</span><span>■ Late</span><span>◇ Your test case</span></div>
-<figcaption class="chart-note" id="chart-note">Each dot or square represents a simulated task. The background shows the class the model assigns. Move the white diamond or change the model setting. Both inputs run from 0 to 1.</figcaption>
+<figcaption class="chart-note" id="chart-note">Each dot or square represents a simulated task. The background shows the class the model assigns. Use the sliders to move the diamond or adjust the model. Both inputs run from 0 to 1.</figcaption>
 </figure>
 <div class="controls">
 <label class="slider-label" for="setting">Number of neighbors (k)<output data-output="setting"></output></label><input type="range" id="setting" min="1" max="21" step="2" value="5">

@@ -16,11 +16,17 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Statistics · Machine learning · AI</span></div>
   <div class="hero-label">Supervised learning</div>
   <h1>Logistic regression</h1><p>Estimate the chance of an event and decide what to do. Explore the sigmoid, odds, and decision threshold.</p>
-  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="linear-regression.html">Linear regression</a><a href="logistic-regression.html" aria-current="page">Logistic regression</a><a href="decision-tree.html">Decision tree</a></nav>
+  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="index.html#machine-learning">Machine learning models</a></nav>
 <nav class="nav language" aria-label="Language"><a href="logistic-regression.html" lang="en" hreflang="en" aria-current="true">English</a><a href="pt/logistic-regression.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="es/logistic-regression.html" lang="es" hreflang="es">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links" aria-label="In this lesson"><a href="#equacao">Equation</a><a href="#laboratorio">Lab</a><a href="#treinamento">Training</a><a href="#pratica">How to use it</a><a href="#fontes">References</a></nav>
+<nav class="section-links" aria-label="In this lesson"><a href="#comece">Start here</a><a href="#equacao">Equation</a><a href="#laboratorio">Lab</a><a href="#treinamento">Training</a><a href="#pratica">How to use it</a><a href="#fontes">References</a></nav>
+<section class="card" id="comece"><h2>Start here</h2>
+<p>Think of a rain forecast. A 70% chance of rain and a decision to carry an umbrella are two different things. Here, the model estimates the chance that a job finishes late. A separate rule decides when that chance is high enough to raise an alert.</p>
+<p>Training means using past examples with known outcomes to find a pattern. A prediction applies that pattern to a new case. The lab uses simulated data so you can see what changes when you move one control.</p>
+<h3>Example, step by step</h3><p>If the model says 70%, a 60% alert threshold raises an alert. An 80% threshold does not. The estimate stays at 70% because only the rule for acting changed. The S-shaped curve is what keeps model estimates between 0% and 100%.</p>
+<h3>What to keep in mind</h3><p>A probability is a statement about uncertainty. A 70% estimate leaves room for the task to finish on time.</p>
+</section>
 
 <section id="equacao" class="card"><h2>From minutes of delay to the chance of an event</h2>
 <p>We want to predict whether a task will finish late. Each task in the historical data has an outcome: <strong>1</strong> if it finished late and <strong>0</strong> if it finished on time. Binary logistic regression estimates the probability of y = 1 given the inputs. It computes a linear score and passes it through an S-shaped curve called the <strong>sigmoid</strong>.  <a class="cite" href="#ref-isl" aria-label="Reference 1">[1]</a> <a class="cite" href="#ref-log" aria-label="Reference 2">[2]</a></p>
@@ -39,6 +45,8 @@
 <dl class="live"><div><dt>x · rescaled input</dt><dd><output id="eq-x"></output></dd></div><div><dt>b₀ · intercept</dt><dd><output id="eq-intercept"></output></dd></div><div><dt>b₁ · coefficient</dt><dd><output id="eq-slope"></output></dd></div><div><dt>z · score</dt><dd><output id="eq-z"></output></dd></div><div><dt>p · probability</dt><dd><output id="eq-p"></output></dd></div><div><dt>Estimated odds</dt><dd><output id="eq-odds"></output></dd></div><div><dt>Selected threshold</dt><dd><output id="eq-cut"></output></dd></div></dl>
 </section>
 <noscript><p>Enable JavaScript to use the lab. You can still read the explanations below.</p></noscript><section id="laboratorio" class="lab" aria-labelledby="model-title">
+<div class="card"><h3>Try it in the lab</h3><p>Pick a delivery delay and leave it fixed. Move the alert threshold between a low value and a high one. Watch the probability and the alert separately, then change the delivery delay to see what really moves the probability.</p></div>
+
     <div class="panel-head">
       <div><h2 id="model-title"></h2><p id="model-question"></p></div>
       <button class="action" id="reset" type="button">Reset</button>

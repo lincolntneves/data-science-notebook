@@ -16,11 +16,17 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estatística · Machine learning · IA</span></div>
   <div class="hero-label">Machine learning supervisionado</div>
   <h1>Árvore de decisão</h1><p>Como transformar dados em perguntas. Siga o caminho de uma tarefa e compare os cortes entre grupos.</p>
-  <nav class="nav" aria-label="Aulas"><a href="index.html">Início</a><a href="linear-regression.html">Regressão linear</a><a href="logistic-regression.html">Regressão logística</a><a href="decision-tree.html" aria-current="page">Árvore de decisão</a></nav>
+  <nav class="nav" aria-label="Aulas"><a href="index.html">Início</a><a href="index.html#machine-learning">Modelos de machine learning</a></nav>
 <nav class="nav language" aria-label="Idioma"><a href="../decision-tree.html" lang="en" hreflang="en">English</a><a href="../pt/decision-tree.html" lang="pt-BR" hreflang="pt-BR" aria-current="true">Português</a><a href="../es/decision-tree.html" lang="es" hreflang="es">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links" aria-label="Nesta aula"><a href="#equacao">Equação</a><a href="#laboratorio">Laboratório</a><a href="#treinamento">Treinamento</a><a href="#pratica">Uso na prática</a><a href="#fontes">Bibliografia</a></nav>
+<nav class="section-links" aria-label="Nesta aula"><a href="#comece">Comece por aqui</a><a href="#equacao">Equação</a><a href="#laboratorio">Laboratório</a><a href="#treinamento">Treinamento</a><a href="#pratica">Uso na prática</a><a href="#fontes">Bibliografia</a></nav>
+<section class="card" id="comece"><h2>Comece por aqui</h2>
+<p>Pense num fluxograma com perguntas de sim ou não. Numa obra, você pode perguntar se há mais de oito pendências e depois se a equipe é pequena. A árvore aprende quais perguntas fazer olhando para o resultado de tarefas passadas.</p>
+<p>Treinar é usar exemplos anteriores, com resultado conhecido, para encontrar um padrão. Prever é aplicar esse padrão a um caso novo. O simulador usa dados fictícios para você observar o que muda ao mover um controle.</p>
+<h3>Exemplo passo a passo</h3><p>Imagine que quatro tarefas chegaram à mesma ponta do fluxograma e três atrasaram. A árvore usa esse grupo para estimar 3 ÷ 4 = 75% para uma nova tarefa que segue o mesmo caminho. Esse grupo final se chama folha.</p>
+<h3>O que vale lembrar</h3><p>Uma árvore muito profunda pode decorar peculiaridades dos exemplos. Confira se as perguntas extras ainda ajudam em tarefas que ficaram fora do treino.</p>
+</section>
 
 <section id="equacao" class="card"><h2>Uma sequência de perguntas até a previsão</h2>
 <p>Uma árvore de decisão faz perguntas do tipo “há até 8 pendências?” ou “a equipe tem até 5 pessoas?”. A primeira pergunta fica na <strong>raiz</strong>. Cada resposta leva a um ramo. Uma <strong>folha</strong> é o fim do caminho. Na árvore de classificação deste laboratório, a proporção de atrasos na folha vira a estimativa para uma tarefa nova.  <a class="cite" href="#ref-isl" aria-label="Referência 1">[1]</a> <a class="cite" href="#ref-tree" aria-label="Referência 2">[2]</a></p>
@@ -34,6 +40,8 @@
 <dl class="live"><div><dt>Pergunta da raiz</dt><dd><output id="eq-root"></output></dd></div><div><dt>Exemplos na folha</dt><dd><output id="eq-n"></output></dd></div><div><dt>Atrasos na folha</dt><dd><output id="eq-delay"></output></dd></div><div><dt>Proporção de atrasos</dt><dd><output id="eq-p"></output></dd></div></dl>
 </section>
 <noscript><p>Ative o JavaScript para usar o laboratório. As explicações continuam disponíveis abaixo.</p></noscript><section id="laboratorio" class="lab" aria-labelledby="model-title">
+<div class="card"><h3>Experimente no simulador</h3><p>Comece com uma árvore rasa e mova o controle de pendências até cruzar um corte exibido na árvore. Siga o caminho destacado e veja o resultado. Depois, aumente a profundidade e procure uma pergunta extra ou um grupo final menor.</p></div>
+
     <div class="panel-head">
       <div><h2 id="model-title"></h2><p id="model-question"></p></div>
       <button class="action" id="reset" type="button">Reiniciar</button>

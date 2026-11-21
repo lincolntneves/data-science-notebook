@@ -16,14 +16,22 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Statistics · Machine learning · AI</span></div>
   <div class="hero-label">Explore by topic</div>
   <h1>Linear support vector machine (SVM)</h1><p>Find a dividing line with room on both sides.</p>
-  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="linear-regression.html">Linear regression</a><a href="logistic-regression.html">Logistic regression</a><a href="decision-tree.html">Decision tree</a></nav>
+  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="index.html#machine-learning">Machine learning models</a></nav>
 <nav class="nav language" aria-label="Language"><a href="support-vector-machine.html" lang="en" hreflang="en" aria-current="true">English</a><a href="pt/support-vector-machine.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="es/support-vector-machine.html" lang="es" hreflang="es">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links"><a href="#treinamento">How it learns</a><a href="#equacao">Equation and terms</a><a href="#laboratorio">Lab</a><a href="#pratica">Use and evaluate</a><a href="#fontes">References</a></nav>
+<nav class="section-links"><a href="#comece">Start here</a><a href="#treinamento">How it learns</a><a href="#equacao">Equation and terms</a><a href="#laboratorio">Lab</a><a href="#pratica">Use and evaluate</a><a href="#fontes">References</a></nav>
+<section class="card" id="comece"><h2>Start here</h2>
+<p>Imagine drawing a line between two groups of dots and marking a buffer zone on both sides. You want a wide buffer, but some dots may fall inside it or cross to the wrong side. A linear SVM balances the width of that buffer with the cost of those cases.</p>
+<p>Training means using past examples with known outcomes to find a pattern. A prediction applies that pattern to a new case. The lab uses simulated data so you can see what changes when you move one control.</p>
+<h3>Example, step by step</h3><p>Suppose one job is correctly placed but close to the line. It still incurs a penalty because it is inside the buffer. A job on the wrong side incurs a larger penalty than a job on the same scale just inside the correct side. The control C changes how much the fit cares about these penalties.</p>
+<h3>What to keep in mind</h3><p>The chart uses the sign of the score to assign a class. A score of 0.8 does not imply an 80% chance of delay.</p>
+</section>
 <section class="card" id="treinamento"><h2>How it learns</h2><p>A linear SVM balances a wide margin against examples that are inside the margin or on the wrong side. The lab uses a linear decision function and approximate subgradient optimization. The class is chosen by the sign of the score. <a class="cite" href="#ref-1">[1]</a></p></section>
-<section class="card" id="equacao"><h2>Equation and terms</h2><p class="equation classifier-equation">min ‖w‖²/2 + C · mean(max(0, 1 − yᵢ f(xᵢ))), f(x) = wᵀx + b</p><p>w gives the direction perpendicular to the boundary, b shifts it, and yᵢ is −1 or +1. The hinge loss is zero if yᵢ f(xᵢ) is at least 1. C sets the penalty weight. Libraries may use the sum of losses instead of the mean used here. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></section>
+<section class="card" id="equacao"><h2>Equation and terms</h2><details><summary>The math behind the idea</summary><p class="equation classifier-equation">min ‖w‖²/2 + C · mean(max(0, 1 − yᵢ f(xᵢ))), f(x) = wᵀx + b</p><p>w gives the direction perpendicular to the boundary, b shifts it, and yᵢ is −1 or +1. The hinge loss is zero if yᵢ f(xᵢ) is at least 1. C sets the penalty weight. Libraries may use the sum of losses instead of the mean used here. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></details></section>
 <section id="laboratorio">
+<div class="card"><h3>Try it in the lab</h3><p>Move the white diamond to both sides of the line and watch the sign of its score. Then compare a low and a high C. The line may move or tilt. At zero you are on the boundary, and the score is not a percentage.</p><h3>How to read the chart</h3><p>The sliders place the white diamond on the chart. Move one slider at a time. The horizontal axis shows open items and the vertical axis shows delivery delay. The controls express both measurements on a 0–1 scale, with 0 meaning low and 1 meaning high. The colored background tells you which label the model would assign at that spot.</p></div>
+
 <div id="classifier-lab" data-model="svm" data-ontime="On time" data-late="Late" data-tie="Tie" data-score="Signed decision score">
 <div class="panel-head"><h2>Lab</h2><button class="action" type="button">Reset</button></div>
 <noscript><p>No JavaScript is needed to read the lesson. Enable it to use the lab.</p></noscript>
@@ -31,7 +39,7 @@
 <div class="chart-heading"><h3>Decision regions</h3></div>
 <canvas class="chart" role="img" aria-label="Decision regions" aria-describedby="chart-note"></canvas>
 <div class="legend classifier-legend"><span>● On time</span><span>■ Late</span><span>◇ Your test case</span></div>
-<figcaption class="chart-note" id="chart-note">Each dot or square represents a simulated task. The background shows the class the model assigns. Move the white diamond or change the model setting. Both inputs run from 0 to 1.</figcaption>
+<figcaption class="chart-note" id="chart-note">Each dot or square represents a simulated task. The background shows the class the model assigns. Use the sliders to move the diamond or adjust the model. Both inputs run from 0 to 1.</figcaption>
 </figure>
 <div class="controls">
 <label class="slider-label" for="setting">Margin penalty (C)<output data-output="setting"></output></label><input type="range" id="setting" min="1" max="30" step="1" value="9">

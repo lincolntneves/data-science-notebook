@@ -16,11 +16,17 @@
   <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estatística · Machine learning · IA</span></div>
   <div class="hero-label">Machine learning supervisionado</div>
   <h1>Regressão logística</h1><p>Como medir a chance de um evento e decidir a partir dela. Explore a sigmoide, as odds e o limiar.</p>
-  <nav class="nav" aria-label="Aulas"><a href="index.html">Início</a><a href="linear-regression.html">Regressão linear</a><a href="logistic-regression.html" aria-current="page">Regressão logística</a><a href="decision-tree.html">Árvore de decisão</a></nav>
+  <nav class="nav" aria-label="Aulas"><a href="index.html">Início</a><a href="index.html#machine-learning">Modelos de machine learning</a></nav>
 <nav class="nav language" aria-label="Idioma"><a href="../logistic-regression.html" lang="en" hreflang="en">English</a><a href="../pt/logistic-regression.html" lang="pt-BR" hreflang="pt-BR" aria-current="true">Português</a><a href="../es/logistic-regression.html" lang="es" hreflang="es">Español</a></nav>
 </div></header>
 <main id="conteudo" class="wrap content">
-<nav class="section-links" aria-label="Nesta aula"><a href="#equacao">Equação</a><a href="#laboratorio">Laboratório</a><a href="#treinamento">Treinamento</a><a href="#pratica">Uso na prática</a><a href="#fontes">Bibliografia</a></nav>
+<nav class="section-links" aria-label="Nesta aula"><a href="#comece">Comece por aqui</a><a href="#equacao">Equação</a><a href="#laboratorio">Laboratório</a><a href="#treinamento">Treinamento</a><a href="#pratica">Uso na prática</a><a href="#fontes">Bibliografia</a></nav>
+<section class="card" id="comece"><h2>Comece por aqui</h2>
+<p>Pense na previsão de chuva. Estimar 70% de chance de chover e decidir levar um guarda-chuva são duas coisas diferentes. Aqui, o modelo estima a chance de uma tarefa terminar atrasada. Uma regra separada decide a partir de que chance vale emitir um alerta.</p>
+<p>Treinar é usar exemplos anteriores, com resultado conhecido, para encontrar um padrão. Prever é aplicar esse padrão a um caso novo. O simulador usa dados fictícios para você observar o que muda ao mover um controle.</p>
+<h3>Exemplo passo a passo</h3><p>Se a estimativa é 70%, um limite de alerta de 60% aciona o alerta. Com limite de 80%, o alerta fica desligado. A estimativa continua em 70% porque só a regra de decisão mudou. A curva em S mantém as estimativas entre 0% e 100%.</p>
+<h3>O que vale lembrar</h3><p>Probabilidade expressa incerteza. Mesmo com uma estimativa de 70%, a tarefa pode acabar no prazo.</p>
+</section>
 
 <section id="equacao" class="card"><h2>Do atraso em minutos à chance de um evento</h2>
 <p>Agora queremos prever se a tarefa termina depois do prazo. No histórico, cada tarefa tem um resultado: <strong>1</strong> se atrasou e <strong>0</strong> se ficou no prazo. A regressão logística binária estima a probabilidade de y = 1, dados os preditores. Ela calcula um escore linear e depois passa esse escore por uma curva em S, a <strong>sigmoide</strong>.  <a class="cite" href="#ref-isl" aria-label="Referência 1">[1]</a> <a class="cite" href="#ref-log" aria-label="Referência 2">[2]</a></p>
@@ -39,6 +45,8 @@
 <dl class="live"><div><dt>x · entrada reescalada</dt><dd><output id="eq-x"></output></dd></div><div><dt>b₀ · intercepto</dt><dd><output id="eq-intercept"></output></dd></div><div><dt>b₁ · coeficiente</dt><dd><output id="eq-slope"></output></dd></div><div><dt>z · escore</dt><dd><output id="eq-z"></output></dd></div><div><dt>p · probabilidade</dt><dd><output id="eq-p"></output></dd></div><div><dt>Odds estimadas</dt><dd><output id="eq-odds"></output></dd></div><div><dt>Limiar escolhido</dt><dd><output id="eq-cut"></output></dd></div></dl>
 </section>
 <noscript><p>Ative o JavaScript para usar o laboratório. As explicações continuam disponíveis abaixo.</p></noscript><section id="laboratorio" class="lab" aria-labelledby="model-title">
+<div class="card"><h3>Experimente no simulador</h3><p>Escolha um atraso na entrega e mantenha esse valor. Mova o limite de alerta de baixo para alto. Observe a probabilidade e o alerta separadamente. Depois, mude o atraso da entrega para ver o que realmente altera a probabilidade.</p></div>
+
     <div class="panel-head">
       <div><h2 id="model-title"></h2><p id="model-question"></p></div>
       <button class="action" id="reset" type="button">Reiniciar</button>
