@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Busca una recta que separe grupos con espacio a ambos lados.">
+<title>Máquina de vectores de soporte lineal (SVM) | Data Science Notebook</title>
+<link rel="stylesheet" href="../assets/site.css">
+
+<script defer src="../assets/language.js"></script>
+<script defer src="../assets/classifiers.js"></script>
+</head>
+<body>
+<a class="skip" href="#conteudo">Saltar al contenido</a>
+<header class="hero"><div class="wrap">
+  <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estadística · Aprendizaje automático · IA</span></div>
+  <div class="hero-label">Explora por tema</div>
+  <h1>Máquina de vectores de soporte lineal (SVM)</h1><p>Busca una recta que separe grupos con espacio a ambos lados.</p>
+  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="linear-regression.html">Regresión lineal</a><a href="logistic-regression.html">Regresión logística</a><a href="decision-tree.html">Árbol de decisión</a></nav>
+<nav class="nav language" aria-label="Idioma"><a href="../support-vector-machine.html" lang="en" hreflang="en">English</a><a href="../pt/support-vector-machine.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="../es/support-vector-machine.html" lang="es" hreflang="es" aria-current="true">Español</a></nav>
+</div></header>
+<main id="conteudo" class="wrap content">
+<nav class="section-links"><a href="#treinamento">Cómo aprende</a><a href="#equacao">Ecuación y términos</a><a href="#laboratorio">Laboratorio</a><a href="#pratica">Uso y evaluación</a><a href="#fontes">Referencias</a></nav>
+<section class="card" id="treinamento"><h2>Cómo aprende</h2><p>La SVM lineal equilibra un margen amplio con una penalización para los ejemplos dentro del margen o del lado equivocado. El laboratorio usa una función lineal y optimización aproximada por subgradiente. El signo de la puntuación decide la clase. <a class="cite" href="#ref-1">[1]</a></p></section>
+<section class="card" id="equacao"><h2>Ecuación y términos</h2><p class="equation classifier-equation">min ‖w‖²/2 + C · mean(max(0, 1 − yᵢ f(xᵢ))), f(x) = wᵀx + b</p><p>w es perpendicular a la frontera, b la desplaza e yᵢ vale −1 o +1. La pérdida hinge es cero si yᵢ f(xᵢ) es al menos 1. C controla el peso de la penalización. Algunas bibliotecas usan la suma de pérdidas en vez de la media usada aquí. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></section>
+<section id="laboratorio">
+<div id="classifier-lab" data-model="svm" data-ontime="A tiempo" data-late="Retraso" data-tie="Empate" data-score="Puntuación de decisión con signo">
+<div class="panel-head"><h2>Laboratorio</h2><button class="action" type="button">Restablecer</button></div>
+<noscript><p>Puedes leer la lección sin JavaScript. Actívalo para usar el laboratorio.</p></noscript>
+<div class="lab-grid"><figure class="chart-card">
+<div class="chart-heading"><h3>Regiones de decisión</h3></div>
+<canvas class="chart" role="img" aria-label="Regiones de decisión" aria-describedby="chart-note"></canvas>
+<div class="legend classifier-legend"><span>● A tiempo</span><span>■ Retraso</span><span>◇ Tu caso de prueba</span></div>
+<figcaption class="chart-note" id="chart-note">Cada punto o cuadrado representa una tarea simulada. El fondo indica la clase predicha. Mueve el rombo blanco o ajusta el parámetro del modelo. Las dos entradas van de 0 a 1.</figcaption>
+</figure>
+<div class="controls">
+<label class="slider-label" for="setting">Penalización del margen (C)<output data-output="setting"></output></label><input type="range" id="setting" min="1" max="30" step="1" value="9">
+<label class="slider-label" for="query-x">Pendientes (x₁)<output data-output="query-x"></output></label><input type="range" id="query-x" min="0" max="100" step="1" value="55">
+<label class="slider-label" for="query-y">Retraso en la entrega (x₂)<output data-output="query-y"></output></label><input type="range" id="query-y" min="0" max="100" step="1" value="50">
+<p class="result" id="classification-result" role="status"></p>
+</div></div></div></section>
+<section class="card" id="pratica"><h2>Uso y evaluación</h2><p>Ajusta la escala y elige C con validación. Una frontera lineal sirve de referencia antes de explorar kernels. El corte de la puntuación está en cero y su magnitud no es una probabilidad. <a class="cite" href="#ref-2">[2]</a></p><h3>Repaso</h3><details><summary>¿Qué ocurre si un punto bien clasificado queda dentro del margen?</summary><p>También incurre en pérdida hinge porque su margen con signo es menor que 1.</p></details></section>
+<section class="card" id="fontes"><h2>Referencias</h2><ol>
+<li id="ref-1">scikit-learn, <cite>Máquina de vectores de soporte lineal (SVM)</cite>. <a href="https://scikit-learn.org/stable/modules/svm.html">Abrir la fuente</a>.</li>
+<li id="ref-2">James, Witten, Hastie, Tibshirani &amp; Taylor. <cite>An Introduction to Statistical Learning with Applications in Python</cite> (2023). Capítulo 9. <a href="https://link.springer.com/book/10.1007/978-3-031-38747-0">Abrir la fuente</a>.</li>
+</ol><p><a href="index.html">Volver a todas las lecciones</a></p></section>
+</main>
+<footer><div class="wrap">Data Science Notebook · Los ejemplos usan datos simulados. Los laboratorios funcionan sin conexión.</div></footer>
+</body>
+</html>

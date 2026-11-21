@@ -1,8 +1,34 @@
 # Data Science Notebook
 
-Interactive lessons on statistics, machine learning, and AI. The first three lessons cover linear regression, logistic regression, and decision trees. The examples use simulated data.
+Interactive lessons on statistics, machine learning, and AI. The notebook covers ten models, from linear regression to gradient boosting. The examples use simulated data.
 
 **English** is the default. **Português** and **Español** are available from every page. Each version includes the complete theory, equations, lab, review questions, and references.
+
+## About this project
+
+I’m Lincoln Thiago Neves. Drawing on my background in statistics, I started this notebook to revisit core ideas in statistics, machine learning, and AI and share what I learn. I propose the ideas and choose the topics. ChatGPT creates and organizes the lesson material and builds the site. I curate and review the explanations, examples, and references before publishing.
+
+## Contributing
+
+If you’ve used one of these models in practice, I’d love to hear what you learned. If you spot an error that slipped through my review, please flag it. Corrections, clearer explanations, references, and examples that can be shared publicly are welcome.
+
+- Use a [GitHub issue](https://github.com/lincolntneves/data-science-notebook/issues) to suggest an idea, report an error, or share a practical example. Mention the lesson and add a source or a reproducible example when helpful.
+- Use a [pull request](https://github.com/lincolntneves/data-science-notebook/pulls) to propose a specific edit. For lesson changes, identify the affected language versions so the English, Portuguese, and Spanish editions can stay aligned.
+
+I review proposals for technical accuracy, clarity, and fit with the notebook’s study goals. After review, accepted edits go into `main`, which feeds the published site. The Git history records what changed and keeps earlier versions available.
+
+## Lessons
+
+- [Linear regression](linear-regression.html)
+- [Logistic regression](logistic-regression.html)
+- [Decision tree](decision-tree.html)
+- [K-nearest neighbors (KNN)](k-nearest-neighbors.html)
+- [Gaussian naive Bayes](gaussian-naive-bayes.html)
+- [Linear discriminant analysis (LDA)](linear-discriminant-analysis.html)
+- [Quadratic discriminant analysis (QDA)](quadratic-discriminant-analysis.html)
+- [Linear support vector machine (SVM)](support-vector-machine.html)
+- [Random forest](random-forest.html)
+- [Gradient boosting](gradient-boosting.html)
 
 ## Open locally
 

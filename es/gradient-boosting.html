@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Construye un clasificador con pequeñas correcciones sucesivas.">
+<title>Gradient boosting | Data Science Notebook</title>
+<link rel="stylesheet" href="../assets/site.css">
+
+<script defer src="../assets/language.js"></script>
+<script defer src="../assets/classifiers.js"></script>
+</head>
+<body>
+<a class="skip" href="#conteudo">Saltar al contenido</a>
+<header class="hero"><div class="wrap">
+  <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estadística · Aprendizaje automático · IA</span></div>
+  <div class="hero-label">Explora por tema</div>
+  <h1>Gradient boosting</h1><p>Construye un clasificador con pequeñas correcciones sucesivas.</p>
+  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="linear-regression.html">Regresión lineal</a><a href="logistic-regression.html">Regresión logística</a><a href="decision-tree.html">Árbol de decisión</a></nav>
+<nav class="nav language" aria-label="Idioma"><a href="../gradient-boosting.html" lang="en" hreflang="en">English</a><a href="../pt/gradient-boosting.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="../es/gradient-boosting.html" lang="es" hreflang="es" aria-current="true">Español</a></nav>
+</div></header>
+<main id="conteudo" class="wrap content">
+<nav class="section-links"><a href="#treinamento">Cómo aprende</a><a href="#equacao">Ecuación y términos</a><a href="#laboratorio">Laboratorio</a><a href="#pratica">Uso y evaluación</a><a href="#fontes">Referencias</a></nav>
+<section class="card" id="treinamento"><h2>Cómo aprende</h2><p>Empieza con el logaritmo de las odds de retraso en entrenamiento. En cada ronda, ajusta un árbol de una división a yᵢ − pᵢ, el gradiente negativo de la pérdida logarítmica binaria. El laboratorio calcula un paso de Newton por hoja, lo multiplica por 0,25 y lo suma a la puntuación. <a class="cite" href="#ref-1">[1]</a></p></section>
+<section class="card" id="equacao"><h2>Ecuación y términos</h2><p class="equation classifier-equation">Fₘ(x) = Fₘ₋₁(x) + η hₘ(x), p(x) = 1 / (1 + exp(−Fₘ(x)))</p><p>F es la puntuación acumulada en log-odds, hₘ es la nueva corrección y η es la tasa de aprendizaje. La sigmoide convierte la puntuación en una probabilidad. Una puntuación cero da el 50%. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></section>
+<section id="laboratorio">
+<div id="classifier-lab" data-model="gb" data-ontime="A tiempo" data-late="Retraso" data-tie="Empate" data-score="Probabilidad estimada de retraso">
+<div class="panel-head"><h2>Laboratorio</h2><button class="action" type="button">Restablecer</button></div>
+<noscript><p>Puedes leer la lección sin JavaScript. Actívalo para usar el laboratorio.</p></noscript>
+<div class="lab-grid"><figure class="chart-card">
+<div class="chart-heading"><h3>Regiones de decisión</h3></div>
+<canvas class="chart" role="img" aria-label="Regiones de decisión" aria-describedby="chart-note"></canvas>
+<div class="legend classifier-legend"><span>● A tiempo</span><span>■ Retraso</span><span>◇ Tu caso de prueba</span></div>
+<figcaption class="chart-note" id="chart-note">Cada punto o cuadrado representa una tarea simulada. El fondo indica la clase predicha. Mueve el rombo blanco o ajusta el parámetro del modelo. Las dos entradas van de 0 a 1.</figcaption>
+</figure>
+<div class="controls">
+<label class="slider-label" for="setting">Rondas de boosting<output data-output="setting"></output></label><input type="range" id="setting" min="1" max="35" step="1" value="12">
+<label class="slider-label" for="query-x">Pendientes (x₁)<output data-output="query-x"></output></label><input type="range" id="query-x" min="0" max="100" step="1" value="55">
+<label class="slider-label" for="query-y">Retraso en la entrega (x₂)<output data-output="query-y"></output></label><input type="range" id="query-y" min="0" max="100" step="1" value="50">
+<p class="result" id="classification-result" role="status"></p>
+</div></div></div></section>
+<section class="card" id="pratica"><h2>Uso y evaluación</h2><p>El boosting ayuda a captar patrones tabulares que un modelo simple no detecta. Ajusta la tasa de aprendizaje y el número de árboles en conjunto con validación. Demasiadas rondas pueden seguir el ruido. <a class="cite" href="#ref-2">[2]</a></p><h3>Repaso</h3><details><summary>¿En qué se diferencia este laboratorio del bosque aleatorio?</summary><p>El bosque promedia árboles ajustados de forma independiente. El boosting usa los errores del conjunto actual para ajustar el siguiente árbol.</p></details></section>
+<section class="card" id="fontes"><h2>Referencias</h2><ol>
+<li id="ref-1">scikit-learn, <cite>Gradient boosting</cite>. <a href="https://scikit-learn.org/stable/modules/ensemble.html">Abrir la fuente</a>.</li>
+<li id="ref-2">James, Witten, Hastie, Tibshirani &amp; Taylor. <cite>An Introduction to Statistical Learning with Applications in Python</cite> (2023). Capítulo 8. <a href="https://link.springer.com/book/10.1007/978-3-031-38747-0">Abrir la fuente</a>.</li>
+</ol><p><a href="index.html">Volver a todas las lecciones</a></p></section>
+</main>
+<footer><div class="wrap">Data Science Notebook · Los ejemplos usan datos simulados. Los laboratorios funcionan sin conexión.</div></footer>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Ask the most similar past cases to vote.">
+<title>K-nearest neighbors (KNN) | Data Science Notebook</title>
+<link rel="stylesheet" href="assets/site.css">
+
+<script defer src="assets/language.js"></script>
+<script defer src="assets/classifiers.js"></script>
+</head>
+<body>
+<a class="skip" href="#conteudo">Skip to content</a>
+<header class="hero"><div class="wrap">
+  <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Statistics · Machine learning · AI</span></div>
+  <div class="hero-label">Explore by topic</div>
+  <h1>K-nearest neighbors (KNN)</h1><p>Ask the most similar past cases to vote.</p>
+  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="linear-regression.html">Linear regression</a><a href="logistic-regression.html">Logistic regression</a><a href="decision-tree.html">Decision tree</a></nav>
+<nav class="nav language" aria-label="Language"><a href="k-nearest-neighbors.html" lang="en" hreflang="en" aria-current="true">English</a><a href="pt/k-nearest-neighbors.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="es/k-nearest-neighbors.html" lang="es" hreflang="es">Español</a></nav>
+</div></header>
+<main id="conteudo" class="wrap content">
+<nav class="section-links"><a href="#treinamento">How it learns</a><a href="#equacao">Equation and terms</a><a href="#laboratorio">Lab</a><a href="#pratica">Use and evaluate</a><a href="#fontes">References</a></nav>
+<section class="card" id="treinamento"><h2>How it learns</h2><p>KNN keeps the training examples. For a new task, it ranks examples by distance, takes the closest k, and counts how many finished late. The lab uses Euclidean distance and equal votes. <a class="cite" href="#ref-1">[1]</a></p></section>
+<section class="card" id="equacao"><h2>Equation and terms</h2><p class="equation classifier-equation">ŝ(x) = (1/k) ∑ yᵢ, i ∈ Nₖ(x)</p><p>Nₖ(x) is the set of k nearest examples to the new task x. Each yᵢ is 1 for late and 0 for on time. ŝ is the fraction that voted late. With three late tasks out of five, the fraction is 60%. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></section>
+<section id="laboratorio">
+<div id="classifier-lab" data-model="knn" data-ontime="On time" data-late="Late" data-tie="Tie" data-score="Late vote share">
+<div class="panel-head"><h2>Lab</h2><button class="action" type="button">Reset</button></div>
+<noscript><p>No JavaScript is needed to read the lesson. Enable it to use the lab.</p></noscript>
+<div class="lab-grid"><figure class="chart-card">
+<div class="chart-heading"><h3>Decision regions</h3></div>
+<canvas class="chart" role="img" aria-label="Decision regions" aria-describedby="chart-note"></canvas>
+<div class="legend classifier-legend"><span>● On time</span><span>■ Late</span><span>◇ Your test case</span></div>
+<figcaption class="chart-note" id="chart-note">Each dot or square represents a simulated task. The background shows the class the model assigns. Move the white diamond or change the model setting. Both inputs run from 0 to 1.</figcaption>
+</figure>
+<div class="controls">
+<label class="slider-label" for="setting">Number of neighbors (k)<output data-output="setting"></output></label><input type="range" id="setting" min="1" max="21" step="2" value="5">
+<label class="slider-label" for="query-x">Open items (x₁)<output data-output="query-x"></output></label><input type="range" id="query-x" min="0" max="100" step="1" value="55">
+<label class="slider-label" for="query-y">Delivery delay (x₂)<output data-output="query-y"></output></label><input type="range" id="query-y" min="0" max="100" step="1" value="50">
+<p class="result" id="classification-result" role="status"></p>
+</div></div></div></section>
+<section class="card" id="pratica"><h2>Use and evaluate</h2><p>Use comparable scales before measuring distance. Try a small and a large k with validation data. A small k can follow noise, while a large k can erase local patterns. <a class="cite" href="#ref-2">[2]</a></p><h3>Review</h3><details><summary>Why can a feature measured in minutes dominate one on a 0–1 scale?</summary><p>Without scaling, its larger numerical differences contribute more to the distance.</p></details></section>
+<section class="card" id="fontes"><h2>References</h2><ol>
+<li id="ref-1">scikit-learn, <cite>K-nearest neighbors (KNN)</cite>. <a href="https://scikit-learn.org/stable/modules/neighbors.html">Open source</a>.</li>
+<li id="ref-2">James, Witten, Hastie, Tibshirani &amp; Taylor. <cite>An Introduction to Statistical Learning with Applications in Python</cite> (2023). Chapter 4. <a href="https://link.springer.com/book/10.1007/978-3-031-38747-0">Open source</a>.</li>
+</ol><p><a href="index.html">Back to all lessons</a></p></section>
+</main>
+<footer><div class="wrap">Data Science Notebook · Examples use simulated data. Labs work offline.</div></footer>
+</body>
+</html>

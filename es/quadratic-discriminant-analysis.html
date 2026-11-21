@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Permite que cada clase tenga su propia forma y orientación.">
+<title>Análisis discriminante cuadrático (QDA) | Data Science Notebook</title>
+<link rel="stylesheet" href="../assets/site.css">
+
+<script defer src="../assets/language.js"></script>
+<script defer src="../assets/classifiers.js"></script>
+</head>
+<body>
+<a class="skip" href="#conteudo">Saltar al contenido</a>
+<header class="hero"><div class="wrap">
+  <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estadística · Aprendizaje automático · IA</span></div>
+  <div class="hero-label">Explora por tema</div>
+  <h1>Análisis discriminante cuadrático (QDA)</h1><p>Permite que cada clase tenga su propia forma y orientación.</p>
+  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="linear-regression.html">Regresión lineal</a><a href="logistic-regression.html">Regresión logística</a><a href="decision-tree.html">Árbol de decisión</a></nav>
+<nav class="nav language" aria-label="Idioma"><a href="../quadratic-discriminant-analysis.html" lang="en" hreflang="en">English</a><a href="../pt/quadratic-discriminant-analysis.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="../es/quadratic-discriminant-analysis.html" lang="es" hreflang="es" aria-current="true">Español</a></nav>
+</div></header>
+<main id="conteudo" class="wrap content">
+<nav class="section-links"><a href="#treinamento">Cómo aprende</a><a href="#equacao">Ecuación y términos</a><a href="#laboratorio">Laboratorio</a><a href="#pratica">Uso y evaluación</a><a href="#fontes">Referencias</a></nav>
+<section class="card" id="treinamento"><h2>Cómo aprende</h2><p>Al igual que LDA, QDA describe cada clase con una distribución gaussiana. Estima una covarianza por clase. Los términos cuadráticos suelen permanecer al comparar clases, lo que permite fronteras curvas. <a class="cite" href="#ref-1">[1]</a></p></section>
+<section class="card" id="equacao"><h2>Ecuación y términos</h2><p class="equation classifier-equation">δc(x) = ln πc − ½ ln det(Σc) − ½ (x−μc)ᵀΣc⁻¹(x−μc)</p><p>μc sitúa la clase, Σc describe su forma y πc es su probabilidad inicial. El determinante refleja el grado de dispersión. El último término mide la distancia al centro teniendo en cuenta la forma. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></section>
+<section id="laboratorio">
+<div id="classifier-lab" data-model="qda" data-ontime="A tiempo" data-late="Retraso" data-tie="Empate" data-score="Probabilidad estimada de retraso">
+<div class="panel-head"><h2>Laboratorio</h2><button class="action" type="button">Restablecer</button></div>
+<noscript><p>Puedes leer la lección sin JavaScript. Actívalo para usar el laboratorio.</p></noscript>
+<div class="lab-grid"><figure class="chart-card">
+<div class="chart-heading"><h3>Regiones de decisión</h3></div>
+<canvas class="chart" role="img" aria-label="Regiones de decisión" aria-describedby="chart-note"></canvas>
+<div class="legend classifier-legend"><span>● A tiempo</span><span>■ Retraso</span><span>◇ Tu caso de prueba</span></div>
+<figcaption class="chart-note" id="chart-note">Cada punto o cuadrado representa una tarea simulada. El fondo indica la clase predicha. Mueve el rombo blanco o ajusta el parámetro del modelo. Las dos entradas van de 0 a 1.</figcaption>
+</figure>
+<div class="controls">
+<label class="slider-label" for="setting">Regularización diagonal (×0,001)<output data-output="setting"></output></label><input type="range" id="setting" min="1" max="80" step="1" value="4">
+<label class="slider-label" for="query-x">Pendientes (x₁)<output data-output="query-x"></output></label><input type="range" id="query-x" min="0" max="100" step="1" value="55">
+<label class="slider-label" for="query-y">Retraso en la entrega (x₂)<output data-output="query-y"></output></label><input type="range" id="query-y" min="0" max="100" step="1" value="50">
+<p class="result" id="classification-result" role="status"></p>
+</div></div></div></section>
+<section class="card" id="pratica"><h2>Uso y evaluación</h2><p>Prueba QDA cuando las clases tengan dispersiones distintas y suficientes ejemplos. Compáralo con LDA en datos separados, ya que las covarianzas separadas pueden ser inestables. <a class="cite" href="#ref-2">[2]</a></p><h3>Repaso</h3><details><summary>¿Por qué puede fallar QDA cuando una clase tiene pocos ejemplos?</summary><p>La covarianza de esa clase se estima con esos pocos datos, por lo que puede ser inestable.</p></details></section>
+<section class="card" id="fontes"><h2>Referencias</h2><ol>
+<li id="ref-1">scikit-learn, <cite>Análisis discriminante cuadrático (QDA)</cite>. <a href="https://scikit-learn.org/stable/modules/lda_qda.html">Abrir la fuente</a>.</li>
+<li id="ref-2">James, Witten, Hastie, Tibshirani &amp; Taylor. <cite>An Introduction to Statistical Learning with Applications in Python</cite> (2023). Capítulo 4. <a href="https://link.springer.com/book/10.1007/978-3-031-38747-0">Abrir la fuente</a>.</li>
+</ol><p><a href="index.html">Volver a todas las lecciones</a></p></section>
+</main>
+<footer><div class="wrap">Data Science Notebook · Los ejemplos usan datos simulados. Los laboratorios funcionan sin conexión.</div></footer>
+</body>
+</html>

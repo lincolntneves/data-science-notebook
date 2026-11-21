@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Pide a los casos anteriores más parecidos que voten.">
+<title>K vecinos más cercanos (KNN) | Data Science Notebook</title>
+<link rel="stylesheet" href="../assets/site.css">
+
+<script defer src="../assets/language.js"></script>
+<script defer src="../assets/classifiers.js"></script>
+</head>
+<body>
+<a class="skip" href="#conteudo">Saltar al contenido</a>
+<header class="hero"><div class="wrap">
+  <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estadística · Aprendizaje automático · IA</span></div>
+  <div class="hero-label">Explora por tema</div>
+  <h1>K vecinos más cercanos (KNN)</h1><p>Pide a los casos anteriores más parecidos que voten.</p>
+  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="linear-regression.html">Regresión lineal</a><a href="logistic-regression.html">Regresión logística</a><a href="decision-tree.html">Árbol de decisión</a></nav>
+<nav class="nav language" aria-label="Idioma"><a href="../k-nearest-neighbors.html" lang="en" hreflang="en">English</a><a href="../pt/k-nearest-neighbors.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="../es/k-nearest-neighbors.html" lang="es" hreflang="es" aria-current="true">Español</a></nav>
+</div></header>
+<main id="conteudo" class="wrap content">
+<nav class="section-links"><a href="#treinamento">Cómo aprende</a><a href="#equacao">Ecuación y términos</a><a href="#laboratorio">Laboratorio</a><a href="#pratica">Uso y evaluación</a><a href="#fontes">Referencias</a></nav>
+<section class="card" id="treinamento"><h2>Cómo aprende</h2><p>KNN guarda los ejemplos de entrenamiento. Para una tarea nueva, ordena los ejemplos por distancia, toma los k más cercanos y cuenta cuántos se retrasaron. El laboratorio usa distancia euclidiana y votos con el mismo peso. <a class="cite" href="#ref-1">[1]</a></p></section>
+<section class="card" id="equacao"><h2>Ecuación y términos</h2><p class="equation classifier-equation">ŝ(x) = (1/k) ∑ yᵢ, i ∈ Nₖ(x)</p><p>Nₖ(x) reúne los k ejemplos más cercanos a la tarea x. Cada yᵢ vale 1 si hubo retraso y 0 si terminó a tiempo. ŝ es la fracción de votos por retraso. Con tres retrasos entre cinco tareas, es el 60%. <a class="cite" href="#ref-1">[1]</a> <a class="cite" href="#ref-2">[2]</a></p></section>
+<section id="laboratorio">
+<div id="classifier-lab" data-model="knn" data-ontime="A tiempo" data-late="Retraso" data-tie="Empate" data-score="Fracción de votos por retraso">
+<div class="panel-head"><h2>Laboratorio</h2><button class="action" type="button">Restablecer</button></div>
+<noscript><p>Puedes leer la lección sin JavaScript. Actívalo para usar el laboratorio.</p></noscript>
+<div class="lab-grid"><figure class="chart-card">
+<div class="chart-heading"><h3>Regiones de decisión</h3></div>
+<canvas class="chart" role="img" aria-label="Regiones de decisión" aria-describedby="chart-note"></canvas>
+<div class="legend classifier-legend"><span>● A tiempo</span><span>■ Retraso</span><span>◇ Tu caso de prueba</span></div>
+<figcaption class="chart-note" id="chart-note">Cada punto o cuadrado representa una tarea simulada. El fondo indica la clase predicha. Mueve el rombo blanco o ajusta el parámetro del modelo. Las dos entradas van de 0 a 1.</figcaption>
+</figure>
+<div class="controls">
+<label class="slider-label" for="setting">Número de vecinos (k)<output data-output="setting"></output></label><input type="range" id="setting" min="1" max="21" step="2" value="5">
+<label class="slider-label" for="query-x">Pendientes (x₁)<output data-output="query-x"></output></label><input type="range" id="query-x" min="0" max="100" step="1" value="55">
+<label class="slider-label" for="query-y">Retraso en la entrega (x₂)<output data-output="query-y"></output></label><input type="range" id="query-y" min="0" max="100" step="1" value="50">
+<p class="result" id="classification-result" role="status"></p>
+</div></div></div></section>
+<section class="card" id="pratica"><h2>Uso y evaluación</h2><p>Usa escalas comparables antes de medir distancias. Prueba valores pequeños y grandes de k con validación. Un k pequeño puede seguir el ruido y uno grande puede borrar patrones locales. <a class="cite" href="#ref-2">[2]</a></p><h3>Repaso</h3><details><summary>¿Por qué una variable en minutos puede dominar a otra medida entre 0 y 1?</summary><p>Sin ajustar la escala, las diferencias numéricas mayores aportan más a la distancia.</p></details></section>
+<section class="card" id="fontes"><h2>Referencias</h2><ol>
+<li id="ref-1">scikit-learn, <cite>K vecinos más cercanos (KNN)</cite>. <a href="https://scikit-learn.org/stable/modules/neighbors.html">Abrir la fuente</a>.</li>
+<li id="ref-2">James, Witten, Hastie, Tibshirani &amp; Taylor. <cite>An Introduction to Statistical Learning with Applications in Python</cite> (2023). Capítulo 4. <a href="https://link.springer.com/book/10.1007/978-3-031-38747-0">Abrir la fuente</a>.</li>
+</ol><p><a href="index.html">Volver a todas las lecciones</a></p></section>
+</main>
+<footer><div class="wrap">Data Science Notebook · Los ejemplos usan datos simulados. Los laboratorios funcionan sin conexión.</div></footer>
+</body>
+</html>

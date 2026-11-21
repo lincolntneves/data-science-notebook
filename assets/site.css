@@ -115,3 +115,8 @@ th{background:#edf5ef}
 .language{margin-top:9px}
 .language a{padding:4px 9px;font-size:.77rem}
 .language [aria-current=true]{background:#ffe5d3;color:#3d241a;border-color:#ffe5d3}
+
+.classifier-equation { display:block; overflow-wrap:anywhere; }
+.classifier-legend span:nth-child(1) { color:#205e4e; }
+.classifier-legend span:nth-child(2) { color:#9b471d; }
+.controls input[type="range"] { margin-block:0 10px; }
