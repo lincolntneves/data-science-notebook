@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Turn data into questions. Follow a task through the tree and compare how its splits group the examples.">
+<title>Decision tree | Data Science Notebook</title>
+<link rel="stylesheet" href="assets/site.css">
+<script defer src="assets/strings.js"></script>
+<script defer src="assets/lab.js"></script>
+<script defer src="assets/language.js"></script>
+</head>
+<body data-model="tree">
+<a class="skip" href="#conteudo">Skip to content</a>
+<header class="hero"><div class="wrap">
+  <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Statistics · Machine learning · AI</span></div>
+  <div class="hero-label">Supervised learning</div>
+  <h1>Decision tree</h1><p>Turn data into questions. Follow a task through the tree and compare how its splits group the examples.</p>
+  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="linear-regression.html">Linear regression</a><a href="logistic-regression.html">Logistic regression</a><a href="decision-tree.html" aria-current="page">Decision tree</a></nav>
+<nav class="nav language" aria-label="Language"><a href="decision-tree.html" lang="en" hreflang="en" aria-current="true">English</a><a href="pt/decision-tree.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="es/decision-tree.html" lang="es" hreflang="es">Español</a></nav>
+</div></header>
+<main id="conteudo" class="wrap content">
+<nav class="section-links" aria-label="In this lesson"><a href="#equacao">Equation</a><a href="#laboratorio">Lab</a><a href="#treinamento">Training</a><a href="#pratica">How to use it</a><a href="#fontes">References</a></nav>
+
+<section id="equacao" class="card"><h2>A sequence of questions leads to a prediction</h2>
+<p>A decision tree asks questions like “Are there at most 8 open items?” or “Are there at most 5 people on the crew?” The first question sits at the <strong>root</strong>. Each answer leads to a branch. A <strong>leaf</strong> is the end of the path. In this lab, the fraction of late tasks in a classification tree&#x27;s leaf becomes the estimate for a new task.  <a class="cite" href="#ref-isl" aria-label="Reference 1">[1]</a> <a class="cite" href="#ref-tree" aria-label="Reference 2">[2]</a></p>
+<div class="equation"><a class="term" href="#tree-p">p</a> = <a class="term term-b" href="#tree-delay">late tasks in leaf</a> / <a class="term term-c" href="#tree-n">all tasks in leaf</a></div>
+<dl class="symbols">
+<div id="tree-delay"><dt>Late tasks in leaf</dt><dd>How many training examples followed that path and finished late.</dd></div>
+<div id="tree-n"><dt>All tasks in leaf</dt><dd>How many training examples followed that path, whether late or on time.</dd></div>
+<div id="tree-p"><dt>p · fraction in the leaf</dt><dd>If 3 of 4 tasks finished late, p = 75%. By majority vote, the predicted class is late. A 50/50 split appears as a tie in this lab.</dd></div>
+</dl>
+<h3>Live values</h3><p>The first split comes from the training data. Change the task to see the counts in its leaf.</p>
+<dl class="live"><div><dt>Root question</dt><dd><output id="eq-root"></output></dd></div><div><dt>Examples in leaf</dt><dd><output id="eq-n"></output></dd></div><div><dt>Late tasks in leaf</dt><dd><output id="eq-delay"></output></dd></div><div><dt>Fraction of late tasks</dt><dd><output id="eq-p"></output></dd></div></dl>
+</section>
+<noscript><p>Enable JavaScript to use the lab. You can still read the explanations below.</p></noscript><section id="laboratorio" class="lab" aria-labelledby="model-title">
+    <div class="panel-head">
+      <div><h2 id="model-title"></h2><p id="model-question"></p></div>
+      <button class="action" id="reset" type="button">Reset</button>
+    </div>
+    <div class="lab-grid">
+      <figure class="chart-card">
+        <div class="chart-heading">
+          <h3 id="chart-title"></h3>
+          <button class="action" id="mode-toggle" type="button" aria-pressed="false"></button>
+        </div>
+        <canvas class="chart" id="chart" role="img" aria-labelledby="chart-title" aria-describedby="chart-note"></canvas>
+        <div class="legend" id="legend"></div>
+        <figcaption class="chart-note" id="chart-note"></figcaption>
+      </figure>
+      <aside class="controls" aria-label="Simulation controls">
+        <h3>Try it</h3>
+        <div id="sliders"></div>
+        <div>
+          <label id="check-label"><input type="checkbox" id="extra"> <span id="check-text"></span></label>
+          <p class="control-hint" id="check-hint"></p>
+        </div>
+        <div class="result" id="result" role="status"></div>
+      </aside>
+    </div>
+    <div class="lesson">
+      <div><h3>How it learns</h3><p id="learn"></p></div>
+      <div><h3>When to use it</h3><p id="use"></p></div>
+      <div><h3>What to watch for</h3><p id="watch"></p></div>
+      <details id="recall"><summary id="prompt"></summary><p id="answer"></p></details>
+    </div>
+  </section>
+<section id="treinamento" class="card"><h2>How the tree chooses a question</h2>
+<p>The tree tests candidate questions. For consecutive input values such as 7 and 8 open items, one possible cutoff lies halfway between them, at 7.5. Each split divides the examples into two groups. <strong>Gini impurity</strong> measures the mix of classes in each group.  <a class="cite" href="#ref-tree" aria-label="Reference 2">[2]</a> <a class="cite" href="#ref-cart" aria-label="Reference 3">[3]</a></p>
+<div class="equation"><a class="term" href="#tree-gini">Gini</a> = 1 − [<a class="term term-b" href="#tree-gini-p">p²</a> + <a class="term term-c" href="#tree-gini-q">(1 − p)²</a>]</div>
+<dl class="symbols">
+<div id="tree-gini"><dt>Gini · class mix</dt><dd>With two classes, Gini is 0 in a single-class group and reaches 0.5 at an even split.</dd></div>
+<div id="tree-gini-p"><dt>p² · late class</dt><dd>p is the fraction of late tasks in the group under study, whether the root, a branch, or a leaf.</dd></div>
+<div id="tree-gini-q"><dt>(1 − p)² · on-time class</dt><dd>1 − p is the on-time fraction. Both squared terms measure how concentrated the classes are.</dd></div>
+</dl>
+<p>Calculate Gini for both groups and weight the average by each group&#x27;s size. The <strong>gain</strong> is the Gini before the split minus that average. The algorithm chooses the greatest available gain at that node and repeats. It is a local choice: the best next split may yield a tree that is suboptimal overall.  <a class="cite" href="#ref-tree" aria-label="Reference 2">[2]</a> <a class="cite" href="#ref-cart" aria-label="Reference 3">[3]</a></p>
+<div class="callout"><p><strong>Try it in your head.</strong> Start with 4 late tasks out of 8. Gini = 0.50. A split sends 4 on-time tasks left and 4 late tasks right. Both groups have Gini 0, so the weighted average is 0 and the gain is <strong>0.50</strong>.</p></div>
+<dl class="live"><div><dt>Gini at the root</dt><dd><output id="eq-parent"></output></dd></div><div><dt>Weighted Gini of child nodes</dt><dd><output id="eq-children"></output></dd></div><div><dt>Gain from the first split</dt><dd><output id="eq-gain"></output></dd></div></dl>
+<details><summary>What if we want to predict a number, such as hours of rework?</summary><p>A regression tree can predict the mean of the observed values in the leaf. With squared error, the best split reduces the sum of squared deviations from the group means. This classification tree uses Gini because the outcome has classes.  <a class="cite" href="#ref-tree" aria-label="Reference 2">[2]</a> <a class="cite" href="#ref-isl" aria-label="Reference 1">[1]</a></p></details>
+<details><summary>What does pruning do?</summary><p>A depth limit stops the tree from growing past a chosen level. Cost-complexity pruning compares fitted subtrees and penalizes those with more leaves. Use validation to choose how complex the tree should be.  <a class="cite" href="#ref-tree" aria-label="Reference 2">[2]</a> <a class="cite" href="#ref-cart" aria-label="Reference 3">[3]</a></p></details>
+</section>
+<section id="pratica" class="card"><h2>How to use and evaluate it</h2>
+<ol>
+<li><strong>Use inputs available at prediction time.</strong> Record open items and crew size at the start of the shift. Define what counts as a delay before assembling the historical data.</li>
+<li><strong>Compare trees of different sizes.</strong> Track training and validation metrics. If training improves while validation worsens, the tree may be learning quirks of the training data. This is overfitting. Adjust depth, minimum leaf size, or pruning.  <a class="cite" href="#ref-tree" aria-label="Reference 2">[2]</a> <a class="cite" href="#ref-isl" aria-label="Reference 1">[1]</a></li>
+<li><strong>Check how many tasks support the prediction.</strong> A 100% leaf based on one task is a weak signal. If you use leaf fractions as operational probabilities, check calibration on separate data.  <a class="cite" href="#ref-tree" aria-label="Reference 2">[2]</a> <a class="cite" href="#ref-cal" aria-label="Reference 4">[4]</a></li>
+<li><strong>Test on new scenarios.</strong> Small changes in the data can alter the splits, especially when several candidates are close. Monitor future performance and compare with a simple rule or baseline model. A learned rule captures patterns in the data. Causal conclusions about changing the crew need additional evidence.  <a class="cite" href="#ref-isl" aria-label="Reference 1">[1]</a> <a class="cite" href="#ref-tree" aria-label="Reference 2">[2]</a></li>
+</ol>
+<h3>Review</h3>
+<details><summary>A leaf has 12 tasks and 9 finished late. What does it predict?</summary><p>The late fraction is 9 ÷ 12 = 75%. By majority vote, the predicted class is late.</p></details>
+<details><summary>Which would you choose: a tree that gets everything right on training data or a smaller one that does better on validation data?</summary><p>To predict new cases, validation on representative data offers the stronger evidence. Confirm the choice on a separate final test set.</p></details>
+</section>
+<section class="card study-notes" aria-labelledby="notas-label"><h2 id="notas-label">My notes</h2>
+<label for="notes">What do I want to revisit?</label>
+<textarea id="notes" placeholder="Write down a question or an example to explore."></textarea>
+<div class="notes-actions"><button class="action" type="button" id="export-notes">Download notes (.txt)</button><span id="notes-status" role="status"></span></div>
+</section>
+<section aria-labelledby="fontes-title" id="fontes" class="card references"><h2 id="fontes-title">References and further reading</h2><ol>
+<li id="ref-isl">James, G., Witten, D., Hastie, T., Tibshirani, R., and Taylor, J. (2023). <cite>An Introduction to Statistical Learning with Applications in Python</cite>. Springer. DOI 10.1007/978-3-031-38747-0. Chapter 8, tree-based methods. <a href="https://www.statlearning.com/">Open the reference</a>.</li>
+<li id="ref-tree">scikit-learn. <cite>Decision Trees</cite>. User guide. Split criteria, regression trees, and pruning. <a href="https://scikit-learn.org/stable/modules/tree.html">Open the reference</a>.</li>
+<li id="ref-cart">Breiman, L., Friedman, J. H., Olshen, R. A., and Stone, C. J. (1984). <cite>Classification and Regression Trees</cite>. The classic book on CART. <a href="https://www.routledge.com/Classification-and-Regression-Trees/Breiman-Friedman-Stone-Olshen/p/book/9780412048418/">Open the reference</a>.</li>
+<li id="ref-cal">scikit-learn. <cite>Probability calibration</cite>. User guide. Evaluating probability estimates. <a href="https://scikit-learn.org/stable/modules/calibration.html">Open the reference</a>.</li>
+</ol></section><nav class="next" aria-label="Keep learning"><a href="index.html">Back to the index</a><a href="linear-regression.html">Linear regression</a><a href="logistic-regression.html">Logistic regression</a></nav>
+</main>
+<footer><div class="wrap">Data Science Notebook · Examples use simulated data. Labs work offline.</div></footer>
+</body>
+</html>

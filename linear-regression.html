@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Predict a quantity with a straight line. Explore residuals, slope, and error in 3D.">
+<title>Linear regression | Data Science Notebook</title>
+<link rel="stylesheet" href="assets/site.css">
+<script defer src="assets/strings.js"></script>
+<script defer src="assets/lab.js"></script>
+<script defer src="assets/language.js"></script>
+</head>
+<body data-model="linear">
+<a class="skip" href="#conteudo">Skip to content</a>
+<header class="hero"><div class="wrap">
+  <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Statistics · Machine learning · AI</span></div>
+  <div class="hero-label">Supervised learning</div>
+  <h1>Linear regression</h1><p>Predict a quantity with a straight line. Explore residuals, slope, and error in 3D.</p>
+  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="linear-regression.html" aria-current="page">Linear regression</a><a href="logistic-regression.html">Logistic regression</a><a href="decision-tree.html">Decision tree</a></nav>
+<nav class="nav language" aria-label="Language"><a href="linear-regression.html" lang="en" hreflang="en" aria-current="true">English</a><a href="pt/linear-regression.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="es/linear-regression.html" lang="es" hreflang="es">Español</a></nav>
+</div></header>
+<main id="conteudo" class="wrap content">
+<nav class="section-links" aria-label="In this lesson"><a href="#equacao">Equation</a><a href="#laboratorio">Lab</a><a href="#treinamento">Training</a><a href="#pratica">How to use it</a><a href="#fontes">References</a></nav>
+
+<section id="equacao" class="card"><h2>The line equation, piece by piece</h2>
+<p>Imagine recording the hours worked and the square meters installed across several shifts. Each shift becomes a point. Linear regression fits a line to describe the <strong>expected average output</strong> for a shift of a given length.  <a class="cite" href="#ref-isl" aria-label="Reference 1">[1]</a> <a class="cite" href="#ref-ols" aria-label="Reference 2">[2]</a></p>
+<div class="equation"><a class="term" href="#lin-y">ŷ</a> = <a class="term term-b" href="#lin-a">b₀</a> + <a class="term term-c" href="#lin-b">b₁</a> × <a class="term term-d" href="#lin-x">x</a></div>
+<dl class="symbols">
+<div id="lin-y"><dt>ŷ · prediction</dt><dd>Read this as “y hat.” It is the output predicted by the line, in m². Plain y is the observed output.</dd></div>
+<div id="lin-a"><dt>b₀ · intercept</dt><dd>Where the line crosses the vertical axis, when x is zero. If zero is outside the data range, treat the intercept as a component of the equation.</dd></div>
+<div id="lin-b"><dt>b₁ · slope</dt><dd>How many m² the prediction changes per additional hour. It can be positive, negative, or zero.</dd></div>
+<div id="lin-x"><dt>x · input</dt><dd>The length of the shift in hours. In another problem the input might be distance, temperature, or another measurement.</dd></div>
+</dl>
+<div class="callout"><p><strong>Try it in your head.</strong> If b₀ = 4 and b₁ = 5, then for 6 hours we get 4 + 5 × 6 = <strong>34 m²</strong>. At 7 hours, the prediction is 39 m². One extra hour raises the prediction by 5 m².</p></div>
+<h3>Live values</h3><p>These values follow the lab controls. Rounding is for display only.</p>
+<dl class="live"><div><dt>x · hours</dt><dd><output id="eq-x"></output></dd></div><div><dt>b₀ · intercept</dt><dd><output id="eq-intercept"></output></dd></div><div><dt>b₁ · slope</dt><dd><output id="eq-slope"></output></dd></div><div><dt>ŷ · prediction</dt><dd><output id="eq-y"></output></dd></div><div><dt>Training MSE</dt><dd><output id="eq-mse"></output></dd></div></dl>
+</section>
+<noscript><p>Enable JavaScript to use the lab. You can still read the explanations below.</p></noscript><section id="laboratorio" class="lab" aria-labelledby="model-title">
+    <div class="panel-head">
+      <div><h2 id="model-title"></h2><p id="model-question"></p></div>
+      <button class="action" id="reset" type="button">Reset</button>
+    </div>
+    <div class="lab-grid">
+      <figure class="chart-card">
+        <div class="chart-heading">
+          <h3 id="chart-title"></h3>
+          <button class="action" id="mode-toggle" type="button" aria-pressed="false"></button>
+        </div>
+        <canvas class="chart" id="chart" role="img" aria-labelledby="chart-title" aria-describedby="chart-note"></canvas>
+        <div class="legend" id="legend"></div>
+        <figcaption class="chart-note" id="chart-note"></figcaption>
+      </figure>
+      <aside class="controls" aria-label="Simulation controls">
+        <h3>Try it</h3>
+        <div id="sliders"></div>
+        <div>
+          <label id="check-label"><input type="checkbox" id="extra"> <span id="check-text"></span></label>
+          <p class="control-hint" id="check-hint"></p>
+        </div>
+        <div class="result" id="result" role="status"></div>
+      </aside>
+    </div>
+    <div class="lesson">
+      <div><h3>How it learns</h3><p id="learn"></p></div>
+      <div><h3>When to use it</h3><p id="use"></p></div>
+      <div><h3>What to watch for</h3><p id="watch"></p></div>
+      <details id="recall"><summary id="prompt"></summary><p id="answer"></p></details>
+    </div>
+  </section>
+<section id="treinamento" class="card"><h2>How the model chooses the line</h2>
+<p>To judge a candidate line, measure the vertical difference between an observed point and the prediction at the same x. This difference is the <strong>residual</strong>. If the crew installed 31 m² and the prediction was 34 m², the residual is −3 m². The line predicted 3 m² above the observed output.  <a class="cite" href="#ref-ols" aria-label="Reference 2">[2]</a></p>
+<div class="equation">eᵢ = yᵢ − ŷᵢ</div>
+<p>The subscript i means “this row of the table.” Squaring each residual keeps positive and negative errors from canceling and gives large misses more weight. The sum of squared errors is called <strong>SSE</strong>. Dividing by the number of examples n gives the mean squared error, called <strong>MSE</strong>. Both choose the same line for a fixed training set.  <a class="cite" href="#ref-ols" aria-label="Reference 2">[2]</a></p>
+<div class="equation">SSE = ∑ eᵢ² <span aria-hidden="true">·</span> MSE = SSE / n</div>
+<p>∑ means “add them all.” The 3D surface shows MSE for different slopes and line heights. Here the height is the prediction at the average shift length. The equation above uses the prediction at zero hours as its intercept. Both parameterizations describe the same line from different reference points.</p>
+<details><summary>How to calculate the coefficients directly</summary><p>The slope is the sum of the products (xᵢ − x̄)(yᵢ − ȳ) divided by the sum of (xᵢ − x̄)². The bars denote the means of x and y. The intercept equals ȳ − b₁x̄, so the line passes through the point defined by the two means. The x values must vary for the formula to work.  <a class="cite" href="#ref-ols" aria-label="Reference 2">[2]</a></p></details>
+<details><summary>What if there are other variables?</summary><p>You can add terms for crew, wall type, or other inputs. In multiple regression, a coefficient describes the change in the predicted mean when its input changes and the others stay fixed. A causal interpretation requires a design that supports that conclusion.  <a class="cite" href="#ref-isl" aria-label="Reference 1">[1]</a></p></details>
+</section>
+<section id="pratica" class="card"><h2>How to use and evaluate it</h2>
+<ol>
+<li><strong>Define the prediction.</strong> One row can represent one shift. Record installed area at the end of the shift and use only inputs available when you want to make the prediction. If you plan in the morning, use scheduled hours when actual hours are still unknown.</li>
+<li><strong>Compare against a simple baseline.</strong> Start with the historical mean as a baseline. Train on one period and test on later shifts when predicting future production. MAE tells you the average absolute miss in m². RMSE also reports m² and gives large errors more weight.  <a class="cite" href="#ref-isl" aria-label="Reference 1">[1]</a></li>
+<li><strong>Inspect residuals.</strong> A curve suggests the straight line may miss part of the pattern. A funnel suggests uneven error variance. Consecutive shifts of the same crew may have dependent errors. Normality is an assumption for some classical inference procedures. You can calculate the line without it.  <a class="cite" href="#ref-resid" aria-label="Reference 3">[3]</a> <a class="cite" href="#ref-interval" aria-label="Reference 4">[4]</a></li>
+<li><strong>Communicate uncertainty.</strong> A confidence interval for the mean addresses expected average output. A prediction interval addresses one specific shift and is generally wider under the same classical model conditions. Avoid extending the line far past the observed shift lengths.  <a class="cite" href="#ref-interval" aria-label="Reference 4">[4]</a></li>
+</ol>
+<h3>Review</h3>
+<details><summary>If the residual was +7 m², was the line above or below the observation?</summary><p>Below. The observed output exceeded the prediction by 7 m².</p></details>
+<details><summary>Why does adding an outlier change predictions for other shifts?</summary><p>The model refits one line to all the examples. The new point can alter the slope and intercept, changing predictions along the line.</p></details>
+</section>
+<section class="card study-notes" aria-labelledby="notas-label"><h2 id="notas-label">My notes</h2>
+<label for="notes">What do I want to revisit?</label>
+<textarea id="notes" placeholder="Write down a question or an example to explore."></textarea>
+<div class="notes-actions"><button class="action" type="button" id="export-notes">Download notes (.txt)</button><span id="notes-status" role="status"></span></div>
+</section>
+<section aria-labelledby="fontes-title" id="fontes" class="card references"><h2 id="fontes-title">References and further reading</h2><ol>
+<li id="ref-isl">James, G., Witten, D., Hastie, T., Tibshirani, R., and Taylor, J. (2023). <cite>An Introduction to Statistical Learning with Applications in Python</cite>. Springer. DOI 10.1007/978-3-031-38747-0. Chapter 3, linear regression, and Chapter 5, resampling. <a href="https://www.statlearning.com/">Open the reference</a>.</li>
+<li id="ref-ols">Penn State. <cite>STAT 501 — Simple Linear Regression</cite>. Lesson 1. Least squares and interpreting coefficients. <a href="https://online.stat.psu.edu/stat501/Lesson01">Open the reference</a>.</li>
+<li id="ref-resid">Penn State. <cite>STAT 501 — SLR Model Assumptions</cite>. Lesson 4. Diagnosing patterns in residual plots. <a href="https://online.stat.psu.edu/stat501/Lesson04">Open the reference</a>.</li>
+<li id="ref-interval">Penn State. <cite>STAT 501 — SLR Estimation &amp; Prediction</cite>. Lesson 3. Intervals for the mean and for an observation. <a href="https://online.stat.psu.edu/stat501/Lesson03">Open the reference</a>.</li>
+</ol></section><nav class="next" aria-label="Keep learning"><a href="index.html">Back to the index</a><a href="logistic-regression.html">Logistic regression</a><a href="decision-tree.html">Decision tree</a></nav>
+</main>
+<footer><div class="wrap">Data Science Notebook · Examples use simulated data. Labs work offline.</div></footer>
+</body>
+</html>

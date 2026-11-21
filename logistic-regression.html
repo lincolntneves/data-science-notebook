@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Estimate the chance of an event and decide what to do. Explore the sigmoid, odds, and decision threshold.">
+<title>Logistic regression | Data Science Notebook</title>
+<link rel="stylesheet" href="assets/site.css">
+<script defer src="assets/strings.js"></script>
+<script defer src="assets/lab.js"></script>
+<script defer src="assets/language.js"></script>
+</head>
+<body data-model="logistic">
+<a class="skip" href="#conteudo">Skip to content</a>
+<header class="hero"><div class="wrap">
+  <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Statistics · Machine learning · AI</span></div>
+  <div class="hero-label">Supervised learning</div>
+  <h1>Logistic regression</h1><p>Estimate the chance of an event and decide what to do. Explore the sigmoid, odds, and decision threshold.</p>
+  <nav class="nav" aria-label="Lessons"><a href="index.html">Home</a><a href="linear-regression.html">Linear regression</a><a href="logistic-regression.html" aria-current="page">Logistic regression</a><a href="decision-tree.html">Decision tree</a></nav>
+<nav class="nav language" aria-label="Language"><a href="logistic-regression.html" lang="en" hreflang="en" aria-current="true">English</a><a href="pt/logistic-regression.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="es/logistic-regression.html" lang="es" hreflang="es">Español</a></nav>
+</div></header>
+<main id="conteudo" class="wrap content">
+<nav class="section-links" aria-label="In this lesson"><a href="#equacao">Equation</a><a href="#laboratorio">Lab</a><a href="#treinamento">Training</a><a href="#pratica">How to use it</a><a href="#fontes">References</a></nav>
+
+<section id="equacao" class="card"><h2>From minutes of delay to the chance of an event</h2>
+<p>We want to predict whether a task will finish late. Each task in the historical data has an outcome: <strong>1</strong> if it finished late and <strong>0</strong> if it finished on time. Binary logistic regression estimates the probability of y = 1 given the inputs. It computes a linear score and passes it through an S-shaped curve called the <strong>sigmoid</strong>.  <a class="cite" href="#ref-isl" aria-label="Reference 1">[1]</a> <a class="cite" href="#ref-log" aria-label="Reference 2">[2]</a></p>
+<div class="equation"><a class="term" href="#log-z">z</a> = <a class="term term-b" href="#log-a">b₀</a> + <a class="term term-c" href="#log-b">b₁</a> × <a class="term term-d" href="#log-x">x</a></div>
+<div class="equation"><a class="term" href="#log-p">p</a> = 1 / (1 + <a class="term term-d" href="#log-exp">e<sup>−z</sup></a>)</div>
+<dl class="symbols">
+<div id="log-x"><dt>x · rescaled input</dt><dd>Here x = (minutes − 20) ÷ 10. A delivery 30 minutes late gives x = 1.</dd></div>
+<div id="log-a"><dt>b₀ · reference point</dt><dd>The score at x = 0, which corresponds to a delivery 20 minutes late.</dd></div>
+<div id="log-b"><dt>b₁ · change in score</dt><dd>Another 10 minutes changes z by b₁. The change in probability depends on where you are on the curve.</dd></div>
+<div id="log-z"><dt>z · score</dt><dd>It can be any number. The sigmoid maps z = 0 to 50%, negative values below 50%, and positive values above 50%.</dd></div>
+<div id="log-exp"><dt>e<sup>−z</sup> · exponential term</dt><dd>e is a constant of about 2.718. The full formula squeezes the score into a number between 0 and 1.</dd></div>
+<div id="log-p"><dt>p · estimated probability</dt><dd>Multiply by 100 to read it as a percentage. Whether to flag the task depends on the threshold.</dd></div>
+</dl>
+<div class="callout"><p><strong>Try it in your head.</strong> If b₀ = 0 and b₁ = 1, a delivery 30 minutes late gives x = 1, z = 1, and p ≈ <strong>73%</strong>. At a 70% threshold you flag the task. At 80% it falls below the cutoff.</p></div>
+<h3>Live values</h3><p>The coefficients come from simulated history. Change the minutes or the threshold to see which values move.</p>
+<dl class="live"><div><dt>x · rescaled input</dt><dd><output id="eq-x"></output></dd></div><div><dt>b₀ · intercept</dt><dd><output id="eq-intercept"></output></dd></div><div><dt>b₁ · coefficient</dt><dd><output id="eq-slope"></output></dd></div><div><dt>z · score</dt><dd><output id="eq-z"></output></dd></div><div><dt>p · probability</dt><dd><output id="eq-p"></output></dd></div><div><dt>Estimated odds</dt><dd><output id="eq-odds"></output></dd></div><div><dt>Selected threshold</dt><dd><output id="eq-cut"></output></dd></div></dl>
+</section>
+<noscript><p>Enable JavaScript to use the lab. You can still read the explanations below.</p></noscript><section id="laboratorio" class="lab" aria-labelledby="model-title">
+    <div class="panel-head">
+      <div><h2 id="model-title"></h2><p id="model-question"></p></div>
+      <button class="action" id="reset" type="button">Reset</button>
+    </div>
+    <div class="lab-grid">
+      <figure class="chart-card">
+        <div class="chart-heading">
+          <h3 id="chart-title"></h3>
+          <button class="action" id="mode-toggle" type="button" aria-pressed="false"></button>
+        </div>
+        <canvas class="chart" id="chart" role="img" aria-labelledby="chart-title" aria-describedby="chart-note"></canvas>
+        <div class="legend" id="legend"></div>
+        <figcaption class="chart-note" id="chart-note"></figcaption>
+      </figure>
+      <aside class="controls" aria-label="Simulation controls">
+        <h3>Try it</h3>
+        <div id="sliders"></div>
+        <div>
+          <label id="check-label"><input type="checkbox" id="extra"> <span id="check-text"></span></label>
+          <p class="control-hint" id="check-hint"></p>
+        </div>
+        <div class="result" id="result" role="status"></div>
+      </aside>
+    </div>
+    <div class="lesson">
+      <div><h3>How it learns</h3><p id="learn"></p></div>
+      <div><h3>When to use it</h3><p id="use"></p></div>
+      <div><h3>What to watch for</h3><p id="watch"></p></div>
+      <details id="recall"><summary id="prompt"></summary><p id="answer"></p></details>
+    </div>
+  </section>
+<section id="treinamento" class="card"><h2>How the model fits the curve</h2>
+<p>Consider a task that actually finished late. Predicting a 90% chance of delay gives the observed outcome a high probability. Predicting 10% gives it a low one. <strong>Log loss</strong> penalizes the second case more. For an on-time task, the relevant probability is 1 − p.  <a class="cite" href="#ref-isl" aria-label="Reference 1">[1]</a> <a class="cite" href="#ref-log" aria-label="Reference 2">[2]</a></p>
+<div class="equation">Loss per task = −[y ln(p) + (1 − y) ln(1 − p)]</div>
+<p>ln is the natural logarithm. When y = 1, the loss is −ln(p). When y = 0, it is −ln(1 − p). For an observed delay, predicting 90% costs about 0.11 and predicting 10% costs about 2.30. Minimizing average log loss is equivalent to maximizing the Bernoulli likelihood. The lab uses gradient descent: it starts with initial coefficients and adjusts them in small steps to reduce the loss.  <a class="cite" href="#ref-isl" aria-label="Reference 1">[1]</a> <a class="cite" href="#ref-log" aria-label="Reference 2">[2]</a></p>
+<details><summary>What are odds, and why is z called log-odds?</summary><p>Odds compare the probability of an event with the probability it does not occur: p ÷ (1 − p). At p = 75%, the odds are 3 to 1. The score z is ln of the odds. For each one-unit increase in x, the odds are multiplied by e raised to b₁. An odds ratio of 2 doubles the odds. For example, the probability can move from 50% to about 67%.  <a class="cite" href="#ref-log" aria-label="Reference 2">[2]</a></p></details>
+<details><summary>What changes with more variables or perfectly separated classes?</summary><p>Add a term to the score for each input. Interpret coefficients on the log-odds scale with other inputs held fixed. When a boundary perfectly separates the classes, unpenalized maximum likelihood can drive coefficients to grow without a finite solution. Regularization penalizes large coefficients and can help.  <a class="cite" href="#ref-isl" aria-label="Reference 1">[1]</a> <a class="cite" href="#ref-log" aria-label="Reference 2">[2]</a></p></details>
+</section>
+<section id="pratica" class="card"><h2>How to turn a probability into a decision</h2>
+<ol>
+<li><strong>Set the prediction time.</strong> If you flag tasks after delivery, you already know how late the delivery was. If you plan beforehand, use only information available at that earlier time.</li>
+<li><strong>Choose which cost matters.</strong> If missing a delay costs more than investigating a false alarm, a lower threshold may make sense. Choose it on validation data and reserve the test set for final evaluation.  <a class="cite" href="#ref-cut" aria-label="Reference 3">[3]</a></li>
+<li><strong>Look at two types of error.</strong> In the confusion matrix, a false positive is a flagged task that finished on time. A false negative is a late task that was missed. Precision is the fraction of flags that were correct. Recall is the fraction of actual delays that were flagged. When delays are rare, high accuracy can hide low recall.  <a class="cite" href="#ref-isl" aria-label="Reference 1">[1]</a> <a class="cite" href="#ref-cut" aria-label="Reference 3">[3]</a></li>
+<li><strong>Check calibration.</strong> Among tasks assigned probabilities near 70%, about 70% should finish late in a large, comparable sample. A calibration plot helps check this. Ranking tasks by risk is a separate property.  <a class="cite" href="#ref-cal" aria-label="Reference 4">[4]</a></li>
+</ol>
+<h3>Review</h3>
+<details><summary>The model predicts 40%. What happens if I lower the threshold from 50% to 35%?</summary><p>The task is now flagged. Its probability is still 40%. The threshold changes the decision while the fitted curve stays the same.</p></details>
+<details><summary>If the probability is 80%, what are the odds?</summary><p>0.8 ÷ 0.2 = 4. The odds of a delay are 4 to 1.</p></details>
+</section>
+<section class="card study-notes" aria-labelledby="notas-label"><h2 id="notas-label">My notes</h2>
+<label for="notes">What do I want to revisit?</label>
+<textarea id="notes" placeholder="Write down a question or an example to explore."></textarea>
+<div class="notes-actions"><button class="action" type="button" id="export-notes">Download notes (.txt)</button><span id="notes-status" role="status"></span></div>
+</section>
+<section aria-labelledby="fontes-title" id="fontes" class="card references"><h2 id="fontes-title">References and further reading</h2><ol>
+<li id="ref-isl">James, G., Witten, D., Hastie, T., Tibshirani, R., and Taylor, J. (2023). <cite>An Introduction to Statistical Learning with Applications in Python</cite>. Springer. DOI 10.1007/978-3-031-38747-0. Chapter 4, classification and logistic regression. <a href="https://www.statlearning.com/">Open the reference</a>.</li>
+<li id="ref-log">Penn State. <cite>STAT 501 — Weighted Least Squares &amp; Logistic Regressions</cite>. Lesson 13, logistic regression section. Log-odds, odds ratios, and interpreting coefficients. <a href="https://online.stat.psu.edu/stat501/Lesson13">Open the reference</a>.</li>
+<li id="ref-cut">scikit-learn. <cite>Tuning the decision threshold for class prediction</cite>. User guide. Estimating probabilities and making decisions. <a href="https://scikit-learn.org/stable/modules/classification_threshold.html">Open the reference</a>.</li>
+<li id="ref-cal">scikit-learn. <cite>Probability calibration</cite>. User guide. How to check estimated probabilities. <a href="https://scikit-learn.org/stable/modules/calibration.html">Open the reference</a>.</li>
+</ol></section><nav class="next" aria-label="Keep learning"><a href="index.html">Back to the index</a><a href="linear-regression.html">Linear regression</a><a href="decision-tree.html">Decision tree</a></nav>
+</main>
+<footer><div class="wrap">Data Science Notebook · Examples use simulated data. Labs work offline.</div></footer>
+</body>
+</html>

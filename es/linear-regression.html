@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Predice una cantidad con una recta. Explora los residuos, la pendiente y el error en 3D.">
+<title>Regresión lineal | Data Science Notebook</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script defer src="../assets/strings.js"></script>
+<script defer src="../assets/lab.js"></script>
+<script defer src="../assets/language.js"></script>
+</head>
+<body data-model="linear">
+<a class="skip" href="#conteudo">Saltar al contenido</a>
+<header class="hero"><div class="wrap">
+  <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estadística · Aprendizaje automático · IA</span></div>
+  <div class="hero-label">Aprendizaje supervisado</div>
+  <h1>Regresión lineal</h1><p>Predice una cantidad con una recta. Explora los residuos, la pendiente y el error en 3D.</p>
+  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="linear-regression.html" aria-current="page">Regresión lineal</a><a href="logistic-regression.html">Regresión logística</a><a href="decision-tree.html">Árbol de decisión</a></nav>
+<nav class="nav language" aria-label="Idioma"><a href="../linear-regression.html" lang="en" hreflang="en">English</a><a href="../pt/linear-regression.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="../es/linear-regression.html" lang="es" hreflang="es" aria-current="true">Español</a></nav>
+</div></header>
+<main id="conteudo" class="wrap content">
+<nav class="section-links" aria-label="En esta lección"><a href="#equacao">Ecuación</a><a href="#laboratorio">Laboratorio</a><a href="#treinamento">Entrenamiento</a><a href="#pratica">Cómo aplicarlo</a><a href="#fontes">Bibliografía</a></nav>
+
+<section id="equacao" class="card"><h2>La ecuación de la recta, pieza por pieza</h2>
+<p>Imagina que registras las horas trabajadas y los metros cuadrados instalados en varios turnos. Cada turno se convierte en un punto. La regresión lineal ajusta una recta para describir la <strong>producción media esperada</strong> para un turno de una duración determinada.  <a class="cite" href="#ref-isl" aria-label="Referencia 1">[1]</a> <a class="cite" href="#ref-ols" aria-label="Referencia 2">[2]</a></p>
+<div class="equation"><a class="term" href="#lin-y">ŷ</a> = <a class="term term-b" href="#lin-a">b₀</a> + <a class="term term-c" href="#lin-b">b₁</a> × <a class="term term-d" href="#lin-x">x</a></div>
+<dl class="symbols">
+<div id="lin-y"><dt>ŷ · predicción</dt><dd>Se lee «y con sombrero». Es la producción que predice la recta, en m². La y sin sombrero es el valor observado.</dd></div>
+<div id="lin-a"><dt>b₀ · intercepto</dt><dd>Es el punto donde la recta corta el eje vertical, cuando x vale cero. Si el cero queda fuera del rango de los datos, trata el intercepto como un componente de la ecuación.</dd></div>
+<div id="lin-b"><dt>b₁ · pendiente</dt><dd>Cuántos m² cambia la predicción por cada hora adicional. Puede ser positiva, negativa o cero.</dd></div>
+<div id="lin-x"><dt>x · entrada</dt><dd>La duración del turno en horas. En otro problema, podría ser la distancia, la temperatura u otra medida.</dd></div>
+</dl>
+<div class="callout"><p><strong>Haz la cuenta mentalmente.</strong> Si b₀ = 4 y b₁ = 5, para 6 horas obtenemos 4 + 5 × 6 = <strong>34 m²</strong>. Con 7 horas, la predicción es 39 m². Una hora adicional aumenta la predicción en 5 m².</p></div>
+<h3>Valores de la simulación</h3><p>Estos valores cambian con los controles del laboratorio. El redondeo solo afecta a la visualización.</p>
+<dl class="live"><div><dt>x · horas</dt><dd><output id="eq-x"></output></dd></div><div><dt>b₀ · intercepto</dt><dd><output id="eq-intercept"></output></dd></div><div><dt>b₁ · pendiente</dt><dd><output id="eq-slope"></output></dd></div><div><dt>ŷ · predicción</dt><dd><output id="eq-y"></output></dd></div><div><dt>MSE de entrenamiento</dt><dd><output id="eq-mse"></output></dd></div></dl>
+</section>
+<noscript><p>Activa JavaScript para usar el laboratorio. Puedes seguir leyendo las explicaciones.</p></noscript><section id="laboratorio" class="lab" aria-labelledby="model-title">
+    <div class="panel-head">
+      <div><h2 id="model-title"></h2><p id="model-question"></p></div>
+      <button class="action" id="reset" type="button">Restablecer</button>
+    </div>
+    <div class="lab-grid">
+      <figure class="chart-card">
+        <div class="chart-heading">
+          <h3 id="chart-title"></h3>
+          <button class="action" id="mode-toggle" type="button" aria-pressed="false"></button>
+        </div>
+        <canvas class="chart" id="chart" role="img" aria-labelledby="chart-title" aria-describedby="chart-note"></canvas>
+        <div class="legend" id="legend"></div>
+        <figcaption class="chart-note" id="chart-note"></figcaption>
+      </figure>
+      <aside class="controls" aria-label="Controles de la simulación">
+        <h3>Experimenta</h3>
+        <div id="sliders"></div>
+        <div>
+          <label id="check-label"><input type="checkbox" id="extra"> <span id="check-text"></span></label>
+          <p class="control-hint" id="check-hint"></p>
+        </div>
+        <div class="result" id="result" role="status"></div>
+      </aside>
+    </div>
+    <div class="lesson">
+      <div><h3>Cómo aprende</h3><p id="learn"></p></div>
+      <div><h3>Cuándo usarlo</h3><p id="use"></p></div>
+      <div><h3>En qué fijarte</h3><p id="watch"></p></div>
+      <details id="recall"><summary id="prompt"></summary><p id="answer"></p></details>
+    </div>
+  </section>
+<section id="treinamento" class="card"><h2>Cómo el modelo elige la recta</h2>
+<p>Para evaluar una recta candidata, calcula la diferencia vertical entre el punto observado y la predicción para el mismo valor de x. Esa diferencia es el <strong>residuo</strong>. Si el equipo instaló 31 m² y la predicción era 34 m², el residuo es −3 m². La recta predijo 3 m² más de lo observado.  <a class="cite" href="#ref-ols" aria-label="Referencia 2">[2]</a></p>
+<div class="equation">eᵢ = yᵢ − ŷᵢ</div>
+<p>El subíndice i indica «esta fila de la tabla». Al elevar cada residuo al cuadrado, los errores positivos y negativos dejan de compensarse y los grandes pesan más. La suma de los errores al cuadrado se llama <strong>SSE</strong>. Al dividir por el número de ejemplos n se obtiene el error cuadrático medio, también llamado <strong>MSE</strong>. Ambos eligen la misma recta para un conjunto de entrenamiento fijo.  <a class="cite" href="#ref-ols" aria-label="Referencia 2">[2]</a></p>
+<div class="equation">SSE = ∑ eᵢ² <span aria-hidden="true">·</span> MSE = SSE / n</div>
+<p>∑ significa «suma todos». La superficie 3D muestra el MSE para distintas pendientes y alturas de la recta. Aquí, la altura es la predicción para la duración media de los turnos. La ecuación anterior usa como intercepto la predicción para cero horas. Ambas formas describen la misma recta desde distintos puntos de referencia.</p>
+<details><summary>Cómo calcular los coeficientes directamente</summary><p>La pendiente es la suma de los productos (xᵢ − x̄)(yᵢ − ȳ) dividida por la suma de (xᵢ − x̄)². Las barras indican las medias de x e y. El intercepto es ȳ − b₁x̄, por lo que la recta pasa por el punto de las medias. La fórmula requiere que varíen los valores de x.  <a class="cite" href="#ref-ols" aria-label="Referencia 2">[2]</a></p></details>
+<details><summary>¿Y si hay más variables?</summary><p>Puedes añadir términos para el equipo, el tipo de pared u otras entradas. En la regresión múltiple, un coeficiente describe el cambio en la media predicha al variar su entrada y mantener fijas las demás. Interpretarlo como efecto causal requiere un diseño que respalde esa conclusión.  <a class="cite" href="#ref-isl" aria-label="Referencia 1">[1]</a></p></details>
+</section>
+<section id="pratica" class="card"><h2>Cómo usarlo y evaluarlo</h2>
+<ol>
+<li><strong>Define la predicción.</strong> Una fila puede representar un turno. Registra el área instalada al cerrarlo y usa solo las entradas disponibles en el momento de predecir. Si planificas por la mañana, usa las horas programadas cuando aún no conozcas las horas reales.</li>
+<li><strong>Compara con una referencia simple.</strong> Usa la media histórica como referencia. Entrena con un período y evalúa con turnos posteriores si quieres predecir producción futura. El MAE mide el error absoluto medio en m². El RMSE también se expresa en m² y da más peso a los errores grandes.  <a class="cite" href="#ref-isl" aria-label="Referencia 1">[1]</a></li>
+<li><strong>Examina los residuos.</strong> Una curva indica que la recta podría omitir parte del patrón. Un embudo apunta a una varianza desigual. Los turnos consecutivos de un mismo equipo pueden tener errores dependientes. La normalidad es un supuesto de ciertos procedimientos clásicos de inferencia. La recta se puede calcular sin ella.  <a class="cite" href="#ref-resid" aria-label="Referencia 3">[3]</a> <a class="cite" href="#ref-interval" aria-label="Referencia 4">[4]</a></li>
+<li><strong>Comunica la incertidumbre.</strong> Un intervalo de confianza para la media se refiere a la producción media esperada. Un intervalo de predicción se refiere a un turno concreto y suele ser más amplio bajo las mismas condiciones del modelo clásico. Evita extrapolar la recta muy lejos de las duraciones observadas.  <a class="cite" href="#ref-interval" aria-label="Referencia 4">[4]</a></li>
+</ol>
+<h3>Repaso</h3>
+<details><summary>Si el residuo fue +7 m², ¿la recta quedó por encima o por debajo de lo observado?</summary><p>Por debajo. La producción observada superó la predicción en 7 m².</p></details>
+<details><summary>¿Por qué añadir un valor atípico cambia las predicciones de otros turnos?</summary><p>El modelo vuelve a ajustar una única recta para todos los ejemplos. El nuevo punto puede cambiar la pendiente y el intercepto, y así modificar las predicciones a lo largo de la recta.</p></details>
+</section>
+<section class="card study-notes" aria-labelledby="notas-label"><h2 id="notas-label">Mis notas</h2>
+<label for="notes">¿Qué quiero repasar?</label>
+<textarea id="notes" placeholder="Anota una pregunta o un ejemplo para explorar."></textarea>
+<div class="notes-actions"><button class="action" type="button" id="export-notes">Descargar notas (.txt)</button><span id="notes-status" role="status"></span></div>
+</section>
+<section aria-labelledby="fontes-title" id="fontes" class="card references"><h2 id="fontes-title">Bibliografía y lecturas recomendadas</h2><ol>
+<li id="ref-isl">James, G., Witten, D., Hastie, T., Tibshirani, R., y Taylor, J. (2023). <cite>An Introduction to Statistical Learning with Applications in Python</cite>. Springer. DOI 10.1007/978-3-031-38747-0. Capítulo 3, regresión lineal, y capítulo 5, remuestreo. <a href="https://www.statlearning.com/">Abrir la referencia</a>.</li>
+<li id="ref-ols">Penn State. <cite>STAT 501 — Simple Linear Regression</cite>. Lección 1. Mínimos cuadrados e interpretación de coeficientes. <a href="https://online.stat.psu.edu/stat501/Lesson01">Abrir la referencia</a>.</li>
+<li id="ref-resid">Penn State. <cite>STAT 501 — SLR Model Assumptions</cite>. Lección 4. Diagnóstico de patrones en gráficos de residuos. <a href="https://online.stat.psu.edu/stat501/Lesson04">Abrir la referencia</a>.</li>
+<li id="ref-interval">Penn State. <cite>STAT 501 — SLR Estimation &amp; Prediction</cite>. Lección 3. Intervalos para la media y para una observación. <a href="https://online.stat.psu.edu/stat501/Lesson03">Abrir la referencia</a>.</li>
+</ol></section><nav class="next" aria-label="Sigue aprendiendo"><a href="index.html">Volver al índice</a><a href="logistic-regression.html">Regresión logística</a><a href="decision-tree.html">Árbol de decisión</a></nav>
+</main>
+<footer><div class="wrap">Data Science Notebook · Los ejemplos usan datos simulados. Los laboratorios funcionan sin conexión.</div></footer>
+</body>
+</html>

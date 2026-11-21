@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Estima la probabilidad de un evento y decide qué hacer. Explora la sigmoide, las odds y el umbral de decisión.">
+<title>Regresión logística | Data Science Notebook</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script defer src="../assets/strings.js"></script>
+<script defer src="../assets/lab.js"></script>
+<script defer src="../assets/language.js"></script>
+</head>
+<body data-model="logistic">
+<a class="skip" href="#conteudo">Saltar al contenido</a>
+<header class="hero"><div class="wrap">
+  <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estadística · Aprendizaje automático · IA</span></div>
+  <div class="hero-label">Aprendizaje supervisado</div>
+  <h1>Regresión logística</h1><p>Estima la probabilidad de un evento y decide qué hacer. Explora la sigmoide, las odds y el umbral de decisión.</p>
+  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="linear-regression.html">Regresión lineal</a><a href="logistic-regression.html" aria-current="page">Regresión logística</a><a href="decision-tree.html">Árbol de decisión</a></nav>
+<nav class="nav language" aria-label="Idioma"><a href="../logistic-regression.html" lang="en" hreflang="en">English</a><a href="../pt/logistic-regression.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="../es/logistic-regression.html" lang="es" hreflang="es" aria-current="true">Español</a></nav>
+</div></header>
+<main id="conteudo" class="wrap content">
+<nav class="section-links" aria-label="En esta lección"><a href="#equacao">Ecuación</a><a href="#laboratorio">Laboratorio</a><a href="#treinamento">Entrenamiento</a><a href="#pratica">Cómo aplicarlo</a><a href="#fontes">Bibliografía</a></nav>
+
+<section id="equacao" class="card"><h2>De minutos de retraso a la probabilidad de un evento</h2>
+<p>Queremos predecir si una tarea terminará tarde. Cada tarea del historial tiene un resultado: <strong>1</strong> si terminó tarde y <strong>0</strong> si terminó a tiempo. La regresión logística binaria estima la probabilidad de y = 1 dadas las entradas. Calcula una puntuación lineal y la transforma con una curva en S llamada <strong>sigmoide</strong>.  <a class="cite" href="#ref-isl" aria-label="Referencia 1">[1]</a> <a class="cite" href="#ref-log" aria-label="Referencia 2">[2]</a></p>
+<div class="equation"><a class="term" href="#log-z">z</a> = <a class="term term-b" href="#log-a">b₀</a> + <a class="term term-c" href="#log-b">b₁</a> × <a class="term term-d" href="#log-x">x</a></div>
+<div class="equation"><a class="term" href="#log-p">p</a> = 1 / (1 + <a class="term term-d" href="#log-exp">e<sup>−z</sup></a>)</div>
+<dl class="symbols">
+<div id="log-x"><dt>x · entrada reescalada</dt><dd>Aquí x = (minutos − 20) ÷ 10. Una entrega con 30 minutos de retraso da x = 1.</dd></div>
+<div id="log-a"><dt>b₀ · punto de referencia</dt><dd>La puntuación cuando x = 0, que corresponde a una entrega con 20 minutos de retraso.</dd></div>
+<div id="log-b"><dt>b₁ · cambio en la puntuación</dt><dd>Diez minutos más cambian z en b₁. El cambio en la probabilidad depende del punto de la curva.</dd></div>
+<div id="log-z"><dt>z · puntuación</dt><dd>Puede ser cualquier número. La sigmoide lleva z = 0 al 50%, los valores negativos por debajo del 50% y los positivos por encima.</dd></div>
+<div id="log-exp"><dt>e<sup>−z</sup> · término exponencial</dt><dd>e es una constante de aproximadamente 2,718. La fórmula completa convierte la puntuación en un número entre 0 y 1.</dd></div>
+<div id="log-p"><dt>p · probabilidad estimada</dt><dd>Multiplica por 100 para leerla como porcentaje. La decisión de marcar la tarea depende del umbral.</dd></div>
+</dl>
+<div class="callout"><p><strong>Haz la cuenta mentalmente.</strong> Si b₀ = 0 y b₁ = 1, una entrega con 30 minutos de retraso da x = 1, z = 1 y p ≈ <strong>73%</strong>. Con un umbral del 70%, marcas la tarea. Con el 80%, queda por debajo.</p></div>
+<h3>Valores de la simulación</h3><p>Los coeficientes se obtienen del historial simulado. Cambia los minutos o el umbral y observa qué valores cambian.</p>
+<dl class="live"><div><dt>x · entrada reescalada</dt><dd><output id="eq-x"></output></dd></div><div><dt>b₀ · intercepto</dt><dd><output id="eq-intercept"></output></dd></div><div><dt>b₁ · coeficiente</dt><dd><output id="eq-slope"></output></dd></div><div><dt>z · puntuación</dt><dd><output id="eq-z"></output></dd></div><div><dt>p · probabilidad</dt><dd><output id="eq-p"></output></dd></div><div><dt>Odds estimadas</dt><dd><output id="eq-odds"></output></dd></div><div><dt>Umbral elegido</dt><dd><output id="eq-cut"></output></dd></div></dl>
+</section>
+<noscript><p>Activa JavaScript para usar el laboratorio. Puedes seguir leyendo las explicaciones.</p></noscript><section id="laboratorio" class="lab" aria-labelledby="model-title">
+    <div class="panel-head">
+      <div><h2 id="model-title"></h2><p id="model-question"></p></div>
+      <button class="action" id="reset" type="button">Restablecer</button>
+    </div>
+    <div class="lab-grid">
+      <figure class="chart-card">
+        <div class="chart-heading">
+          <h3 id="chart-title"></h3>
+          <button class="action" id="mode-toggle" type="button" aria-pressed="false"></button>
+        </div>
+        <canvas class="chart" id="chart" role="img" aria-labelledby="chart-title" aria-describedby="chart-note"></canvas>
+        <div class="legend" id="legend"></div>
+        <figcaption class="chart-note" id="chart-note"></figcaption>
+      </figure>
+      <aside class="controls" aria-label="Controles de la simulación">
+        <h3>Experimenta</h3>
+        <div id="sliders"></div>
+        <div>
+          <label id="check-label"><input type="checkbox" id="extra"> <span id="check-text"></span></label>
+          <p class="control-hint" id="check-hint"></p>
+        </div>
+        <div class="result" id="result" role="status"></div>
+      </aside>
+    </div>
+    <div class="lesson">
+      <div><h3>Cómo aprende</h3><p id="learn"></p></div>
+      <div><h3>Cuándo usarlo</h3><p id="use"></p></div>
+      <div><h3>En qué fijarte</h3><p id="watch"></p></div>
+      <details id="recall"><summary id="prompt"></summary><p id="answer"></p></details>
+    </div>
+  </section>
+<section id="treinamento" class="card"><h2>Cómo se ajusta la curva</h2>
+<p>Imagina una tarea que realmente terminó tarde. Predecir un 90% de probabilidad de retraso asigna una probabilidad alta al resultado observado. Predecir un 10% le asigna una baja. La <strong>pérdida logarítmica</strong> penaliza más el segundo caso. Si la tarea termina a tiempo, la probabilidad relevante es 1 − p.  <a class="cite" href="#ref-isl" aria-label="Referencia 1">[1]</a> <a class="cite" href="#ref-log" aria-label="Referencia 2">[2]</a></p>
+<div class="equation">Pérdida por tarea = −[y ln(p) + (1 − y) ln(1 − p)]</div>
+<p>ln es el logaritmo natural. Cuando y = 1, la pérdida es −ln(p). Cuando y = 0, es −ln(1 − p). Para un retraso observado, predecir el 90% cuesta cerca de 0,11 y predecir el 10% cuesta cerca de 2,30. Minimizar la pérdida media equivale a maximizar la verosimilitud de Bernoulli. El laboratorio usa descenso de gradiente: parte de unos coeficientes iniciales y los ajusta en pasos pequeños para reducir la pérdida.  <a class="cite" href="#ref-isl" aria-label="Referencia 1">[1]</a> <a class="cite" href="#ref-log" aria-label="Referencia 2">[2]</a></p>
+<details><summary>¿Qué son las odds y por qué z es su logaritmo?</summary><p>Las odds comparan la probabilidad de que ocurra el evento con la de que no ocurra: p ÷ (1 − p). Con p = 75%, las odds son 3 a 1. La puntuación z es el logaritmo natural de las odds. Por cada unidad que aumenta x, las odds se multiplican por e elevado a b₁. Una razón de odds de 2 duplica las odds. Por ejemplo, la probabilidad puede pasar del 50% a cerca del 67%.  <a class="cite" href="#ref-log" aria-label="Referencia 2">[2]</a></p></details>
+<details><summary>¿Qué cambia si hay más variables o las clases están perfectamente separadas?</summary><p>Añade un término a la puntuación por cada entrada. Interpreta los coeficientes en la escala logarítmica de las odds manteniendo fijas las demás entradas. Si una frontera separa perfectamente las clases, la máxima verosimilitud sin penalización puede hacer crecer los coeficientes sin una solución finita. La regularización penaliza coeficientes grandes y puede ayudar.  <a class="cite" href="#ref-isl" aria-label="Referencia 1">[1]</a> <a class="cite" href="#ref-log" aria-label="Referencia 2">[2]</a></p></details>
+</section>
+<section id="pratica" class="card"><h2>Cómo pasar de la probabilidad a la decisión</h2>
+<ol>
+<li><strong>Define cuándo vas a predecir.</strong> Si marcas tareas después de la entrega, ya conoces su retraso. Si planificas antes, usa solo la información disponible en ese momento.</li>
+<li><strong>Decide qué coste importa más.</strong> Si pasar por alto un retraso cuesta más que investigar una falsa alarma, puede convenir un umbral menor. Elígelo con datos de validación y reserva el conjunto de prueba para la evaluación final.  <a class="cite" href="#ref-cut" aria-label="Referencia 3">[3]</a></li>
+<li><strong>Observa dos tipos de error.</strong> En la matriz de confusión, un falso positivo es una tarea marcada que terminó a tiempo. Un falso negativo es un retraso que pasó inadvertido. La precisión es la proporción de alertas correctas. La sensibilidad es la proporción de retrasos reales detectados. Si los retrasos son raros, una alta exactitud puede ocultar una baja sensibilidad.  <a class="cite" href="#ref-isl" aria-label="Referencia 1">[1]</a> <a class="cite" href="#ref-cut" aria-label="Referencia 3">[3]</a></li>
+<li><strong>Comprueba la calibración.</strong> Entre las tareas con probabilidades cercanas al 70%, aproximadamente el 70% debería retrasarse en una muestra suficientemente grande y comparable. Un gráfico de calibración ayuda a comprobarlo. Ordenar las tareas por riesgo es una propiedad distinta.  <a class="cite" href="#ref-cal" aria-label="Referencia 4">[4]</a></li>
+</ol>
+<h3>Repaso</h3>
+<details><summary>El modelo predice un 40%. ¿Qué pasa si bajo el umbral del 50% al 35%?</summary><p>Ahora se marca la tarea. La probabilidad sigue siendo del 40%. El umbral cambia la decisión y la curva ajustada se mantiene.</p></details>
+<details><summary>Si la probabilidad es del 80%, ¿cuáles son las odds?</summary><p>0,8 ÷ 0,2 = 4. Las odds a favor del retraso son 4 a 1.</p></details>
+</section>
+<section class="card study-notes" aria-labelledby="notas-label"><h2 id="notas-label">Mis notas</h2>
+<label for="notes">¿Qué quiero repasar?</label>
+<textarea id="notes" placeholder="Anota una pregunta o un ejemplo para explorar."></textarea>
+<div class="notes-actions"><button class="action" type="button" id="export-notes">Descargar notas (.txt)</button><span id="notes-status" role="status"></span></div>
+</section>
+<section aria-labelledby="fontes-title" id="fontes" class="card references"><h2 id="fontes-title">Bibliografía y lecturas recomendadas</h2><ol>
+<li id="ref-isl">James, G., Witten, D., Hastie, T., Tibshirani, R., y Taylor, J. (2023). <cite>An Introduction to Statistical Learning with Applications in Python</cite>. Springer. DOI 10.1007/978-3-031-38747-0. Capítulo 4, clasificación y regresión logística. <a href="https://www.statlearning.com/">Abrir la referencia</a>.</li>
+<li id="ref-log">Penn State. <cite>STAT 501 — Weighted Least Squares &amp; Logistic Regressions</cite>. Lección 13, sección de regresión logística. Escala logarítmica, razones de odds e interpretación de coeficientes. <a href="https://online.stat.psu.edu/stat501/Lesson13">Abrir la referencia</a>.</li>
+<li id="ref-cut">scikit-learn. <cite>Tuning the decision threshold for class prediction</cite>. Guía de usuario. Estimación de probabilidades y toma de decisiones. <a href="https://scikit-learn.org/stable/modules/classification_threshold.html">Abrir la referencia</a>.</li>
+<li id="ref-cal">scikit-learn. <cite>Probability calibration</cite>. Guía de usuario. Cómo comprobar las probabilidades estimadas. <a href="https://scikit-learn.org/stable/modules/calibration.html">Abrir la referencia</a>.</li>
+</ol></section><nav class="next" aria-label="Sigue aprendiendo"><a href="index.html">Volver al índice</a><a href="linear-regression.html">Regresión lineal</a><a href="decision-tree.html">Árbol de decisión</a></nav>
+</main>
+<footer><div class="wrap">Data Science Notebook · Los ejemplos usan datos simulados. Los laboratorios funcionan sin conexión.</div></footer>
+</body>
+</html>

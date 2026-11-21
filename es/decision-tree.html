@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Convierte los datos en preguntas. Sigue una tarea por el árbol y compara cómo las divisiones agrupan los ejemplos.">
+<title>Árbol de decisión | Data Science Notebook</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script defer src="../assets/strings.js"></script>
+<script defer src="../assets/lab.js"></script>
+<script defer src="../assets/language.js"></script>
+</head>
+<body data-model="tree">
+<a class="skip" href="#conteudo">Saltar al contenido</a>
+<header class="hero"><div class="wrap">
+  <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estadística · Aprendizaje automático · IA</span></div>
+  <div class="hero-label">Aprendizaje supervisado</div>
+  <h1>Árbol de decisión</h1><p>Convierte los datos en preguntas. Sigue una tarea por el árbol y compara cómo las divisiones agrupan los ejemplos.</p>
+  <nav class="nav" aria-label="Lecciones"><a href="index.html">Inicio</a><a href="linear-regression.html">Regresión lineal</a><a href="logistic-regression.html">Regresión logística</a><a href="decision-tree.html" aria-current="page">Árbol de decisión</a></nav>
+<nav class="nav language" aria-label="Idioma"><a href="../decision-tree.html" lang="en" hreflang="en">English</a><a href="../pt/decision-tree.html" lang="pt-BR" hreflang="pt-BR">Português</a><a href="../es/decision-tree.html" lang="es" hreflang="es" aria-current="true">Español</a></nav>
+</div></header>
+<main id="conteudo" class="wrap content">
+<nav class="section-links" aria-label="En esta lección"><a href="#equacao">Ecuación</a><a href="#laboratorio">Laboratorio</a><a href="#treinamento">Entrenamiento</a><a href="#pratica">Cómo aplicarlo</a><a href="#fontes">Bibliografía</a></nav>
+
+<section id="equacao" class="card"><h2>Una secuencia de preguntas lleva a una predicción</h2>
+<p>Un árbol de decisión plantea preguntas como «¿hay como máximo 8 pendientes?» o «¿hay como máximo 5 personas en el equipo?». La primera pregunta está en la <strong>raíz</strong>. Cada respuesta lleva a una rama. Una <strong>hoja</strong> es el final del recorrido. En este laboratorio, la proporción de retrasos de una hoja del árbol de clasificación se convierte en la estimación para una tarea nueva.  <a class="cite" href="#ref-isl" aria-label="Referencia 1">[1]</a> <a class="cite" href="#ref-tree" aria-label="Referencia 2">[2]</a></p>
+<div class="equation"><a class="term" href="#tree-p">p</a> = <a class="term term-b" href="#tree-delay">retrasos en la hoja</a> / <a class="term term-c" href="#tree-n">total en la hoja</a></div>
+<dl class="symbols">
+<div id="tree-delay"><dt>Retrasos en la hoja</dt><dd>Cuántos ejemplos de entrenamiento siguieron ese recorrido y terminaron tarde.</dd></div>
+<div id="tree-n"><dt>Total en la hoja</dt><dd>Cuántos ejemplos de entrenamiento siguieron ese recorrido, con o sin retraso.</dd></div>
+<div id="tree-p"><dt>p · proporción en la hoja</dt><dd>Si 3 de 4 tareas terminaron tarde, p = 75%. Por mayoría, la clase predicha es retraso. Un reparto 50/50 aparece como empate en este laboratorio.</dd></div>
+</dl>
+<h3>Valores de la simulación</h3><p>La primera división se aprende de los datos. Cambia la tarea para ver los recuentos de su hoja.</p>
+<dl class="live"><div><dt>Pregunta de la raíz</dt><dd><output id="eq-root"></output></dd></div><div><dt>Ejemplos en la hoja</dt><dd><output id="eq-n"></output></dd></div><div><dt>Retrasos en la hoja</dt><dd><output id="eq-delay"></output></dd></div><div><dt>Proporción de retrasos</dt><dd><output id="eq-p"></output></dd></div></dl>
+</section>
+<noscript><p>Activa JavaScript para usar el laboratorio. Puedes seguir leyendo las explicaciones.</p></noscript><section id="laboratorio" class="lab" aria-labelledby="model-title">
+    <div class="panel-head">
+      <div><h2 id="model-title"></h2><p id="model-question"></p></div>
+      <button class="action" id="reset" type="button">Restablecer</button>
+    </div>
+    <div class="lab-grid">
+      <figure class="chart-card">
+        <div class="chart-heading">
+          <h3 id="chart-title"></h3>
+          <button class="action" id="mode-toggle" type="button" aria-pressed="false"></button>
+        </div>
+        <canvas class="chart" id="chart" role="img" aria-labelledby="chart-title" aria-describedby="chart-note"></canvas>
+        <div class="legend" id="legend"></div>
+        <figcaption class="chart-note" id="chart-note"></figcaption>
+      </figure>
+      <aside class="controls" aria-label="Controles de la simulación">
+        <h3>Experimenta</h3>
+        <div id="sliders"></div>
+        <div>
+          <label id="check-label"><input type="checkbox" id="extra"> <span id="check-text"></span></label>
+          <p class="control-hint" id="check-hint"></p>
+        </div>
+        <div class="result" id="result" role="status"></div>
+      </aside>
+    </div>
+    <div class="lesson">
+      <div><h3>Cómo aprende</h3><p id="learn"></p></div>
+      <div><h3>Cuándo usarlo</h3><p id="use"></p></div>
+      <div><h3>En qué fijarte</h3><p id="watch"></p></div>
+      <details id="recall"><summary id="prompt"></summary><p id="answer"></p></details>
+    </div>
+  </section>
+<section id="treinamento" class="card"><h2>Cómo el árbol elige una pregunta</h2>
+<p>El árbol prueba varias preguntas. Para valores consecutivos como 7 y 8 pendientes, un posible corte está en el punto medio, en 7,5. Cada división reparte los ejemplos en dos grupos. La <strong>impureza de Gini</strong> mide la mezcla de clases en cada grupo.  <a class="cite" href="#ref-tree" aria-label="Referencia 2">[2]</a> <a class="cite" href="#ref-cart" aria-label="Referencia 3">[3]</a></p>
+<div class="equation"><a class="term" href="#tree-gini">Gini</a> = 1 − [<a class="term term-b" href="#tree-gini-p">p²</a> + <a class="term term-c" href="#tree-gini-q">(1 − p)²</a>]</div>
+<dl class="symbols">
+<div id="tree-gini"><dt>Gini · mezcla de clases</dt><dd>Con dos clases, Gini vale 0 en un grupo de una sola clase y llega a 0,5 cuando se reparten por igual.</dd></div>
+<div id="tree-gini-p"><dt>p² · clase retraso</dt><dd>p es la proporción de retrasos del grupo analizado, sea la raíz, una rama o una hoja.</dd></div>
+<div id="tree-gini-q"><dt>(1 − p)² · clase a tiempo</dt><dd>1 − p es la proporción de tareas a tiempo. Los dos términos al cuadrado miden la concentración de las clases.</dd></div>
+</dl>
+<p>Calcula el Gini de los dos grupos y promedia ponderando por su tamaño. La <strong>ganancia</strong> es el Gini antes de dividir menos ese promedio. El algoritmo elige la mayor ganancia disponible en el nodo y repite. Es una decisión local: la mejor división inmediata puede no dar el mejor árbol en conjunto.  <a class="cite" href="#ref-tree" aria-label="Referencia 2">[2]</a> <a class="cite" href="#ref-cart" aria-label="Referencia 3">[3]</a></p>
+<div class="callout"><p><strong>Haz la cuenta mentalmente.</strong> Empieza con 4 retrasos en 8 tareas. Gini = 0,50. Una división envía a la izquierda las 4 tareas a tiempo y a la derecha los 4 retrasos. Los dos grupos tienen Gini 0, el promedio ponderado es 0 y la ganancia es <strong>0,50</strong>.</p></div>
+<dl class="live"><div><dt>Gini en la raíz</dt><dd><output id="eq-parent"></output></dd></div><div><dt>Gini ponderado de los nodos hijos</dt><dd><output id="eq-children"></output></dd></div><div><dt>Ganancia de la primera división</dt><dd><output id="eq-gain"></output></dd></div></dl>
+<details><summary>¿Y si queremos predecir una cantidad, como horas de retrabajo?</summary><p>Un árbol de regresión puede predecir la media de los valores observados en la hoja. Con el error cuadrático, la mejor división reduce la suma de los cuadrados de las desviaciones respecto a las medias de los grupos. Este árbol de clasificación usa Gini porque el resultado tiene clases.  <a class="cite" href="#ref-tree" aria-label="Referencia 2">[2]</a> <a class="cite" href="#ref-isl" aria-label="Referencia 1">[1]</a></p></details>
+<details><summary>¿Para qué sirve la poda?</summary><p>Un límite de profundidad impide que el árbol crezca más allá de cierto nivel. La poda por coste y complejidad compara subárboles ajustados y penaliza los que tienen más hojas. Usa la validación para elegir la complejidad.  <a class="cite" href="#ref-tree" aria-label="Referencia 2">[2]</a> <a class="cite" href="#ref-cart" aria-label="Referencia 3">[3]</a></p></details>
+</section>
+<section id="pratica" class="card"><h2>Cómo usarlo y evaluarlo</h2>
+<ol>
+<li><strong>Usa entradas disponibles al predecir.</strong> Registra los pendientes y el tamaño del equipo al empezar el turno. Define qué cuenta como retraso antes de preparar el historial.</li>
+<li><strong>Compara árboles de distintos tamaños.</strong> Observa las métricas de entrenamiento y validación. Si mejora el entrenamiento y empeora la validación, el árbol podría estar aprendiendo particularidades del historial. Esto es sobreajuste. Ajusta la profundidad, el tamaño mínimo de hoja o la poda.  <a class="cite" href="#ref-tree" aria-label="Referencia 2">[2]</a> <a class="cite" href="#ref-isl" aria-label="Referencia 1">[1]</a></li>
+<li><strong>Comprueba cuántas tareas respaldan la predicción.</strong> Una hoja del 100% basada en una sola tarea ofrece una señal débil. Si usas esas proporciones como probabilidades operativas, evalúa la calibración con datos separados.  <a class="cite" href="#ref-tree" aria-label="Referencia 2">[2]</a> <a class="cite" href="#ref-cal" aria-label="Referencia 4">[4]</a></li>
+<li><strong>Prueba con escenarios nuevos.</strong> Un cambio pequeño en los datos puede alterar las divisiones, sobre todo cuando hay varias opciones parecidas. Mide el desempeño en períodos futuros y compáralo con una regla simple o un modelo de referencia. Una regla aprendida recoge patrones de los datos. Las conclusiones causales sobre cambiar el equipo requieren más evidencia.  <a class="cite" href="#ref-isl" aria-label="Referencia 1">[1]</a> <a class="cite" href="#ref-tree" aria-label="Referencia 2">[2]</a></li>
+</ol>
+<h3>Repaso</h3>
+<details><summary>Una hoja tiene 12 tareas y 9 terminaron tarde. ¿Qué predice?</summary><p>La proporción de retrasos es 9 ÷ 12 = 75%. Por mayoría, la clase predicha es retraso.</p></details>
+<details><summary>¿Qué elegirías: un árbol que acierta todo en entrenamiento o uno más pequeño que acierta más en validación?</summary><p>Para predecir casos nuevos, la validación con datos representativos ofrece mejor evidencia. Confirma la elección en un conjunto de prueba final separado.</p></details>
+</section>
+<section class="card study-notes" aria-labelledby="notas-label"><h2 id="notas-label">Mis notas</h2>
+<label for="notes">¿Qué quiero repasar?</label>
+<textarea id="notes" placeholder="Anota una pregunta o un ejemplo para explorar."></textarea>
+<div class="notes-actions"><button class="action" type="button" id="export-notes">Descargar notas (.txt)</button><span id="notes-status" role="status"></span></div>
+</section>
+<section aria-labelledby="fontes-title" id="fontes" class="card references"><h2 id="fontes-title">Bibliografía y lecturas recomendadas</h2><ol>
+<li id="ref-isl">James, G., Witten, D., Hastie, T., Tibshirani, R., y Taylor, J. (2023). <cite>An Introduction to Statistical Learning with Applications in Python</cite>. Springer. DOI 10.1007/978-3-031-38747-0. Capítulo 8, métodos basados en árboles. <a href="https://www.statlearning.com/">Abrir la referencia</a>.</li>
+<li id="ref-tree">scikit-learn. <cite>Decision Trees</cite>. Guía de usuario. Criterios de división, árboles de regresión y poda. <a href="https://scikit-learn.org/stable/modules/tree.html">Abrir la referencia</a>.</li>
+<li id="ref-cart">Breiman, L., Friedman, J. H., Olshen, R. A., y Stone, C. J. (1984). <cite>Classification and Regression Trees</cite>. El libro clásico sobre CART. <a href="https://www.routledge.com/Classification-and-Regression-Trees/Breiman-Friedman-Stone-Olshen/p/book/9780412048418/">Abrir la referencia</a>.</li>
+<li id="ref-cal">scikit-learn. <cite>Probability calibration</cite>. Guía de usuario. Evaluación de las probabilidades estimadas. <a href="https://scikit-learn.org/stable/modules/calibration.html">Abrir la referencia</a>.</li>
+</ol></section><nav class="next" aria-label="Sigue aprendiendo"><a href="index.html">Volver al índice</a><a href="linear-regression.html">Regresión lineal</a><a href="logistic-regression.html">Regresión logística</a></nav>
+</main>
+<footer><div class="wrap">Data Science Notebook · Los ejemplos usan datos simulados. Los laboratorios funcionan sin conexión.</div></footer>
+</body>
+</html>

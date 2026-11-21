@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Como transformar dados em perguntas. Siga o caminho de uma tarefa e compare os cortes entre grupos.">
+<title>Árvore de decisão | Data Science Notebook</title>
+<link rel="stylesheet" href="../assets/site.css">
+<script defer src="../assets/strings.js"></script>
+<script defer src="../assets/lab.js"></script>
+<script defer src="../assets/language.js"></script>
+</head>
+<body data-model="tree">
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
+<header class="hero"><div class="wrap">
+  <div class="masthead"><a href="index.html">Data Science Notebook</a><span>Estatística · Machine learning · IA</span></div>
+  <div class="hero-label">Machine learning supervisionado</div>
+  <h1>Árvore de decisão</h1><p>Como transformar dados em perguntas. Siga o caminho de uma tarefa e compare os cortes entre grupos.</p>
+  <nav class="nav" aria-label="Aulas"><a href="index.html">Início</a><a href="linear-regression.html">Regressão linear</a><a href="logistic-regression.html">Regressão logística</a><a href="decision-tree.html" aria-current="page">Árvore de decisão</a></nav>
+<nav class="nav language" aria-label="Idioma"><a href="../decision-tree.html" lang="en" hreflang="en">English</a><a href="../pt/decision-tree.html" lang="pt-BR" hreflang="pt-BR" aria-current="true">Português</a><a href="../es/decision-tree.html" lang="es" hreflang="es">Español</a></nav>
+</div></header>
+<main id="conteudo" class="wrap content">
+<nav class="section-links" aria-label="Nesta aula"><a href="#equacao">Equação</a><a href="#laboratorio">Laboratório</a><a href="#treinamento">Treinamento</a><a href="#pratica">Uso na prática</a><a href="#fontes">Bibliografia</a></nav>
+
+<section id="equacao" class="card"><h2>Uma sequência de perguntas até a previsão</h2>
+<p>Uma árvore de decisão faz perguntas do tipo “há até 8 pendências?” ou “a equipe tem até 5 pessoas?”. A primeira pergunta fica na <strong>raiz</strong>. Cada resposta leva a um ramo. Uma <strong>folha</strong> é o fim do caminho. Na árvore de classificação deste laboratório, a proporção de atrasos na folha vira a estimativa para uma tarefa nova.  <a class="cite" href="#ref-isl" aria-label="Referência 1">[1]</a> <a class="cite" href="#ref-tree" aria-label="Referência 2">[2]</a></p>
+<div class="equation"><a class="term" href="#tree-p">p</a> = <a class="term term-b" href="#tree-delay">atrasos na folha</a> / <a class="term term-c" href="#tree-n">total na folha</a></div>
+<dl class="symbols">
+<div id="tree-delay"><dt>Atrasos na folha</dt><dd>Quantos exemplos de treino fizeram aquele caminho e atrasaram.</dd></div>
+<div id="tree-n"><dt>Total na folha</dt><dd>Quantos exemplos de treino fizeram aquele caminho, com ou sem atraso.</dd></div>
+<div id="tree-p"><dt>p · proporção na folha</dt><dd>Se 3 de 4 tarefas atrasaram, p = 75%. Com voto da maioria, a classe prevista é atraso. Neste laboratório, uma divisão 50/50 aparece como empate.</dd></div>
+</dl>
+<h3>Valores da simulação</h3><p>O primeiro corte é aprendido do histórico. Mude a tarefa para acompanhar a contagem na folha.</p>
+<dl class="live"><div><dt>Pergunta da raiz</dt><dd><output id="eq-root"></output></dd></div><div><dt>Exemplos na folha</dt><dd><output id="eq-n"></output></dd></div><div><dt>Atrasos na folha</dt><dd><output id="eq-delay"></output></dd></div><div><dt>Proporção de atrasos</dt><dd><output id="eq-p"></output></dd></div></dl>
+</section>
+<noscript><p>Ative o JavaScript para usar o laboratório. As explicações continuam disponíveis abaixo.</p></noscript><section id="laboratorio" class="lab" aria-labelledby="model-title">
+    <div class="panel-head">
+      <div><h2 id="model-title"></h2><p id="model-question"></p></div>
+      <button class="action" id="reset" type="button">Reiniciar</button>
+    </div>
+    <div class="lab-grid">
+      <figure class="chart-card">
+        <div class="chart-heading">
+          <h3 id="chart-title"></h3>
+          <button class="action" id="mode-toggle" type="button" aria-pressed="false"></button>
+        </div>
+        <canvas class="chart" id="chart" role="img" aria-labelledby="chart-title" aria-describedby="chart-note"></canvas>
+        <div class="legend" id="legend"></div>
+        <figcaption class="chart-note" id="chart-note"></figcaption>
+      </figure>
+      <aside class="controls" aria-label="Controles da simulação">
+        <h3>Experimente</h3>
+        <div id="sliders"></div>
+        <div>
+          <label id="check-label"><input type="checkbox" id="extra"> <span id="check-text"></span></label>
+          <p class="control-hint" id="check-hint"></p>
+        </div>
+        <div class="result" id="result" role="status"></div>
+      </aside>
+    </div>
+    <div class="lesson">
+      <div><h3>Como aprende</h3><p id="learn"></p></div>
+      <div><h3>Quando usar</h3><p id="use"></p></div>
+      <div><h3>O que observar</h3><p id="watch"></p></div>
+      <details id="recall"><summary id="prompt"></summary><p id="answer"></p></details>
+    </div>
+  </section>
+<section id="treinamento" class="card"><h2>Como a árvore escolhe uma pergunta</h2>
+<p>A árvore testa perguntas candidatas. Para dois valores consecutivos de uma entrada, como 7 e 8 pendências, um corte possível fica no meio, em 7,5. Cada corte divide os exemplos em dois grupos. A <strong>impureza de Gini</strong> mede a mistura de classes em cada um deles.  <a class="cite" href="#ref-tree" aria-label="Referência 2">[2]</a> <a class="cite" href="#ref-cart" aria-label="Referência 3">[3]</a></p>
+<div class="equation"><a class="term" href="#tree-gini">Gini</a> = 1 − [<a class="term term-b" href="#tree-gini-p">p²</a> + <a class="term term-c" href="#tree-gini-q">(1 − p)²</a>]</div>
+<dl class="symbols">
+<div id="tree-gini"><dt>Gini · mistura</dt><dd>Com duas classes, vale 0 em um grupo de classe única e chega a 0,5 quando a divisão é meio a meio.</dd></div>
+<div id="tree-gini-p"><dt>p² · classe atraso</dt><dd>p é a proporção de atrasos no grupo em análise, que pode ser a raiz, um ramo ou uma folha.</dd></div>
+<div id="tree-gini-q"><dt>(1 − p)² · classe no prazo</dt><dd>1 − p é a proporção que ficou no prazo. As duas parcelas ao quadrado medem a concentração nas classes.</dd></div>
+</dl>
+<p>Calcule o Gini dos dois grupos e faça a média ponderada pelo tamanho de cada um. O <strong>ganho</strong> é o Gini antes do corte menos essa média. O algoritmo escolhe o maior ganho disponível naquele nó e repete o processo. É uma escolha local: o melhor próximo corte pode não resultar na melhor árvore possível como um todo.  <a class="cite" href="#ref-tree" aria-label="Referência 2">[2]</a> <a class="cite" href="#ref-cart" aria-label="Referência 3">[3]</a></p>
+<div class="callout"><p><strong>Exemplo de cabeça.</strong> Comece com 4 atrasos em 8 tarefas. Gini = 0,50. Um corte manda 4 tarefas no prazo para a esquerda e 4 atrasos para a direita. Os dois lados têm Gini 0, a média ponderada é 0 e o ganho é <strong>0,50</strong>.</p></div>
+<dl class="live"><div><dt>Gini na raiz</dt><dd><output id="eq-parent"></output></dd></div><div><dt>Gini dos filhos, ponderado</dt><dd><output id="eq-children"></output></dd></div><div><dt>Ganho do primeiro corte</dt><dd><output id="eq-gain"></output></dd></div></dl>
+<details><summary>E se quisermos prever uma quantidade, como horas de retrabalho?</summary><p>Uma árvore de regressão pode usar a média dos valores observados na folha como previsão. Com erro quadrático, o melhor corte reduz a soma dos quadrados dos desvios em relação às médias dos grupos. A árvore de classificação aqui usa Gini porque o alvo tem classes.  <a class="cite" href="#ref-tree" aria-label="Referência 2">[2]</a> <a class="cite" href="#ref-isl" aria-label="Referência 1">[1]</a></p></details>
+<details><summary>O que a poda faz?</summary><p>Um limite de profundidade impede a árvore de crescer além de certo ponto. A poda por complexidade compara subárvores já ajustadas e penaliza as que têm mais folhas. Use validação para escolher o grau de complexidade.  <a class="cite" href="#ref-tree" aria-label="Referência 2">[2]</a> <a class="cite" href="#ref-cart" aria-label="Referência 3">[3]</a></p></details>
+</section>
+<section id="pratica" class="card"><h2>Como usar e verificar</h2>
+<ol>
+<li><strong>Escolha entradas que você tem na hora.</strong> Registre pendências e tamanho da equipe no início do turno. Defina o que conta como atraso antes de montar o histórico.</li>
+<li><strong>Compare árvores de tamanhos diferentes.</strong> Acompanhe métricas no treino e na validação. Se o treino melhora e a validação piora, a árvore pode estar aprendendo particularidades do histórico. Isso é overfitting. Ajuste profundidade, tamanho mínimo da folha ou poda.  <a class="cite" href="#ref-tree" aria-label="Referência 2">[2]</a> <a class="cite" href="#ref-isl" aria-label="Referência 1">[1]</a></li>
+<li><strong>Confira quantas tarefas sustentam a previsão.</strong> Uma folha de 100% baseada numa única tarefa dá um sinal frágil. Ao usar essas proporções como probabilidades operacionais, avalie a calibração em dados separados.  <a class="cite" href="#ref-tree" aria-label="Referência 2">[2]</a> <a class="cite" href="#ref-cal" aria-label="Referência 4">[4]</a></li>
+<li><strong>Teste em cenários novos.</strong> Uma mudança pequena nos dados pode alterar os cortes, especialmente quando há opções parecidas. Acompanhe o desempenho em períodos futuros e compare com uma regra simples ou um modelo de referência. A regra aprendida descreve padrões dos dados e não prova que mudar a equipe causará certo resultado.  <a class="cite" href="#ref-isl" aria-label="Referência 1">[1]</a> <a class="cite" href="#ref-tree" aria-label="Referência 2">[2]</a></li>
+</ol>
+<h3>Revisão</h3>
+<details><summary>Uma folha tem 12 tarefas, das quais 9 atrasaram. Qual a previsão?</summary><p>A proporção da classe atraso é 9 ÷ 12 = 75%. Pelo voto da maioria, a previsão de classe é atraso.</p></details>
+<details><summary>Qual você prefere: árvore que acerta tudo no treino ou uma menor que acerta mais na validação?</summary><p>Se o objetivo é prever casos novos, a validação em dados representativos dá a melhor evidência dentre as duas opções. Confirme a escolha em um teste final separado.</p></details>
+</section>
+<section class="card study-notes" aria-labelledby="notas-label"><h2 id="notas-label">Minhas notas</h2>
+<label for="notes">O que quero revisitar nesta aula?</label>
+<textarea id="notes" placeholder="Anote uma dúvida ou um exemplo para explorar."></textarea>
+<div class="notes-actions"><button class="action" type="button" id="export-notes">Baixar notas (.txt)</button><span id="notes-status" role="status"></span></div>
+</section>
+<section aria-labelledby="fontes-title" id="fontes" class="card references"><h2 id="fontes-title">Bibliografia e próximos passos de leitura</h2><ol>
+<li id="ref-isl">James, G., Witten, D., Hastie, T., Tibshirani, R., e Taylor, J. (2023). <cite>An Introduction to Statistical Learning with Applications in Python</cite>. Springer. DOI 10.1007/978-3-031-38747-0. Capítulo 8, métodos baseados em árvores. <a href="https://www.statlearning.com/">Abrir a referência</a>.</li>
+<li id="ref-tree">scikit-learn. <cite>Decision Trees</cite>. Guia do usuário. Critérios de divisão, árvores de regressão e poda. <a href="https://scikit-learn.org/stable/modules/tree.html">Abrir a referência</a>.</li>
+<li id="ref-cart">Breiman, L., Friedman, J. H., Olshen, R. A., e Stone, C. J. (1984). <cite>Classification and Regression Trees</cite>. A obra clássica sobre o método CART. <a href="https://www.routledge.com/Classification-and-Regression-Trees/Breiman-Friedman-Stone-Olshen/p/book/9780412048418/">Abrir a referência</a>.</li>
+<li id="ref-cal">scikit-learn. <cite>Probability calibration</cite>. Guia do usuário. Como avaliar estimativas de probabilidade. <a href="https://scikit-learn.org/stable/modules/calibration.html">Abrir a referência</a>.</li>
+</ol></section><nav class="next" aria-label="Continue estudando"><a href="index.html">Voltar ao índice</a><a href="linear-regression.html">Regressão linear</a><a href="logistic-regression.html">Regressão logística</a></nav>
+</main>
+<footer><div class="wrap">Data Science Notebook · Os exemplos usam dados simulados. Os laboratórios funcionam offline.</div></footer>
+</body>
+</html>
