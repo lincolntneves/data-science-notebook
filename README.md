@@ -1,5 +1,7 @@
 # Data Science Notebook
 
+**[Open the interactive Data Science Notebook →](https://lincolntneves.github.io/data-science-notebook/)**
+
 Interactive lessons on statistics, machine learning, and AI. The notebook covers ten models, from linear regression to gradient boosting. The examples use simulated data.
 
 **English** is the default. **Português** and **Español** are available from every page. Each version includes the complete theory, equations, lab, review questions, and references.
